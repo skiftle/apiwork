@@ -95,7 +95,8 @@ module Apiwork
                   }
 
                   if association.singular?
-                    object.param(name, type: association_type || :object, **base_options)
+                    resolved_type = association_type || :object
+                    object.param(name, type: resolved_type, custom_type: association_type, **base_options)
                   elsif association.collection?
                     if association_type
                       object.param(name, type: :array, **base_options) do |param|

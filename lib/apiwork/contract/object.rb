@@ -109,6 +109,7 @@ module Apiwork
         name,
         type: nil,
         as: nil,
+        custom_type: nil,
         default: nil,
         deprecated: false,
         description: nil,

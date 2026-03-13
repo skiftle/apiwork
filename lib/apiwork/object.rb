@@ -1649,6 +1649,8 @@ module Apiwork
       optional: false,
       required: false
     )
+      reference_type = to || name
+
       param(
         name,
         as:,
@@ -1658,7 +1660,8 @@ module Apiwork
         nullable:,
         optional:,
         required:,
-        type: to || name,
+        custom_type: reference_type,
+        type: reference_type,
       )
     end
 
@@ -1695,6 +1698,8 @@ module Apiwork
       nullable: false,
       required: false
     )
+      reference_type = to || name
+
       param(
         name,
         as:,
@@ -1703,8 +1708,9 @@ module Apiwork
         description:,
         nullable:,
         required:,
+        custom_type: reference_type,
         optional: true,
-        type: to || name,
+        type: reference_type,
       )
     end
 

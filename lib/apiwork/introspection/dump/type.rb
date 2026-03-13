@@ -99,7 +99,7 @@ module Apiwork
         end
 
         def build_param(name, options, scope)
-          reference = resolve_type_reference(options[:type], scope)
+          reference = options[:custom_type] ? resolve_type_reference(options[:custom_type], scope) : nil
 
           {
             reference:,
