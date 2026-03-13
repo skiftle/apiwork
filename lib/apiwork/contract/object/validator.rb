@@ -600,7 +600,9 @@ module Apiwork
         end
 
         def validate_with_type_definition(type_definition, value, path, current_depth:, exclude_param: nil, max_depth:)
-          type_shape = Object.new(@shape.contract_class, action_name: @shape.action_name)
+          scope = type_definition.scope || @shape.contract_class
+
+          type_shape = Object.new(scope, action_name: @shape.action_name)
           type_shape.copy_type_definition_params(type_definition, type_shape)
           type_shape.params.delete(exclude_param) if exclude_param
 

@@ -417,7 +417,9 @@ module Apiwork
         as:,
         options:
       )
-        union = Union.new(@contract_class, discriminator: type_definition.discriminator)
+        scope = type_definition.scope || @contract_class
+
+        union = Union.new(scope, discriminator: type_definition.discriminator)
 
         type_definition.variants.each do |variant|
           if variant[:shape].is_a?(API::Object)
@@ -468,8 +470,10 @@ module Apiwork
         options:,
         &block
       )
+        scope = type_definition.scope || @contract_class
+
         shape = Object.new(
-          @contract_class,
+          scope,
           action_name: @action_name,
           visited_types: visited_types.dup.add([@contract_class.object_id, type]),
         )

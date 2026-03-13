@@ -85,7 +85,9 @@ module Apiwork
         end
 
         def build_type_shape(type_definition, contract_class)
-          type_shape = Object.new(contract_class, action_name: @shape.action_name)
+          scope = type_definition.scope || contract_class
+
+          type_shape = Object.new(scope, action_name: @shape.action_name)
           type_shape.copy_type_definition_params(type_definition, type_shape)
           type_shape
         end
