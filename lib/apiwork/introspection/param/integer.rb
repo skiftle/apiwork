@@ -26,6 +26,22 @@ module Apiwork
       #   end
       class Integer < Base
         # @api public
+        # The default for this param.
+        #
+        # @return [Object, nil]
+        def default
+          @dump[:default]
+        end
+
+        # @api public
+        # The example for this param.
+        #
+        # @return [Object, nil]
+        def example
+          @dump[:example]
+        end
+
+        # @api public
         # The minimum for this param.
         #
         # @return [Numeric, nil]
@@ -47,6 +63,14 @@ module Apiwork
         # @return [Symbol, nil]
         def format
           @dump[:format]
+        end
+
+        # @api public
+        # Whether this param is concrete.
+        #
+        # @return [Boolean]
+        def concrete?
+          true
         end
 
         # @api public
@@ -119,7 +143,9 @@ module Apiwork
         # @return [Hash]
         def to_h
           result = super
+          result[:default] = default
           result[:enum] = enum if enum?
+          result[:example] = example
           result[:format] = format
           result[:max] = max
           result[:min] = min

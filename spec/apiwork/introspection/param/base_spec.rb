@@ -18,8 +18,6 @@ RSpec.describe Apiwork::Introspection::Param::Base do
 
       expect(param.type).to eq(:string)
       expect(param.description).to eq('The title')
-      expect(param.example).to eq('First Post')
-      expect(param.default).to eq('Untitled')
       expect(param.tag).to eq('field')
       expect(param.nullable?).to be(true)
       expect(param.optional?).to be(true)
@@ -203,10 +201,8 @@ RSpec.describe Apiwork::Introspection::Param::Base do
 
       expect(param.to_h).to eq(
         {
-          default: 'Untitled',
           deprecated: false,
           description: 'The title',
-          example: 'First Post',
           nullable: false,
           optional: false,
           type: :string,

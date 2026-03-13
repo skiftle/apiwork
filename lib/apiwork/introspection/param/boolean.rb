@@ -21,6 +21,30 @@ module Apiwork
       #   end
       class Boolean < Base
         # @api public
+        # The default for this param.
+        #
+        # @return [Object, nil]
+        def default
+          @dump[:default]
+        end
+
+        # @api public
+        # The example for this param.
+        #
+        # @return [Object, nil]
+        def example
+          @dump[:example]
+        end
+
+        # @api public
+        # Whether this param is concrete.
+        #
+        # @return [Boolean]
+        def concrete?
+          true
+        end
+
+        # @api public
         # Whether this param is scalar.
         #
         # @return [Boolean]
@@ -66,6 +90,18 @@ module Apiwork
         # @return [Boolean]
         def formattable?
           false
+        end
+
+        # @api public
+        # Converts this param to a hash.
+        #
+        # @return [Hash]
+        def to_h
+          result = super
+          result[:default] = default
+          result[:enum] = enum if enum?
+          result[:example] = example
+          result
         end
       end
     end

@@ -319,7 +319,7 @@ module Apiwork
         schema = map_param(param)
 
         schema[:description] = param.description if param.description
-        schema[:example] = param.example if param.example
+        schema[:example] = param.example if param.concrete? && param.example
         schema[:deprecated] = true if param.deprecated?
 
         schema[:format] = param.format.to_s if param.formattable? && param.format
@@ -353,7 +353,7 @@ module Apiwork
         }
 
         result[:description] = param.description if param.description
-        result[:example] = param.example if param.example
+        result[:example] = param.example if param.respond_to?(:example) && param.example
 
         param.shape.each do |name, field|
           result[:properties][transform_key(name)] = map_field(field)

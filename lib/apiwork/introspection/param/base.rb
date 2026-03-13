@@ -49,27 +49,19 @@ module Apiwork
         end
 
         # @api public
-        # The example for this param.
-        #
-        # @return [Object, nil]
-        def example
-          @dump[:example]
-        end
-
-        # @api public
-        # The default for this param.
-        #
-        # @return [Object, nil]
-        def default
-          @dump[:default]
-        end
-
-        # @api public
         # The tag for this param.
         #
         # @return [String, nil]
         def tag
           @dump[:tag]
+        end
+
+        # @api public
+        # Whether this param is concrete.
+        #
+        # @return [Boolean]
+        def concrete?
+          false
         end
 
         # @api public
@@ -262,10 +254,8 @@ module Apiwork
         # @return [Hash]
         def to_h
           {
-            default: default,
             deprecated: deprecated?,
             description: description,
-            example: example,
             nullable: nullable?,
             optional: optional?,
             type: type,

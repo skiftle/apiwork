@@ -30,7 +30,7 @@ module Apiwork
           ts_type = map_field(param)
           optional_marker = param.optional? ? '?' : ''
 
-          prop_jsdoc = jsdoc(description: param.description, example: param.example)
+          prop_jsdoc = jsdoc(description: param.description, example: param.concrete? ? param.example : nil)
           if prop_jsdoc
             indented_jsdoc = prop_jsdoc.lines.map { |line| "  #{line.chomp}" }.join("\n")
             "#{indented_jsdoc}\n  #{key}#{optional_marker}: #{ts_type};"

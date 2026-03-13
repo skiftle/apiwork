@@ -21,6 +21,22 @@ module Apiwork
       #   param.boundable? # => true
       class Array < Base
         # @api public
+        # The default for this param.
+        #
+        # @return [Object, nil]
+        def default
+          @dump[:default]
+        end
+
+        # @api public
+        # The example for this param.
+        #
+        # @return [Object, nil]
+        def example
+          @dump[:example]
+        end
+
+        # @api public
         # The of for this param.
         #
         # @return [Param::Base, nil]
@@ -63,6 +79,14 @@ module Apiwork
         end
 
         # @api public
+        # Whether this param is concrete.
+        #
+        # @return [Boolean]
+        def concrete?
+          true
+        end
+
+        # @api public
         # Whether this param is boundable.
         #
         # @return [Boolean]
@@ -76,6 +100,8 @@ module Apiwork
         # @return [Hash]
         def to_h
           result = super
+          result[:default] = default
+          result[:example] = example
           result[:max] = max
           result[:min] = min
           result[:of] = of&.to_h
