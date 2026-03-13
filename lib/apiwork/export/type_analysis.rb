@@ -39,11 +39,22 @@ module Apiwork
 
         def find_cycle_breaking_types(graph)
           lazy_types = Set.new
+          reduced_graph = graph
 
-          find_strongly_connected_components(graph).each do |component|
-            next if component.size == 1 && !graph[component.first].include?(component.first)
+          loop do
+            previous_size = lazy_types.size
 
-            lazy_types.add(component.min_by(&:to_s))
+            find_strongly_connected_components(reduced_graph).each do |component|
+              next if component.size == 1 && !reduced_graph[component.first].include?(component.first)
+
+              lazy_types.add(select_cycle_breaker(component, reduced_graph))
+            end
+
+            break if lazy_types.size == previous_size
+
+            reduced_graph = reduced_graph
+              .reject { |node, _| lazy_types.include?(node) }
+              .transform_values { |deps| deps - lazy_types.to_a }
           end
 
           lazy_types
@@ -112,6 +123,10 @@ module Apiwork
             break if successor == node
           end
           state[:components] << component
+        end
+
+        def select_cycle_breaker(component, graph)
+          component.min_by { |node| [-(graph[node] & component).size, node.to_s] }
         end
 
         def collect_references(node, references, filter)
