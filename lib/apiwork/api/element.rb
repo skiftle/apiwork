@@ -32,7 +32,7 @@ module Apiwork
       # This is the verbose form. Prefer sugar methods (string, integer, etc.)
       # for static definitions. Use `of` for dynamic element generation.
       #
-      # @param type [Symbol] [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :uuid]
+      # @param type [Symbol] [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :unknown, :uuid]
       #   The element type. Custom type references are also allowed.
       # @param discriminator [Symbol, nil] (nil)
       #   The discriminator field name. Unions only.
@@ -66,7 +66,7 @@ module Apiwork
       #   end
       def of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, value: nil, &block)
         case type
-        when :string, :integer, :decimal, :boolean, :number, :datetime, :date, :uuid, :time, :binary
+        when :string, :integer, :decimal, :boolean, :number, :datetime, :date, :uuid, :time, :binary, :unknown
           set_type(type, enum:, format:, max:, min:)
         when :literal
           @type = :literal

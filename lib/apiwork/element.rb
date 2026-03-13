@@ -251,6 +251,19 @@ module Apiwork
     end
 
     # @api public
+    # Defines an unknown.
+    #
+    # @return [void]
+    #
+    # @example
+    #   array :values do
+    #     unknown
+    #   end
+    def unknown
+      of(:unknown)
+    end
+
+    # @api public
     # Defines an object.
     #
     # @yield block defining nested structure

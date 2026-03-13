@@ -32,7 +32,7 @@ module Apiwork
       #
       # @param name [Symbol]
       #   The param name.
-      # @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :uuid]
+      # @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :unknown, :uuid]
       #   The param type.
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.

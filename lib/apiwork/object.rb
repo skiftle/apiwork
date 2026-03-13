@@ -1130,6 +1130,103 @@ module Apiwork
     end
 
     # @api public
+    # Defines an unknown.
+    #
+    # @param name [Symbol]
+    #   The name.
+    # @param as [Symbol, nil] (nil)
+    #   The target attribute name.
+    # @param default [Object, nil] (nil)
+    #   The default value.
+    # @param deprecated [Boolean] (false)
+    #   Whether deprecated. Metadata included in exports.
+    # @param description [String, nil] (nil)
+    #   The description. Metadata included in exports.
+    # @param example [Object, nil] (nil)
+    #   The example value. Metadata included in exports.
+    # @param nullable [Boolean] (false)
+    #   Whether the value can be `null`.
+    # @param optional [Boolean] (false)
+    #   Whether the param is optional.
+    # @param required [Boolean] (false)
+    #   Whether the param is required.
+    # @return [void]
+    #
+    # @example Opaque metadata
+    #   unknown :metadata
+    def unknown(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: false,
+      description: nil,
+      example: nil,
+      nullable: false,
+      optional: false,
+      required: false
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        optional:,
+        required:,
+        type: :unknown,
+      )
+    end
+
+    # @api public
+    # Defines an optional unknown.
+    #
+    # @param name [Symbol]
+    #   The name.
+    # @param as [Symbol, nil] (nil)
+    #   The target attribute name.
+    # @param default [Object, nil] (nil)
+    #   The default value.
+    # @param deprecated [Boolean] (false)
+    #   Whether deprecated. Metadata included in exports.
+    # @param description [String, nil] (nil)
+    #   The description. Metadata included in exports.
+    # @param example [Object, nil] (nil)
+    #   The example value. Metadata included in exports.
+    # @param nullable [Boolean] (false)
+    #   Whether the value can be `null`.
+    # @param required [Boolean] (false)
+    #   Whether the param is required.
+    # @return [void]
+    #
+    # @example Optional metadata
+    #   unknown? :metadata
+    def unknown?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: false,
+      description: nil,
+      example: nil,
+      nullable: false,
+      required: false
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        example:,
+        nullable:,
+        required:,
+        optional: true,
+        type: :unknown,
+      )
+    end
+
+    # @api public
     # Defines an object.
     #
     # @param name [Symbol]
