@@ -37,10 +37,8 @@ module Apiwork
       end
 
       def build_contract
-        contract = {
-          endpoints: build_endpoint_tree(@export.api.resources),
-          error: build_error_schema,
-        }
+        contract = { endpoints: build_endpoint_tree(@export.api.resources) }
+        contract[:error] = build_error_schema if @surface.types.key?(:error)
         "export const contract = #{format_object(contract, indent: 0)} as const;"
       end
 
