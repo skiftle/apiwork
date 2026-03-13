@@ -115,6 +115,12 @@ module Apiwork
         end
       end
 
+      def reference(type_name)
+        @type = type_name
+        @custom_type = type_name
+        @defined = true
+      end
+
       private
 
       def resolve_enum(enum)

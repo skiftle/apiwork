@@ -105,6 +105,12 @@ module Apiwork
           @defined = true
         end
       end
+
+      def reference(type_name)
+        @type = type_name
+        @custom_type = type_name
+        @defined = true
+      end
     end
   end
 end
