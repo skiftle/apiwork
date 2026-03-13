@@ -4,6 +4,11 @@ module Apiwork
   module Introspection
     module Dump
       class Type
+        PRIMITIVE_TYPES = %i[
+          array binary boolean date datetime decimal enum float integer json
+          literal number object string text time union unknown uuid
+        ].to_set.freeze
+
         def initialize(api_class)
           @api_class = api_class
         end
@@ -99,7 +104,11 @@ module Apiwork
         end
 
         def build_param(name, options, scope)
-          reference = options[:custom_type] ? resolve_type_reference(options[:custom_type], scope) : nil
+          reference = if options[:custom_type]
+                        resolve_type_reference(options[:custom_type], scope)
+                      elsif options[:type] && !PRIMITIVE_TYPES.include?(options[:type])
+                        resolve_type_reference(options[:type], scope)
+                      end
 
           {
             reference:,
