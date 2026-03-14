@@ -1,5 +1,5 @@
 title: Inline Types
-description: Define typed JSON columns with object shapes, arrays, and nested structures
+description: Define typed JSON columns with object shapes, arrays, records, and nested structures
 order: 12
 
 sections:
@@ -48,6 +48,10 @@ scenarios:
           notifications:
             email: true
             push: false
+        scores:
+          math: 95
+          science: 87
+          history: 72
         metadata:
           source: api
           version: 2
@@ -80,6 +84,9 @@ scenarios:
             notifications:
               email: true
               push: false
+          scores:
+            math: 95
+            science: 87
           metadata:
             source: api
     body:

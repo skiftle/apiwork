@@ -201,6 +201,8 @@ module Apiwork
             validate_shape_object(value, param_options[:shape], field_path, max_depth, current_depth)
           elsif param_options[:type] == :array && value.is_a?(Array)
             validate_array_param(value, param_options, field_path, max_depth, current_depth)
+          elsif param_options[:type] == :record && value.is_a?(Hash)
+            validate_record_param(value, param_options, field_path, max_depth, current_depth)
           else
             [[], value]
           end
@@ -228,6 +230,41 @@ module Apiwork
             },
           )
           array_issues.empty? ? [[], array_values] : [array_issues, NOT_SET]
+        end
+
+        def validate_record_param(value, param_options, field_path, max_depth, current_depth)
+          issues = []
+          validated = {}
+
+          of = param_options[:of]
+          of_type = of&.type
+          of_shape = of&.shape
+
+          value.each do |key, item|
+            item_path = field_path + [key]
+
+            if of_shape
+              validator = Validator.new(normalize_shape(of_shape))
+              shape_result = validator.validate(
+                item,
+                max_depth:,
+                current_depth: current_depth + 1,
+                path: item_path,
+              )
+              if shape_result.invalid?
+                issues.concat(shape_result.issues)
+              else
+                validated[key] = shape_result.params
+              end
+            elsif of_type
+              type_error = validate_type(key, item, of_type, item_path)
+              type_error ? issues << type_error : validated[key] = item
+            else
+              validated[key] = item
+            end
+          end
+
+          issues.empty? ? [[], validated] : [issues, NOT_SET]
         end
 
         def check_unknown_params(data, path)
@@ -369,6 +406,7 @@ module Apiwork
                   when :uuid then value.is_a?(String) && value.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i)
                   when :object then value.is_a?(Hash)
                   when :array then value.is_a?(Array)
+                  when :record then value.is_a?(Hash)
                   when :decimal, :number then value.is_a?(Numeric)
                   else true
                   end

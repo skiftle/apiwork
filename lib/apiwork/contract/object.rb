@@ -56,7 +56,7 @@ module Apiwork
       #
       # @param name [Symbol]
       #   The param name.
-      # @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :unknown, :uuid]
+      # @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :record, :string, :time, :union, :unknown, :uuid]
       #   The param type.
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
@@ -83,7 +83,7 @@ module Apiwork
       # @param nullable [Boolean] (false)
       #   Whether the value can be `null`.
       # @param of [Symbol, Hash, nil] (nil)
-      #   The element type. Arrays only.
+      #   The element or value type. Arrays and records only.
       # @param optional [Boolean] (false)
       #   Whether the param is optional.
       # @param required [Boolean] (false)
@@ -236,6 +236,69 @@ module Apiwork
           required:,
           of: element,
           type: :array,
+        )
+      end
+
+      # @api public
+      # Defines a record param with value type.
+      #
+      # @param name [Symbol]
+      #   The param name.
+      # @param as [Symbol, nil] (nil)
+      #   The target attribute name.
+      # @param default [Object, nil] (nil)
+      #   The default value.
+      # @param deprecated [Boolean] (false)
+      #   Whether deprecated. Metadata included in exports.
+      # @param description [String, nil] (nil)
+      #   The description. Metadata included in exports.
+      # @param nullable [Boolean] (false)
+      #   Whether the value can be `null`.
+      # @param optional [Boolean] (false)
+      #   Whether the param is optional.
+      # @param required [Boolean] (false)
+      #   Whether the param is required.
+      # @yield block for defining value type
+      # @yieldparam element [Contract::Element]
+      # @return [void]
+      #
+      # @example instance_eval style
+      #   record :scores do
+      #     integer
+      #   end
+      #
+      # @example yield style
+      #   record :scores do |element|
+      #     element.integer
+      #   end
+      def record(
+        name,
+        as: nil,
+        default: nil,
+        deprecated: false,
+        description: nil,
+        nullable: false,
+        optional: false,
+        required: false,
+        &block
+      )
+        raise ConfigurationError, 'record requires a block' unless block
+
+        element = Element.new(@contract_class)
+        block.arity.positive? ? yield(element) : element.instance_eval(&block)
+        element.validate!
+
+        param(
+          name,
+          as:,
+          default:,
+          deprecated:,
+          description:,
+          nullable:,
+          optional:,
+          required:,
+          of: element,
+          type: :record,
         )
       end
 
@@ -521,7 +584,7 @@ module Apiwork
       end
 
       def resolve_of(of, type, &block)
-        return nil unless type == :array
+        return nil unless [:array, :record].include?(type)
 
         if block_given?
           element = Element.new(@contract_class)
@@ -536,7 +599,7 @@ module Apiwork
       end
 
       def resolve_shape(shape, type, &block)
-        return nil if type == :array
+        return nil if [:array, :record].include?(type)
 
         if shape
           shape

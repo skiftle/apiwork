@@ -4,9 +4,8 @@ module Apiwork
   module Export
     class TypeAnalysis
       PRIMITIVE_TYPES = %i[
-        string integer boolean datetime date uuid object array
-        decimal float literal union enum text binary json number time
-        unknown
+        array binary boolean date datetime decimal enum float integer json
+        literal number object record string text time union unknown uuid
       ].to_set.freeze
 
       class << self

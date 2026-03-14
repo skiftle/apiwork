@@ -106,6 +106,28 @@ RSpec.describe Apiwork::Contract::Object::Coercer do
       end
     end
 
+    context 'with record of primitives' do
+      it 'returns the coerced hash' do
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                record :scores do
+                  integer
+                end
+              end
+            end
+          end
+        end
+        shape = contract_class.action_for(:create).request.body
+        coercer = described_class.new(shape)
+
+        result = coercer.coerce({ scores: { math: '95', science: '87' } })
+
+        expect(result).to eq({ scores: { math: 95, science: 87 } })
+      end
+    end
+
     context 'when key is not present in hash' do
       it 'returns an empty hash' do
         contract_class = create_test_contract do

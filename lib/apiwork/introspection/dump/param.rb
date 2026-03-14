@@ -183,7 +183,7 @@ module Apiwork
             variants: [],
           }
 
-          result[:of] = build_of_from_element(element.inner) if element.type == :array && element.inner
+          result[:of] = build_of_from_element(element.inner) if [:array, :record].include?(element.type) && element.inner
 
           result
         end

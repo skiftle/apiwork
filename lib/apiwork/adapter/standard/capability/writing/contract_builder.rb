@@ -176,7 +176,7 @@ module Apiwork
               if attribute.element
                 element = attribute.element
 
-                if element.type == :array
+                if [:array, :record].include?(element.type)
                   options[:of] = element.inner
                 else
                   options[:shape] = element.shape

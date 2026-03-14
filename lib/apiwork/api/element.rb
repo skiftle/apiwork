@@ -90,6 +90,15 @@ module Apiwork
           @inner = inner
           @shape = inner.shape
           @defined = true
+        when :record
+          raise ConfigurationError, 'record requires a block' unless block
+
+          inner = Element.new
+          block.arity.positive? ? yield(inner) : inner.instance_eval(&block)
+          inner.validate!
+          @type = :record
+          @inner = inner
+          @defined = true
         when :union
           raise ConfigurationError, 'union requires a block' unless block
 

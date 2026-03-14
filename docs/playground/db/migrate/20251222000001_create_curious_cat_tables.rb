@@ -9,6 +9,7 @@ class CreateCuriousCatTables < ActiveRecord::Migration[8.1]
       t.text :tags, null: false
       t.json :addresses, null: false
       t.json :preferences, null: false
+      t.json :scores, null: false
       t.text :metadata, null: false
       t.timestamps
     end

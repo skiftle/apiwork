@@ -165,6 +165,8 @@ module Apiwork
           map_object_type(param)
         elsif param.array?
           map_array_type(param)
+        elsif param.record?
+          map_record_type(param)
         elsif param.union?
           map_union_type(param)
         elsif param.literal?
@@ -205,6 +207,11 @@ module Apiwork
         else
           "#{element_type}[]"
         end
+      end
+
+      def map_record_type(param)
+        value_type = param.of ? map_param(param.of) : 'unknown'
+        "Record<string, #{value_type}>"
       end
 
       def map_union_type(param)

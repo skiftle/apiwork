@@ -31,6 +31,12 @@ RSpec.describe Apiwork::Introspection::Param::Base do
     end
   end
 
+  describe '#record?' do
+    it 'returns false when not record' do
+      expect(described_class.new(type: :string).record?).to be(false)
+    end
+  end
+
   describe '#binary?' do
     it 'returns false when not binary' do
       expect(described_class.new(type: :string).binary?).to be(false)

@@ -7,7 +7,7 @@ module Apiwork
     #
     # Accessed via `object :name do` in API or contract definitions.
     # Use type methods to define params: {#string}, {#integer}, {#decimal},
-    # {#boolean}, {#array}, {#object}, {#union}, {#reference}.
+    # {#boolean}, {#array}, {#record}, {#object}, {#union}, {#reference}.
     #
     # @see API::Element Block context for array/variant elements
     # @see Contract::Object Block context for inline objects
@@ -32,7 +32,7 @@ module Apiwork
       #
       # @param name [Symbol]
       #   The param name.
-      # @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :string, :time, :union, :unknown, :uuid]
+      # @param type [Symbol, nil] (nil) [:array, :binary, :boolean, :date, :datetime, :decimal, :integer, :literal, :number, :object, :record, :string, :time, :union, :unknown, :uuid]
       #   The param type.
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
@@ -59,7 +59,7 @@ module Apiwork
       # @param nullable [Boolean] (false)
       #   Whether the value can be `null`.
       # @param of [Symbol, Hash, nil] (nil)
-      #   The element type. Arrays only.
+      #   The element or value type. Arrays and records only.
       # @param optional [Boolean] (false)
       #   Whether the param is optional.
       # @param required [Boolean] (false)
@@ -104,7 +104,7 @@ module Apiwork
         &block
       )
         resolved_of = resolve_of(of, type, &block)
-        resolved_shape = type == :array ? nil : (shape || build_shape(type, discriminator, &block))
+        resolved_shape = [:array, :record].include?(type) ? nil : (shape || build_shape(type, discriminator, &block))
         discriminator = resolved_of&.discriminator if type == :array
 
         param_hash = {
@@ -195,10 +195,73 @@ module Apiwork
         )
       end
 
+      # @api public
+      # Defines a record param with value type.
+      #
+      # @param name [Symbol]
+      #   The param name.
+      # @param as [Symbol, nil] (nil)
+      #   The target attribute name.
+      # @param default [Object, nil] (nil)
+      #   The default value.
+      # @param deprecated [Boolean] (false)
+      #   Whether deprecated. Metadata included in exports.
+      # @param description [String, nil] (nil)
+      #   The description. Metadata included in exports.
+      # @param nullable [Boolean] (false)
+      #   Whether the value can be `null`.
+      # @param optional [Boolean] (false)
+      #   Whether the param is optional.
+      # @param required [Boolean] (false)
+      #   Whether the param is required.
+      # @yield block for defining value type
+      # @yieldparam element [API::Element]
+      # @return [void]
+      #
+      # @example instance_eval style
+      #   record :scores do
+      #     integer
+      #   end
+      #
+      # @example yield style
+      #   record :scores do |element|
+      #     element.integer
+      #   end
+      def record(
+        name,
+        as: nil,
+        default: nil,
+        deprecated: false,
+        description: nil,
+        nullable: false,
+        optional: false,
+        required: false,
+        &block
+      )
+        raise ArgumentError, 'record requires a block' unless block
+
+        element = Element.new
+        block.arity.positive? ? yield(element) : element.instance_eval(&block)
+        element.validate!
+
+        param(
+          name,
+          as:,
+          default:,
+          deprecated:,
+          description:,
+          nullable:,
+          optional:,
+          required:,
+          of: element,
+          type: :record,
+        )
+      end
+
       private
 
       def resolve_of(of, type, &block)
-        return nil unless type == :array
+        return nil unless [:array, :record].include?(type)
 
         if block
           element = Element.new

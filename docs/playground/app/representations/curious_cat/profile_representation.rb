@@ -44,6 +44,12 @@ module CuriousCat
       end
     end
 
+    attribute :scores, writable: true do
+      record do
+        integer
+      end
+    end
+
     attribute :metadata, type: :unknown, writable: true
 
     attribute :created_at

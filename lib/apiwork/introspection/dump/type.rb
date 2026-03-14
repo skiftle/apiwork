@@ -6,7 +6,7 @@ module Apiwork
       class Type
         PRIMITIVE_TYPES = %i[
           array binary boolean date datetime decimal enum float integer json
-          literal number object string text time union unknown uuid
+          literal number object record string text time union unknown uuid
         ].to_set.freeze
 
         def initialize(api_class)

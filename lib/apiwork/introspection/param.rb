@@ -18,6 +18,7 @@ module Apiwork
           when :binary then Binary.new(dump)
           when :unknown then Unknown.new(dump)
           when :array then Array.new(dump)
+          when :record then Record.new(dump)
           when :object then Object.new(dump)
           when :union then Union.new(dump)
           when :literal then Literal.new(dump)

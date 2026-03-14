@@ -40,6 +40,9 @@ integer? :count
 array? :tags do
   string
 end
+record? :metadata do
+  string
+end
 ```
 
 All other options work the same:

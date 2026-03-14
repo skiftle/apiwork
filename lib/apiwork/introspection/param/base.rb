@@ -89,6 +89,14 @@ module Apiwork
         end
 
         # @api public
+        # Whether this param is a record.
+        #
+        # @return [Boolean]
+        def record?
+          false
+        end
+
+        # @api public
         # Whether this param is a union.
         #
         # @return [Boolean]

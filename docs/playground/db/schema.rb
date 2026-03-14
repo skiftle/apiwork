@@ -115,6 +115,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_23_000005) do
     t.text "metadata", null: false
     t.string "name", null: false
     t.json "preferences", null: false
+    t.json "scores", null: false
     t.json "settings", null: false
     t.text "tags", null: false
     t.datetime "updated_at", null: false

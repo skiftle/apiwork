@@ -258,5 +258,49 @@ RSpec.describe Apiwork::Contract::Object::Validator do
         expect(result.issues.first.code).to eq(:type_invalid)
       end
     end
+
+    context 'with record' do
+      it 'validates record values' do
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                record :scores do
+                  integer
+                end
+              end
+            end
+          end
+        end
+        shape = contract_class.action_for(:create).request.body
+        validator = described_class.new(shape)
+
+        result = validator.validate({ scores: { math: 95, science: 87 } })
+
+        expect(result).to be_valid
+        expect(result.params[:scores]).to eq({ math: 95, science: 87 })
+      end
+
+      it 'returns type_invalid issue' do
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                record :scores do
+                  integer
+                end
+              end
+            end
+          end
+        end
+        shape = contract_class.action_for(:create).request.body
+        validator = described_class.new(shape)
+
+        result = validator.validate({ scores: { math: 95, science: 'high' } })
+
+        expect(result).to be_invalid
+        expect(result.issues.first.code).to eq(:type_invalid)
+      end
+    end
   end
 end

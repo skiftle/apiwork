@@ -1444,6 +1444,113 @@ module Apiwork
     end
 
     # @api public
+    # Defines a record.
+    #
+    # @param name [Symbol]
+    #   The name.
+    # @param as [Symbol, nil] (nil)
+    #   The target attribute name.
+    # @param default [Object, nil] (nil)
+    #   The default value.
+    # @param deprecated [Boolean] (false)
+    #   Whether deprecated. Metadata included in exports.
+    # @param description [String, nil] (nil)
+    #   The description. Metadata included in exports.
+    # @param nullable [Boolean] (false)
+    #   Whether the value can be `null`.
+    # @param optional [Boolean] (false)
+    #   Whether the param is optional.
+    # @param required [Boolean] (false)
+    #   Whether the param is required.
+    # @yield block defining value type
+    # @return [void]
+    #
+    # @example Record of integers
+    #   record :scores do
+    #     integer
+    #   end
+    #
+    # @example Record of objects
+    #   record :settings do
+    #     object do
+    #       string :value
+    #       boolean :enabled
+    #     end
+    #   end
+    def record(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: false,
+      description: nil,
+      nullable: false,
+      optional: false,
+      required: false,
+      &block
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        nullable:,
+        optional:,
+        required:,
+        type: :record,
+        &block
+      )
+    end
+
+    # @api public
+    # Defines an optional record.
+    #
+    # @param name [Symbol]
+    #   The name.
+    # @param as [Symbol, nil] (nil)
+    #   The target attribute name.
+    # @param default [Object, nil] (nil)
+    #   The default value.
+    # @param deprecated [Boolean] (false)
+    #   Whether deprecated. Metadata included in exports.
+    # @param description [String, nil] (nil)
+    #   The description. Metadata included in exports.
+    # @param nullable [Boolean] (false)
+    #   Whether the value can be `null`.
+    # @param required [Boolean] (false)
+    #   Whether the param is required.
+    # @yield block defining value type
+    # @return [void]
+    #
+    # @example Optional record
+    #   record? :metadata do
+    #     string
+    #   end
+    def record?(
+      name,
+      as: nil,
+      default: nil,
+      deprecated: false,
+      description: nil,
+      nullable: false,
+      required: false,
+      &block
+    )
+      param(
+        name,
+        as:,
+        default:,
+        deprecated:,
+        description:,
+        nullable:,
+        required:,
+        optional: true,
+        type: :record,
+        &block
+      )
+    end
+
+    # @api public
     # Defines a union.
     #
     # @param name [Symbol]

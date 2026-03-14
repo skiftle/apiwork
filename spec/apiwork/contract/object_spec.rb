@@ -58,6 +58,61 @@ RSpec.describe Apiwork::Contract::Object do
     end
   end
 
+  describe '#record' do
+    context 'with defaults' do
+      it 'defines a record param' do
+        contract_class = create_test_contract
+        object = described_class.new(contract_class)
+        object.record(:scores) { integer }
+
+        expect(object.params[:scores][:type]).to eq(:record)
+        expect(object.params[:scores][:deprecated]).to be(false)
+        expect(object.params[:scores][:nullable]).to be(false)
+        expect(object.params[:scores][:optional]).to be(false)
+        expect(object.params[:scores][:required]).to be(false)
+      end
+    end
+
+    context 'with overrides' do
+      it 'forwards all options' do
+        contract_class = create_test_contract
+        object = described_class.new(contract_class)
+        object.record(
+          :scores,
+          as: :results,
+          default: {},
+          deprecated: true,
+          description: 'The scores',
+          nullable: true,
+          optional: true,
+          required: false,
+        ) { integer }
+
+        param = object.params[:scores]
+        expect(param[:as]).to eq(:results)
+        expect(param[:default]).to eq({})
+        expect(param[:deprecated]).to be(true)
+        expect(param[:description]).to eq('The scores')
+        expect(param[:nullable]).to be(true)
+        expect(param[:optional]).to be(true)
+        expect(param[:required]).to be(false)
+      end
+    end
+  end
+
+  describe '#record?' do
+    context 'with defaults' do
+      it 'defines an optional record param' do
+        contract_class = create_test_contract
+        object = described_class.new(contract_class)
+        object.record?(:scores) { integer }
+
+        expect(object.params[:scores][:type]).to eq(:record)
+        expect(object.params[:scores][:optional]).to be(true)
+      end
+    end
+  end
+
   describe '#binary' do
     context 'with defaults' do
       it 'defines a binary param' do

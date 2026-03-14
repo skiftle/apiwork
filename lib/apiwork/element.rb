@@ -314,6 +314,26 @@ module Apiwork
     end
 
     # @api public
+    # Defines a record.
+    #
+    # @yield block defining value type
+    # @yieldparam element [Element]
+    # @return [void]
+    #
+    # @example instance_eval style
+    #   record :scores do
+    #     integer
+    #   end
+    #
+    # @example yield style
+    #   record :scores do |element|
+    #     element.integer
+    #   end
+    def record(&block)
+      of(:record, &block)
+    end
+
+    # @api public
     # Defines a union.
     #
     # @param discriminator [Symbol, nil] (nil)

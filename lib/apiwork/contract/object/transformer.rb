@@ -32,6 +32,15 @@ module Apiwork
 
             if param_options[:shape] && value.is_a?(Hash)
               transformed[name] = Transformer.transform(param_options[:shape], value)
+            elsif param_options[:type] == :record && value.is_a?(Hash)
+              of = param_options[:of]
+              of_shape = of&.shape
+
+              if of_shape
+                transformed[name] = value.transform_values do |item|
+                  item.is_a?(Hash) ? Transformer.transform(of_shape, item) : item
+                end
+              end
             elsif param_options[:type] == :array && value.is_a?(Array)
               of = param_options[:of]
               of_shape = of&.shape

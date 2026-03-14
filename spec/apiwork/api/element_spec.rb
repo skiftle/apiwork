@@ -86,6 +86,17 @@ RSpec.describe Apiwork::API::Element do
     end
   end
 
+  describe '#record' do
+    it 'defines the type' do
+      element = described_class.new
+      element.record do
+        integer
+      end
+
+      expect(element.type).to eq(:record)
+    end
+  end
+
   describe '#object' do
     it 'defines the type' do
       element = described_class.new
@@ -135,6 +146,15 @@ RSpec.describe Apiwork::API::Element do
         element.of(:array) { string }
 
         expect(element.type).to eq(:array)
+      end
+    end
+
+    context 'when type is :record' do
+      it 'defines the element type' do
+        element = described_class.new
+        element.of(:record) { string }
+
+        expect(element.type).to eq(:record)
       end
     end
 

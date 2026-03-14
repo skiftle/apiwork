@@ -108,6 +108,30 @@ RSpec.describe Apiwork::Contract::Object::Transformer do
       end
     end
 
+    context 'with record of objects' do
+      it 'returns the transformed hash' do
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                record :settings do
+                  object do
+                    string :title, as: :name
+                  end
+                end
+              end
+            end
+          end
+        end
+        shape = contract_class.action_for(:create).request.body
+        transformer = described_class.new(shape)
+
+        result = transformer.transform({ settings: { layout: { title: 'Wide' }, theme: { title: 'Dark' } } })
+
+        expect(result).to eq({ settings: { layout: { name: 'Wide' }, theme: { name: 'Dark' } } })
+      end
+    end
+
     context 'when key is not present in hash' do
       it 'returns an empty hash' do
         contract_class = create_test_contract do

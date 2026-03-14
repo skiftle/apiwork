@@ -332,6 +332,8 @@ module Apiwork
           map_object(param)
         elsif param.array?
           map_array(param)
+        elsif param.record?
+          map_record(param)
         elsif param.union?
           map_union(param)
         elsif param.literal?
@@ -381,6 +383,11 @@ module Apiwork
                  end,
           type: 'array',
         }
+      end
+
+      def map_record(param)
+        value_schema = param.of ? map_param(param.of) : {}
+        { additionalProperties: value_schema, type: 'object' }
       end
 
       def map_inline_object(shape)

@@ -11,10 +11,11 @@ module Apiwork
     # Only complex types are allowed at the top level:
     # - {#object} for key-value structures
     # - {#array} for ordered collections
+    # - {#record} for key-value maps with typed values
     # - {#union} for polymorphic structures
     #
     # Inside these blocks, the full type DSL is available including
-    # nested objects, arrays, primitives, and unions.
+    # nested objects, arrays, records, primitives, and unions.
     #
     # @see API::Element Block context for array elements
     # @see API::Object Block context for object fields
@@ -74,15 +75,15 @@ module Apiwork
     #   end
     class Element < Apiwork::Element
       def validate!
-        raise ConfigurationError, 'must define exactly one type (object, array, or union)' unless @defined
+        raise ConfigurationError, 'must define exactly one type (object, array, record, or union)' unless @defined
       end
 
       # @api public
       # Defines the element type.
       #
-      # Only complex types (:object, :array, :union) are allowed.
+      # Only complex types (:object, :array, :record, :union) are allowed.
       #
-      # @param type [Symbol] [:array, :object, :union]
+      # @param type [Symbol] [:array, :object, :record, :union]
       #   The element type.
       # @param discriminator [Symbol, nil] (nil)
       #   The discriminator field name. Unions only.
@@ -110,6 +111,15 @@ module Apiwork
           @inner = inner
           @shape = inner.shape
           @defined = true
+        when :record
+          raise ConfigurationError, 'record requires a block' unless block
+
+          inner = API::Element.new
+          block.arity.positive? ? yield(inner) : inner.instance_eval(&block)
+          inner.validate!
+          @type = :record
+          @inner = inner
+          @defined = true
         when :union
           raise ConfigurationError, 'union requires a block' unless block
 
@@ -120,7 +130,7 @@ module Apiwork
           @discriminator = discriminator
           @defined = true
         else
-          raise ConfigurationError, "Representation::Element only supports :object, :array, :union - got #{type.inspect}"
+          raise ConfigurationError, "Representation::Element only supports :object, :array, :record, :union - got #{type.inspect}"
         end
       end
     end

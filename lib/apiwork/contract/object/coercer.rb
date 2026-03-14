@@ -85,6 +85,7 @@ module Apiwork
 
           return coerce_union(value, param_options[:union]) if type == :union
           return coerce_array(value, param_options) if type == :array && value.is_a?(Array)
+          return coerce_record(value, param_options) if type == :record && value.is_a?(Hash)
           return Coercer.coerce(param_options[:shape], value) if param_options[:shape] && value.is_a?(Hash)
 
           if value.is_a?(Hash) && type && !PRIMITIVES.key?(type)
@@ -114,6 +115,23 @@ module Apiwork
               coerce_array(item, { of: of.inner })
             elsif custom_shape && item.is_a?(Hash)
               Coercer.coerce(custom_shape, item)
+            else
+              item
+            end
+          end
+        end
+
+        def coerce_record(hash, param_options)
+          of = param_options[:of]
+          of_type = of&.type
+          of_shape = of&.shape
+
+          hash.transform_values do |item|
+            if of_shape && item.is_a?(Hash)
+              Coercer.coerce(of_shape, item)
+            elsif of_type && PRIMITIVES.key?(of_type)
+              coerced = coerce_primitive(item, of_type)
+              coerced.nil? ? item : coerced
             else
               item
             end

@@ -117,7 +117,7 @@ module Apiwork
           element.validate!
           @element = element
           type = element.type
-          @of = element.inner&.type if element.type == :array
+          @of = element.inner&.type if [:array, :record].include?(element.type)
         end
 
         if owner_representation_class.model_class.present?

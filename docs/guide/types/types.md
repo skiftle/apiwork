@@ -153,12 +153,63 @@ lineItems: {
 | User-provided arrays | `:unknown` | Can't guarantee shape |
 | Mixed-type arrays | `:unknown` | No single element type |
 
+### `unknown` vs `record`
+
+Records represent `Record<string, T>` — objects with dynamic string keys and typed values. Use records when the keys are unknown but every value has the same type.
+
+| Type | Use when | TypeScript | Zod |
+|------|----------|------------|-----|
+| `:unknown` | Shape is arbitrary | `unknown` | `z.unknown()` |
+| `:record` | Keys vary, values share a type | `Record<string, T>` | `z.record(z.string(), T)` |
+
+**`:record` — Typed values with dynamic keys**
+
+```ruby
+record :scores do
+  integer
+end
+```
+
+Generated TypeScript:
+```typescript
+scores: Record<string, number>;
+```
+
+**Record of objects:**
+
+```ruby
+record :settings do
+  object do
+    string :value
+    boolean :enabled
+  end
+end
+```
+
+Generated TypeScript:
+```typescript
+settings: Record<string, {
+  value: string;
+  enabled: boolean;
+}>;
+```
+
+**When to use each:**
+
+| Scenario | Type | Reason |
+|----------|------|--------|
+| Scores, ratings, counters | `record { integer }` | Dynamic keys, typed values |
+| Feature flags, settings | `record { object {...} }` | Dynamic keys, known value shape |
+| Translations | `record { string }` | Locale keys, string values |
+| Arbitrary JSON | `:unknown` | Can't guarantee value type |
+
 ## Structure Types
 
 | Type | Purpose |
 |------|---------|
 | `:object` | Nested object with shape |
 | `:array` | Array of items |
+| `:record` | Key-value map with typed values |
 | `:union` | One of several types |
 
 ### Inline vs Named

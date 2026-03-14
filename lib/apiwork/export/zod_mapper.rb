@@ -200,6 +200,8 @@ module Apiwork
           map_object_type(param)
         elsif param.array?
           map_array_type(param)
+        elsif param.record?
+          map_record_type(param)
         elsif param.union?
           map_union_type(param)
         elsif param.literal?
@@ -246,6 +248,11 @@ module Apiwork
         base += ".min(#{param.min})" unless param.min.nil?
         base += ".max(#{param.max})" unless param.max.nil?
         base
+      end
+
+      def map_record_type(param)
+        value_schema = param.of ? map_param(param.of) : 'z.unknown()'
+        "z.record(z.string(), #{value_schema})"
       end
 
       def map_union_type(param)

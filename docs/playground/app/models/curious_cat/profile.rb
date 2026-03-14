@@ -4,6 +4,7 @@ module CuriousCat
   class Profile < ApplicationRecord
     store :settings, accessors: [:theme, :notifications, :language]
     serialize :tags, coder: JSON
+    store :scores, coder: JSON
     store :metadata, coder: JSON
   end
 end
