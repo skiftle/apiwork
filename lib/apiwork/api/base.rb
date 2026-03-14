@@ -682,16 +682,33 @@ module Apiwork
           end.join('/')
         end
 
+        def transform_key(key)
+          key_string = key.to_s
+
+          return key_string if key_string.match?(/\A[A-Z]+\z/)
+
+          case key_format
+          when :camel then key_string.camelize(:lower)
+          when :pascal then key_string.camelize
+          when :kebab then key_string.dasherize
+          when :underscore then key_string.underscore
+          else key_string
+          end
+        end
+
+        def normalize_key(key)
+          key_string = key.to_s
+
+          return key_string if key_string.match?(/\A[A-Z]+\z/)
+
+          key_string.underscore
+        end
+
         def normalize_request(request)
-          return request if %i[camel pascal kebab].exclude?(key_format)
+          return request if key_format == :keep
 
           request.transform do |hash|
-            hash.deep_transform_keys do |key|
-              key_string = key.to_s
-              next key if key_string.match?(/\A[A-Z]+\z/)
-
-              key_string.underscore.to_sym
-            end
+            hash.deep_transform_keys { |key| normalize_key(key).to_sym }
           end
         end
 
@@ -701,16 +718,9 @@ module Apiwork
 
         def prepare_response(response)
           result = adapter.apply_response_transformers(response)
-          case key_format
-          when :camel
-            result.transform { |hash| hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym } }
-          when :pascal
-            result.transform { |hash| hash.deep_transform_keys { |key| key.to_s.camelize.to_sym } }
-          when :kebab
-            result.transform { |hash| hash.deep_transform_keys { |key| key.to_s.dasherize.to_sym } }
-          else
-            result
-          end
+          return result if key_format == :keep
+
+          result.transform { |hash| hash.deep_transform_keys { |key| transform_key(key).to_sym } }
         end
 
         def type?(name, scope: nil)
