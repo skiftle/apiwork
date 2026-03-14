@@ -151,7 +151,7 @@ module Apiwork
             max: nil,
             min: nil,
             nullable: false,
-            of: resolve_variant_of(variant, scope),
+            of: resolve_of(variant, scope),
             optional: false,
             partial: variant[:partial] == true,
             shape: build_nested_shape(variant[:shape]),
@@ -215,13 +215,26 @@ module Apiwork
           resolved_shape = of.shape ? build_nested_shape(of.shape) : {}
 
           result = {
+            as: nil,
+            default: nil,
+            deprecated: false,
+            description: nil,
+            discriminator: nil,
             enum: of.enum,
+            example: nil,
             format: of.format,
             max: of.max,
             min: of.min,
+            nullable: false,
+            of: nil,
+            optional: false,
+            partial: false,
             reference: scoped_name,
             shape: resolved_shape,
+            tag: nil,
             type: scoped_name ? :reference : type_value,
+            value: nil,
+            variants: [],
           }
           result[:of] = resolve_of({ of: of.inner }, scope) if of.type == :array && of.inner
           result
@@ -235,27 +248,6 @@ module Apiwork
           else
             variant[:enum]
           end
-        end
-
-        def resolve_variant_of(variant, scope)
-          of = variant[:of]
-          return nil unless of
-
-          type_value = of.type
-          scoped_name = resolve_scoped_type_name(type_value, scope)
-          resolved_shape = of.shape ? build_nested_shape(of.shape) : {}
-
-          result = {
-            enum: of.enum,
-            format: of.format,
-            max: of.max,
-            min: of.min,
-            reference: scoped_name,
-            shape: resolved_shape,
-            type: scoped_name ? :reference : type_value,
-          }
-          result[:of] = resolve_variant_of({ of: of.inner }, scope) if of.type == :array && of.inner
-          result
         end
 
         def build_enum(qualified_name, enum_definition)
