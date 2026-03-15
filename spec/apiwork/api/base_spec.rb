@@ -225,4 +225,64 @@ RSpec.describe Apiwork::API::Base do
       expect(resource.only).to eq([:index, :show])
     end
   end
+
+  describe '.transform_key' do
+    context 'when key_format is :keep' do
+      it 'returns the key unchanged' do
+        api_class = Apiwork::API.define('/unit/base-transform-key-keep') {}
+
+        expect(api_class.transform_key(:created_at)).to eq('created_at')
+      end
+    end
+
+    context 'when key_format is :camel' do
+      it 'returns camelCase' do
+        api_class = Apiwork::API.define '/unit/base-transform-key-camel' do
+          key_format :camel
+        end
+
+        expect(api_class.transform_key(:created_at)).to eq('createdAt')
+      end
+    end
+
+    context 'when key_format is :pascal' do
+      it 'returns PascalCase' do
+        api_class = Apiwork::API.define '/unit/base-transform-key-pascal' do
+          key_format :pascal
+        end
+
+        expect(api_class.transform_key(:created_at)).to eq('CreatedAt')
+      end
+    end
+
+    context 'when key_format is :kebab' do
+      it 'returns kebab-case' do
+        api_class = Apiwork::API.define '/unit/base-transform-key-kebab' do
+          key_format :kebab
+        end
+
+        expect(api_class.transform_key(:created_at)).to eq('created-at')
+      end
+    end
+
+    context 'when key_format is :underscore' do
+      it 'returns underscore' do
+        api_class = Apiwork::API.define '/unit/base-transform-key-underscore' do
+          key_format :underscore
+        end
+
+        expect(api_class.transform_key(:created_at)).to eq('created_at')
+      end
+    end
+
+    context 'when key is ALL-CAPS' do
+      it 'preserves the key' do
+        api_class = Apiwork::API.define '/unit/base-transform-key-allcaps' do
+          key_format :camel
+        end
+
+        expect(api_class.transform_key(:OP)).to eq('OP')
+      end
+    end
+  end
 end
