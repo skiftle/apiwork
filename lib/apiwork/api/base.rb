@@ -27,6 +27,7 @@ module Apiwork
         #   @return [String]
         attr_reader :base_path,
                     :enum_registry,
+                    :explorer_config,
                     :export_configs,
                     :representation_registry,
                     :root_resource,
@@ -131,6 +132,44 @@ module Apiwork
           return unless block
 
           block.arity.positive? ? yield(@export_configs[name]) : @export_configs[name].instance_eval(&block)
+        end
+
+        # @api public
+        # Configures the explorer for this API.
+        #
+        # The explorer is an interactive UI for browsing and testing API endpoints.
+        # Requires the `apiwork-explorer` gem.
+        #
+        # @yield Block evaluated in explorer context.
+        # @yieldparam explorer [Configuration]
+        # @return [void]
+        #
+        # @example Enable with defaults
+        #   explorer
+        #
+        # @example Custom configuration
+        #   explorer do
+        #     mode :always
+        #     path '/explorer'
+        #   end
+        def explorer(&block)
+          unless defined?(Apiwork::Explorer::Engine)
+            raise ConfigurationError,
+                  'explorer requires the apiwork-explorer gem. ' \
+                  "Add it to your Gemfile: gem 'apiwork-explorer'"
+          end
+
+          unless @explorer_config
+            options = Configurable.define do
+              option :mode, default: :auto, enum: %i[auto always never], type: :symbol
+              option :path, default: '/.explorer', type: :string
+            end
+            @explorer_config = Configuration.new(options)
+          end
+
+          return @explorer_config unless block
+
+          block.arity.positive? ? yield(@explorer_config) : @explorer_config.instance_eval(&block)
         end
 
         # @api public
@@ -644,6 +683,7 @@ module Apiwork
           @info = nil
           @locales = []
           @raises = []
+          @explorer_config = nil
           @export_configs = {}
           @adapter_config = nil
           @root_resource = Resource.new(self)

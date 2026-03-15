@@ -37,6 +37,46 @@ RSpec.describe Apiwork::API::Base do
     end
   end
 
+  describe '.explorer' do
+    it 'raises ConfigurationError when gem is not installed' do
+      expect do
+        Apiwork::API.define '/unit/base-explorer-missing' do
+          explorer
+        end
+      end.to raise_error(Apiwork::ConfigurationError, /apiwork-explorer/)
+    end
+
+    context 'when gem is installed' do
+      before { stub_const('Apiwork::Explorer::Engine', Class.new) }
+
+      context 'with defaults' do
+        it 'enables the explorer' do
+          api_class = Apiwork::API.define '/unit/base-explorer' do
+            explorer
+          end
+
+          expect(api_class.explorer_config).to be_a(Apiwork::Configuration)
+          expect(api_class.explorer_config.mode).to eq(:auto)
+          expect(api_class.explorer_config.path).to eq('/.explorer')
+        end
+      end
+
+      context 'with overrides' do
+        it 'forwards all options' do
+          api_class = Apiwork::API.define '/unit/base-explorer-block' do
+            explorer do
+              mode :always
+              path '/explorer'
+            end
+          end
+
+          expect(api_class.explorer_config.mode).to eq(:always)
+          expect(api_class.explorer_config.path).to eq('/explorer')
+        end
+      end
+    end
+  end
+
   describe '.export' do
     it 'registers the export' do
       api_class = Apiwork::API.define '/unit/base-export' do

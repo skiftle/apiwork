@@ -35,6 +35,22 @@ module Apiwork
               end
             end
 
+            if api_class.explorer_config && defined?(Apiwork::Explorer::Engine)
+              mount_explorer = case api_class.explorer_config.mode
+                               when :always then true
+                               when :never then false
+                               when :auto then Rails.env.development?
+                               end
+
+              if mount_explorer
+                scope path: api_class.transform_path(api_class.base_path) do
+                  mount Apiwork::Explorer::Engine,
+                        at: api_class.explorer_config.path,
+                        defaults: { api_base_path: api_class.base_path }
+                end
+              end
+            end
+
             scope module: api_class.namespaces.map(&:to_s).join('/').underscore,
                   path: api_class.transform_path(api_class.base_path) do
               router.draw_resources(self, api_class.root_resource.resources, api_class)
