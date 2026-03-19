@@ -130,10 +130,12 @@ const { invoice } = await api.invoices.update({
   invoice: {
     items: [
       {
+        OP: 'update',
         id: '5',
         description: 'Updated item',
       },
       {
+        OP: 'create',
         description: 'New item',
         quantity: 1,
         rate: 100,
@@ -147,7 +149,7 @@ const { invoice } = await api.invoices.update({
 });
 ```
 
-No `id` means create. With `id` means update. `OP: 'delete'` with `id` means delete. All in one request, all typed.
+`OP` determines the operation: `'create'`, `'update'`, or `'delete'`.
 
 ## Error Handling
 

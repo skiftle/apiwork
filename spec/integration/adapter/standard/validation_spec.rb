@@ -125,7 +125,7 @@ RSpec.describe 'Validation', type: :request do
              params: {
                invoice: {
                  customer_id: customer.id,
-                 items: [{ description: '' }],
+                 items: [{ OP: 'create', description: '', invoice_id: 0, quantity: 1, unit_price: 100 }],
                  number: 'INV-001',
                },
              }

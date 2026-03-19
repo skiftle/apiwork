@@ -100,7 +100,6 @@ RSpec.describe 'Writing types', type: :integration do
 
       expect(param.type).to eq(:literal)
       expect(param.value).to eq('create')
-      expect(param.optional?).to be(true)
     end
 
     it 'does not include id' do

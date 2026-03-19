@@ -38,7 +38,7 @@ RSpec.describe 'Nested attributes', type: :request do
             params: {
               invoice: {
                 items: [
-                  { description: 'Updated consulting', id: item1.id, invoice_id: invoice1.id, quantity: 20 },
+                  { OP: 'update', description: 'Updated consulting', id: item1.id, invoice_id: invoice1.id, quantity: 20 },
                 ],
               },
             }
@@ -72,7 +72,7 @@ RSpec.describe 'Nested attributes', type: :request do
             params: {
               invoice: {
                 items: [
-                  { description: 'Updated consulting', id: item1.id, invoice_id: invoice1.id, quantity: 20 },
+                  { OP: 'update', description: 'Updated consulting', id: item1.id, invoice_id: invoice1.id, quantity: 20 },
                   { OP: 'delete', id: item2.id },
                   { OP: 'create',
                     description: 'Support contract',

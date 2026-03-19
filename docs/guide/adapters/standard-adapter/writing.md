@@ -35,15 +35,13 @@ For association configuration, see [Associations](../../representations/associat
 
 ### Create
 
-New records have no `id`:
-
 ```json
 {
   "invoice": {
     "number": "INV-001",
     "items": [
-      { "description": "Consulting" },
-      { "description": "Development" }
+      { "OP": "create", "description": "Consulting" },
+      { "OP": "create", "description": "Development" }
     ]
   }
 }
@@ -51,21 +49,17 @@ New records have no `id`:
 
 ### Update
 
-Existing records include `id`:
-
 ```json
 {
   "invoice": {
     "items": [
-      { "id": "5", "description": "Updated item" }
+      { "OP": "update", "id": "5", "description": "Updated item" }
     ]
   }
 }
 ```
 
 ### Delete
-
-Include `id` and `OP: "delete"`:
 
 ```json
 {
@@ -87,8 +81,8 @@ Combine operations in one request:
 {
   "invoice": {
     "items": [
-      { "id": "5", "description": "Updated" },
-      { "description": "New item" },
+      { "OP": "update", "id": "5", "description": "Updated" },
+      { "OP": "create", "description": "New item" },
       { "OP": "delete", "id": "3" }
     ]
   }
@@ -104,9 +98,10 @@ Nesting can go to any depth:
   "invoice": {
     "items": [
       {
+        "OP": "create",
         "description": "Consulting",
         "adjustments": [
-          { "amount": "10.00" }
+          { "OP": "create", "amount": "10.00" }
         ]
       }
     ]
@@ -120,18 +115,18 @@ TypeScript payloads use a discriminated union with `OP` as the discriminator:
 
 ```typescript
 interface ItemNestedCreatePayload {
-  OP?: 'create';
+  OP: 'create';
   description: string;
 }
 
 interface ItemNestedUpdatePayload {
-  OP?: 'update';
+  OP: 'update';
   id?: string;
   description?: string;
 }
 
 interface ItemNestedDeletePayload {
-  OP?: 'delete';
+  OP: 'delete';
   id: string;
 }
 
@@ -141,7 +136,7 @@ type ItemNestedPayload =
   | ItemNestedDeletePayload;
 ```
 
-`OP` is optional on all variants. When omitted, the adapter infers the operation: records without `id` are created, records with `id` are updated.
+`OP` is the discriminator for the union. The adapter uses it to determine the operation for each nested record.
 
 ## Single Table Inheritance
 
