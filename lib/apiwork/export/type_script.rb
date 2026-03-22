@@ -7,10 +7,13 @@ module Apiwork
       output :string
       file_extension '.ts'
 
+      option :builders, default: false, type: :boolean
       option :version, default: '5', enum: %w[4 5], type: :string
 
       def generate
-        TypeScriptMapper.map(self, surface)
+        output = TypeScriptMapper.map(self, surface)
+        output += "\n\n#{BuilderMapper.map(self, surface)}" if options[:builders]
+        output
       end
 
       private

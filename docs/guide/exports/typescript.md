@@ -18,14 +18,16 @@ end
 
 ```ruby
 export :typescript do
-  path '/types.ts'          # Custom endpoint path
-  key_format :camel         # Transform keys to camelCase
+  builders true               # Generate builder functions for types
+  path '/types.ts'            # Custom endpoint path
+  key_format :camel           # Transform keys to camelCase
 end
 ```
 
-| Option    | Values   | Default |
-| --------- | -------- | ------- |
-| `version` | `4`, `5` | `5`     |
+| Option     | Values          | Default | Description                                                      |
+| ---------- | --------------- | ------- | ---------------------------------------------------------------- |
+| `builders` | `true`, `false` | `false` | Generate builder functions with defaults pre-filled for each type |
+| `version`  | `4`, `5`        | `5`     |                                                                  |
 
 ## Output
 
