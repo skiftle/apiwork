@@ -24,6 +24,8 @@ module Apiwork
       raise ConfigurationError, "Unknown option: #{name}" unless option
 
       if args.empty? && !block
+        return @storage[name] = true if option.type == :boolean
+
         stored = @storage[name]
 
         if option.nested?
