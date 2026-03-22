@@ -208,6 +208,46 @@ RSpec.describe Apiwork::Export::SorbusMapper do
       end
     end
 
+    context 'with camel key_format' do
+      it 'transforms path parameter names but preserves path segments' do
+        action_dump = {
+          deprecated: false,
+          description: nil,
+          method: :get,
+          operation_id: nil,
+          path: '/customers/:customer_id/payment_methods',
+          raises: [],
+          request: { body: {}, query: {} },
+          response: { body: nil, no_content: false },
+          summary: nil,
+          tags: [],
+        }
+        export = stub_export(
+          resources: {
+            customers: build_resource(
+              actions: {},
+              identifier: 'customers',
+              resources: {
+                payment_methods: {
+                  actions: { index: action_dump },
+                  identifier: 'payment_methods',
+                  parent_identifiers: ['customers'],
+                  path: ':customer_id/payment_methods',
+                  resources: {},
+                },
+              },
+            ),
+          },
+        )
+        export.define_singleton_method(:transform_key) { |key| key.to_s.camelize(:lower) }
+        surface = build_surface
+
+        result = described_class.map(export, surface)
+
+        expect(result).to include("path: '/customers/:customerId/payment_methods'")
+      end
+    end
+
     context 'with nested resources' do
       it 'nests endpoints in resource tree' do
         nested_action_dump = {

@@ -78,9 +78,7 @@ module Apiwork
       end
 
       def transform_path(path)
-        path.gsub(%r{(/:?)(\w+)}) do
-          "#{::Regexp.last_match(1)}#{@export.transform_key(::Regexp.last_match(2))}"
-        end
+        path.to_s.gsub(/:(\w+)/) { ":#{@export.transform_key(::Regexp.last_match(1))}" }
       end
 
       def extract_path_params(path)
