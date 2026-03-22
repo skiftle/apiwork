@@ -7,6 +7,7 @@ module Apiwork
 
       def validate_type!(value)
         valid = case type
+                when :boolean then value.is_a?(TrueClass) || value.is_a?(FalseClass)
                 when :symbol then value.is_a?(Symbol)
                 when :string then value.is_a?(String)
                 when :integer then value.is_a?(Integer)
