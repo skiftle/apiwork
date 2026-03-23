@@ -263,10 +263,7 @@ module Apiwork
       end
 
       def extract_options_from_config(config)
-        self.class.options.keys.each_with_object({}) do |key, hash|
-          value = config.public_send(key)
-          hash[key] = value unless value.nil?
-        end
+        config.to_h.slice(*self.class.options.keys).compact
       end
 
       def validate_options!
