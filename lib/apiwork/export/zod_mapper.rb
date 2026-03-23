@@ -267,7 +267,21 @@ module Apiwork
       def map_discriminated_union(param)
         discriminator_field = @export.transform_key(param.discriminator)
 
-        variant_schemas = param.variants.map { |variant| map_param(variant) }
+        variant_schemas = param.variants.map do |variant|
+          if variant.tag && variant.object?
+            discriminator_prop = "#{discriminator_field}: z.literal('#{variant.tag}')"
+            properties = variant.shape.sort_by { |name, _| name.to_s }.map do |name, field|
+              "#{@export.transform_key(name)}: #{map_field(field)}"
+            end
+            all_properties = [discriminator_prop, *properties].join(', ')
+            "z.object({ #{all_properties} })"
+          elsif variant.tag
+            base_schema = map_param(variant)
+            "#{base_schema}.extend({ #{discriminator_field}: z.literal('#{variant.tag}') })"
+          else
+            map_param(variant)
+          end
+        end
 
         "z.discriminatedUnion('#{discriminator_field}', [#{variant_schemas.join(', ')}])"
       end

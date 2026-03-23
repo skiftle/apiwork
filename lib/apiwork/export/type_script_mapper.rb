@@ -215,7 +215,23 @@ module Apiwork
       end
 
       def map_union_type(param)
-        param.variants.map { |variant| map_param(variant) }.sort.join(' | ')
+        variant_types = param.variants.map do |variant|
+          if param.discriminator && variant.tag && variant.object?
+            discriminator_prop = "#{@export.transform_key(param.discriminator)}: '#{variant.tag}'"
+            properties = variant.shape.sort_by { |name, _| name.to_s }.map do |name, field|
+              "#{@export.transform_key(name)}: #{map_field(field)}"
+            end
+            all_properties = [discriminator_prop, *properties].join('; ')
+            "{ #{all_properties} }"
+          elsif param.discriminator && variant.tag
+            base_type = map_param(variant)
+            "{ #{@export.transform_key(param.discriminator)}: '#{variant.tag}' } & #{base_type}"
+          else
+            map_param(variant)
+          end
+        end
+
+        variant_types.sort.join(' | ')
       end
 
       def map_literal_type(param)

@@ -144,14 +144,44 @@ lineItems: {
 }[];
 ```
 
+**Array of unions:**
+
+```ruby
+attribute :notifications do
+  array do
+    union discriminator: :type do
+      variant tag: 'email' do
+        object do
+          string :address
+        end
+      end
+
+      variant tag: 'sms' do
+        object do
+          string :phone
+        end
+      end
+    end
+  end
+end
+```
+
+Generated TypeScript:
+```typescript
+notifications: (
+  | { type: 'email'; address: string }
+  | { type: 'sms'; phone: string }
+)[];
+```
+
 **When to use each:**
 
 | Scenario | Type | Reason |
 |----------|------|--------|
 | Tags, labels, simple lists | `array { string }` | Known element type |
 | Line items, addresses | `array { object {...} }` | Known shape |
+| Mixed-type arrays with known variants | `array { union {...} }` | Known variant types |
 | User-provided arrays | `:unknown` | Can't guarantee shape |
-| Mixed-type arrays | `:unknown` | No single element type |
 
 ### `unknown` vs `record`
 

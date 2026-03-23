@@ -210,16 +210,17 @@ module Apiwork
           of = options[:of]
           return nil unless of
 
+          union = of.type == :union
+          union_shape = union && of.shape.is_a?(Apiwork::API::Union) ? of.shape : nil
           type_value = of.type
           scoped_name = resolve_scoped_type_name(type_value, scope)
-          resolved_shape = of.shape ? build_nested_shape(of.shape) : {}
 
           result = {
             as: nil,
             default: nil,
             deprecated: false,
             description: nil,
-            discriminator: nil,
+            discriminator: union ? of.discriminator : nil,
             enum: of.enum,
             example: nil,
             format: of.format,
@@ -230,14 +231,18 @@ module Apiwork
             optional: false,
             partial: false,
             reference: scoped_name,
-            shape: resolved_shape,
+            shape: union ? {} : resolve_of_shape(of),
             tag: nil,
             type: scoped_name ? :reference : type_value,
             value: nil,
-            variants: [],
+            variants: union_shape ? union_shape.variants.map { |variant| build_variant(variant, scope) } : [],
           }
           result[:of] = resolve_of({ of: of.inner }, scope) if of.type == :array && of.inner
           result
+        end
+
+        def resolve_of_shape(of)
+          of.shape ? build_nested_shape(of.shape) : {}
         end
 
         def resolve_variant_enum(variant, scope)

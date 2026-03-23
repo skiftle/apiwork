@@ -259,6 +259,162 @@ RSpec.describe Apiwork::Contract::Object::Validator do
       end
     end
 
+    context 'with array of discriminated union' do
+      it 'validates valid items' do
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                array :items do
+                  of :union, discriminator: :kind do
+                    variant tag: 'invoice' do
+                      object do
+                        string :number
+                      end
+                    end
+                    variant tag: 'payment' do
+                      object do
+                        decimal :amount
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+        shape = contract_class.action_for(:create).request.body
+        validator = described_class.new(shape)
+
+        result = validator.validate({ items: [{ kind: 'invoice', number: 'INV-001' }, { amount: 150.00, kind: 'payment' }] })
+
+        expect(result).to be_valid
+        expect(result.params[:items].length).to eq(2)
+      end
+
+      it 'returns value_invalid issue for wrong discriminator' do
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                array :items do
+                  of :union, discriminator: :kind do
+                    variant tag: 'invoice' do
+                      object do
+                        string :number
+                      end
+                    end
+                    variant tag: 'payment' do
+                      object do
+                        decimal :amount
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+        shape = contract_class.action_for(:create).request.body
+        validator = described_class.new(shape)
+
+        result = validator.validate({ items: [{ kind: 'unknown', number: 'INV-001' }] })
+
+        expect(result).to be_invalid
+        expect(result.issues.first.code).to eq(:value_invalid)
+      end
+
+      it 'returns type_invalid issue for invalid item field' do
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                array :items do
+                  of :union, discriminator: :kind do
+                    variant tag: 'invoice' do
+                      object do
+                        string :number
+                      end
+                    end
+                    variant tag: 'payment' do
+                      object do
+                        decimal :amount
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+        shape = contract_class.action_for(:create).request.body
+        validator = described_class.new(shape)
+
+        result = validator.validate({ items: [{ kind: 'invoice', number: 42 }] })
+
+        expect(result).to be_invalid
+        expect(result.issues.first.code).to eq(:type_invalid)
+      end
+    end
+
+    context 'with array of simple union' do
+      it 'validates valid items' do
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                array :values do
+                  of :union do
+                    variant do
+                      string
+                    end
+                    variant do
+                      integer
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+        shape = contract_class.action_for(:create).request.body
+        validator = described_class.new(shape)
+
+        result = validator.validate({ values: ['ruby', 42] })
+
+        expect(result).to be_valid
+        expect(result.params[:values]).to eq(['ruby', 42])
+      end
+
+      it 'returns type_invalid issue for invalid item' do
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                array :values do
+                  of :union do
+                    variant do
+                      string
+                    end
+                    variant do
+                      integer
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+        shape = contract_class.action_for(:create).request.body
+        validator = described_class.new(shape)
+
+        result = validator.validate({ values: ['ruby', 19.99] })
+
+        expect(result).to be_invalid
+        expect(result.issues.first.code).to eq(:type_invalid)
+      end
+    end
+
     context 'with record' do
       it 'validates record values' do
         contract_class = create_test_contract do

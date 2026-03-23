@@ -543,6 +543,43 @@ RSpec.describe Apiwork::Export::ZodMapper do
 
         expect(mapper.map_param(param)).to eq('z.array(z.string()).max(10)')
       end
+
+      it 'returns array of simple union' do
+        param = build_param(
+          of: {
+            discriminator: nil,
+            type: :union,
+            variants: [
+              { type: :string },
+              { type: :integer },
+            ],
+          },
+          shape: {},
+          type: :array,
+        )
+
+        expect(mapper.map_param(param)).to eq('z.array(z.union([z.string(), z.number().int()]))')
+      end
+
+      it 'returns array of discriminated union' do
+        param = build_param(
+          of: {
+            discriminator: :kind,
+            type: :union,
+            variants: [
+              { shape: { kind: { type: :literal, value: 'invoice' }, number: { type: :string } }, tag: 'invoice', type: :object },
+              { shape: { amount: { type: :decimal }, kind: { type: :literal, value: 'payment' } }, tag: 'payment', type: :object },
+            ],
+          },
+          shape: {},
+          type: :array,
+        )
+
+        result = mapper.map_param(param)
+
+        expect(result).to include('z.array(')
+        expect(result).to include("z.discriminatedUnion('kind'")
+      end
     end
 
     context 'with union type' do

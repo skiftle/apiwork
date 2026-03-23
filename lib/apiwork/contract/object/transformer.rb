@@ -45,7 +45,9 @@ module Apiwork
               of = param_options[:of]
               of_shape = of&.shape
 
-              if of_shape
+              if of&.type == :union
+                transformed[name] = value
+              elsif of_shape
                 transformed[name] = value.map do |item|
                   item.is_a?(Hash) ? Transformer.transform(of_shape, item) : item
                 end

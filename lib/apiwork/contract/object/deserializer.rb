@@ -85,10 +85,14 @@ module Apiwork
         end
 
         def deserialize_array(array, param_options)
+          of = param_options[:of]
+
           array.map do |item|
             next item unless item.is_a?(Hash)
 
-            if param_options[:shape]
+            if of&.type == :union && of.shape.is_a?(Apiwork::Union)
+              deserialize_union(item, of.shape)
+            elsif param_options[:shape]
               Deserializer.deserialize(param_options[:shape], item)
             else
               item

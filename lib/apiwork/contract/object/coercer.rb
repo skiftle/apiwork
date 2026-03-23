@@ -106,7 +106,9 @@ module Apiwork
           custom_shape = resolve_custom_shape(of_type) if of_type && !PRIMITIVES.key?(of_type)
 
           array.map do |item|
-            if of_shape && item.is_a?(Hash)
+            if of_type == :union && item.is_a?(Hash)
+              coerce_union(item, of_shape)
+            elsif of_shape && item.is_a?(Hash)
               Coercer.coerce(of_shape, item)
             elsif of_type && PRIMITIVES.key?(of_type)
               coerced = coerce_primitive(item, of_type)

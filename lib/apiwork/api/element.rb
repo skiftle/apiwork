@@ -64,6 +64,22 @@ module Apiwork
       #       string :name
       #     end
       #   end
+      #
+      # @example Discriminated union
+      #   array :payments do
+      #     of :union, discriminator: :type do
+      #       variant tag: 'card' do
+      #         object do
+      #           string :last_four
+      #         end
+      #       end
+      #       variant tag: 'bank' do
+      #         object do
+      #           string :account_number
+      #         end
+      #       end
+      #     end
+      #   end
       def of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, value: nil, &block)
         case type
         when :string, :integer, :decimal, :boolean, :number, :datetime, :date, :uuid, :time, :binary, :unknown

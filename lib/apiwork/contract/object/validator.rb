@@ -317,7 +317,10 @@ module Apiwork
           array.each_with_index do |item, index|
             item_path = field_path + [index]
 
-            if of_shape
+            if of&.type == :union && of_shape.is_a?(Apiwork::Union)
+              error, validated = validate_union(nil, item, of_shape, item_path, current_depth:, max_depth:)
+              error ? issues << error : values << validated
+            elsif of_shape
               validator = Validator.new(normalize_shape(of_shape))
               shape_result = validator.validate(
                 item,

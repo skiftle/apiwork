@@ -307,12 +307,15 @@ module Apiwork
           of = options[:of]
           return nil unless of
 
+          union = of.type == :union
+          union_shape = union && of.shape.is_a?(Apiwork::API::Union) ? of.shape : nil
+
           result = {
             as: nil,
             default: nil,
             deprecated: false,
             description: nil,
-            discriminator: nil,
+            discriminator: union ? of.discriminator : nil,
             enum: of.enum,
             example: nil,
             format: of.format,
@@ -323,14 +326,18 @@ module Apiwork
             optional: false,
             partial: false,
             reference: nil,
-            shape: of.shape ? build_nested_shape(of.shape) : {},
+            shape: union ? {} : build_of_shape(of),
             tag: nil,
             type: of.type,
             value: nil,
-            variants: [],
+            variants: union_shape ? union_shape.variants.map { |variant| build_api_variant(variant) } : [],
           }
           result[:of] = build_api_of({ of: of.inner }) if of.type == :array && of.inner
           result
+        end
+
+        def build_of_shape(of)
+          of.shape ? build_nested_shape(of.shape) : {}
         end
 
         def build_api_variant(variant)

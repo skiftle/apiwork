@@ -1364,6 +1364,22 @@ module Apiwork
     #       decimal :price
     #     end
     #   end
+    #
+    # @example Array of discriminated union
+    #   array :notifications do
+    #     union discriminator: :type do
+    #       variant tag: 'email' do
+    #         object do
+    #           string :address
+    #         end
+    #       end
+    #       variant tag: 'sms' do
+    #         object do
+    #           string :phone
+    #         end
+    #       end
+    #     end
+    #   end
     def array(
       name,
       as: nil,
@@ -1416,6 +1432,22 @@ module Apiwork
     # @example Optional array of labels
     #   array? :labels do
     #     string
+    #   end
+    #
+    # @example Optional array of discriminated union
+    #   array? :items do
+    #     union discriminator: :type do
+    #       variant tag: 'text' do
+    #         object do
+    #           string :content
+    #         end
+    #       end
+    #       variant tag: 'image' do
+    #         object do
+    #           string :url
+    #         end
+    #       end
+    #     end
     #   end
     def array?(
       name,

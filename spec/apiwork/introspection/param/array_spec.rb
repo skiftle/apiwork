@@ -42,6 +42,31 @@ RSpec.describe Apiwork::Introspection::Param::Array do
 
       expect(param.of).to be_nil
     end
+
+    context 'when of is a union' do
+      it 'returns a Union param' do
+        param = described_class.new(
+          of: {
+            default: nil,
+            deprecated: false,
+            description: nil,
+            discriminator: :kind,
+            example: nil,
+            nullable: false,
+            optional: false,
+            type: :union,
+            variants: [
+              { default: nil, deprecated: false, description: nil, example: nil, nullable: false, optional: false, type: :string },
+            ],
+          },
+          shape: nil,
+          type: :array,
+        )
+
+        expect(param.of).to be_a(Apiwork::Introspection::Param::Union)
+        expect(param.of.discriminator).to eq(:kind)
+      end
+    end
   end
 
   describe '#shape' do
