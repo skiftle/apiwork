@@ -229,7 +229,7 @@ module Apiwork
         value.transform_values { |nested_value| deep_as_json(nested_value) }
       when Array
         value.map { |element| deep_as_json(element) }
-      when String, Integer, Float, TrueClass, FalseClass, NilClass, Symbol
+      when String, Integer, Float, TrueClass, FalseClass, NilClass, Symbol, Time, Date, BigDecimal
         value
       else
         value.as_json
