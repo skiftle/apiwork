@@ -138,7 +138,7 @@ module Apiwork
                end
              else
                data[:meta] = meta if meta.present?
-               data
+               data.deep_symbolize_keys
              end
 
       response = Response.new(body: deep_as_json(body))
