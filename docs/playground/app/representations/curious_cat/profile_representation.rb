@@ -2,6 +2,17 @@
 
 module CuriousCat
   class ProfileRepresentation < Apiwork::Representation::Base
+    object :address do
+      string :street
+      string :city
+      string :zip
+    end
+
+    object :stats do
+      integer :tags
+      integer :addresses
+    end
+
     attribute :id
     attribute :name, writable: true
     attribute :email, format: :email, writable: true
@@ -9,7 +20,6 @@ module CuriousCat
     attribute :settings, writable: true do
       object do
         string :theme
-        boolean :notifications
         string :language
       end
     end
@@ -20,37 +30,15 @@ module CuriousCat
       end
     end
 
+    attribute :primary_address, type: :address, writable: true
+
     attribute :addresses, writable: true do
       array do
-        object do
-          string :street
-          string :city
-          string :zip
-          boolean :primary
-        end
+        reference :address
       end
     end
 
-    attribute :preferences, writable: true do
-      object do
-        object :ui do
-          string :theme
-          boolean :sidebar_collapsed
-        end
-        object :notifications do
-          boolean :email
-          boolean :push
-        end
-      end
-    end
-
-    attribute :scores, writable: true do
-      record do
-        integer
-      end
-    end
-
-    attribute :metadata, type: :unknown, writable: true
+    attribute :stats, type: :stats
 
     attribute :created_at
     attribute :updated_at

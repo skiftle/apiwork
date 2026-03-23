@@ -1,5 +1,5 @@
-title: Inline Types
-description: Define typed JSON columns with object shapes, arrays, records, and nested structures
+title: Representation Types
+description: Define typed attributes with object shapes, arrays, named types, and derived methods
 order: 12
 
 sections:
@@ -20,8 +20,8 @@ sections:
       - app/controllers/curious_cat/profiles_controller.rb
 
 scenarios:
-  - title: Create a profile with all inline types
-    description: Create a new profile with all structured data fields
+  - title: Create a profile
+    description: Create a profile with settings, tags, and addresses
     order: 1
     method: POST
     path: /curious_cat/profiles
@@ -31,33 +31,24 @@ scenarios:
         email: alice@example.com
         settings:
           theme: dark
-          notifications: true
           language: en
         tags:
           - developer
           - typescript
+        primary_address:
+          street: 123 Main St
+          city: Stockholm
+          zip: "12345"
         addresses:
           - street: 123 Main St
             city: Stockholm
             zip: "12345"
-            primary: true
-        preferences:
-          ui:
-            theme: compact
-            sidebarCollapsed: false
-          notifications:
-            email: true
-            push: false
-        scores:
-          math: 95
-          science: 87
-          history: 72
-        metadata:
-          source: api
-          version: 2
+          - street: 456 Oak Ave
+            city: Gothenburg
+            zip: "41101"
 
-  - title: Update profile settings and tags
-    description: Update structured fields on existing profile
+  - title: Update profile settings
+    description: Update settings and tags on an existing profile
     order: 2
     method: PATCH
     path: /curious_cat/profiles/:id
@@ -68,37 +59,23 @@ scenarios:
           email: alice@example.com
           settings:
             theme: dark
-            notifications: true
             language: en
           tags:
             - developer
+          primary_address:
+            street: 123 Main St
+            city: Stockholm
+            zip: "12345"
           addresses:
             - street: 123 Main St
               city: Stockholm
               zip: "12345"
-              primary: true
-          preferences:
-            ui:
-              theme: compact
-              sidebar_collapsed: false
-            notifications:
-              email: true
-              push: false
-          scores:
-            math: 95
-            science: 87
-          metadata:
-            source: api
     body:
       profile:
         settings:
           theme: light
-          notifications: false
           language: sv
         tags:
           - developer
           - ruby
           - rails
-        metadata:
-          source: api
-          version: 3
