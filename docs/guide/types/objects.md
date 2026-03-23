@@ -187,6 +187,25 @@ Category:
         $ref: "#/components/schemas/Category"
 ```
 
+## Representation-Scoped Objects
+
+Objects can be defined on representations. They are copied to the contract that uses the representation:
+
+```ruby
+class OrderRepresentation < Apiwork::Representation::Base
+  object :address do
+    string :street
+    string :city
+    string :postal_code
+  end
+
+  attribute :shipping_address, type: :address
+  attribute :billing_address, type: :address
+end
+```
+
+The attributes reference the named type by name. In exports, both attributes use the same type instead of duplicating the shape.
+
 ## Contract-Scoped Objects
 
 Objects inside a contract get prefixed with the contract name:

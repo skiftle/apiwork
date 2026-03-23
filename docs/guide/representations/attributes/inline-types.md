@@ -2,9 +2,9 @@
 order: 6
 ---
 
-# Inline Types
+# Representation Types
 
-JSON/JSONB columns auto-detect as `:unknown` because Apiwork cannot know their shape from the database schema alone. Use blocks to define the shape explicitly.
+JSON/JSONB columns auto-detect as `:unknown` because Apiwork cannot know their shape from the database schema alone. Use blocks to define the shape explicitly, or named types for reusable structures.
 
 ::: tip
 If a JSON column has a consistent shape (settings, preferences, configuration), define it. If the shape truly varies per record, leave it as `:unknown`.
@@ -487,10 +487,73 @@ attribute :raw_payload  # stays :unknown
 attribute :flexible_data  # stays :unknown
 ```
 
+## Named Types
+
+When the same shape appears in multiple attributes, define it once as a named type on the representation:
+
+```ruby
+class CustomerRepresentation < Apiwork::Representation::Base
+  object :address do
+    string :street
+    string :city
+    string :postal_code
+  end
+
+  attribute :shipping_address, type: :address
+  attribute :billing_address, type: :address
+end
+```
+
+Named types generate a dedicated type in exports instead of duplicating the shape inline:
+
+```typescript
+export interface CustomerAddress {
+  city: string;
+  postalCode: string;
+  street: string;
+}
+
+export interface Customer {
+  shippingAddress: CustomerAddress;
+  billingAddress: CustomerAddress;
+}
+```
+
+Unions work the same way:
+
+```ruby
+class InvoiceRepresentation < Apiwork::Representation::Base
+  union :content_block, discriminator: :kind do
+    variant tag: 'text' do
+      object do
+        string :body
+      end
+    end
+    variant tag: 'image' do
+      object do
+        string :url
+        integer :width
+        integer :height
+      end
+    end
+  end
+
+  attribute :content, type: :content_block
+end
+```
+
+Named types on representations are copied to the [contract](../../contracts/types.md) that uses the representation. They behave as if defined directly on the contract.
+
+::: tip
+Use inline blocks for one-off shapes. Use named types when the shape is reused or represents a domain concept.
+:::
+
 ## Examples
 
-- [Inline Types](/examples/inline-types) — Define shapes for JSON columns with full TypeScript typing
+- [Representation Types](/examples/representation-types) — Object shapes, named types, arrays, and derived methods
 
 #### See also
 
 - [Representation::Element](/reference/representation/element.md) — block context reference
+- [Objects](../../types/objects.md) — named object types
+- [Unions](../../types/unions.md) — named union types

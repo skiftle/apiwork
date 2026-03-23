@@ -114,7 +114,7 @@ attribute :tags do
 end
 ```
 
-See [Inline Types](./attributes/inline-types.md) for complete syntax.
+See [Representation Types](./attributes/inline-types.md) for complete syntax.
 
 ### Nullable Detection
 
@@ -353,7 +353,7 @@ The following are not automatically detected and must be specified manually:
 These options affect API behavior, security, or documentation in ways that need explicit choices, not automatic detection.
 
 ::: info
-JSON/JSONB columns only tell Apiwork "this is JSON" — not what is inside. Unlike most attributes where the type is detected from the database, JSON columns require an explicit `object` or `array` block for typed exports. See [Inline Types](./attributes/inline-types.md).
+JSON/JSONB columns only tell Apiwork "this is JSON" — not what is inside. Unlike most attributes where the type is detected from the database, JSON columns require an explicit `object` or `array` block for typed exports. See [Representation Types](./attributes/inline-types.md).
 :::
 
 #### See also

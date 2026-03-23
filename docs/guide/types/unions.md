@@ -172,6 +172,33 @@ union :user_update do
 end
 ```
 
+## Representation-Scoped Union
+
+Unions can be defined on representations. They are copied to the contract that uses the representation:
+
+```ruby
+class PostRepresentation < Apiwork::Representation::Base
+  union :content_block, discriminator: :kind do
+    variant tag: 'text' do
+      object do
+        string :body
+      end
+    end
+    variant tag: 'image' do
+      object do
+        string :url
+        integer :width
+        integer :height
+      end
+    end
+  end
+
+  attribute :content, type: :content_block
+end
+```
+
+The attribute references the union by name. In exports, the union generates a dedicated type.
+
 ## Contract-Scoped Union
 
 ```ruby

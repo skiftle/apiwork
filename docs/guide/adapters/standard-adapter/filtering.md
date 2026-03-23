@@ -117,7 +117,7 @@ Accepts: `true`, `false`, `1`, `0`, `'true'`, `'false'`, `'yes'`, `'no'`
 **Complex types** are not filterable. This includes:
 
 - JSON/JSONB columns (normalized to `unknown`)
-- [Inline types](/examples/inline-types) using `array`, `object`, or `union` blocks
+- [Representation types](/examples/representation-types) using `array`, `object`, or `union` blocks
 
 These types are excluded from filter generation. To filter structured data, create dedicated scalar columns.
 

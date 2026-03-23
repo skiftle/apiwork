@@ -33,7 +33,7 @@ Apiwork detects types, nullability, and enum values from the database. The adapt
 - [Custom](./custom.md) — virtual attributes backed by methods
 - [Writable](./writable.md) — controlling create and update access
 - [Encode & Decode](./encode-decode.md) — transforming values during serialization
-- [Inline Types](./inline-types.md) — defining shapes for JSON/JSONB columns
+- [Representation Types](./inline-types.md) — defining shapes, named types, and derived attributes
 - [Metadata](./metadata.md) — descriptions, examples, deprecation, and format hints
 
 #### See also

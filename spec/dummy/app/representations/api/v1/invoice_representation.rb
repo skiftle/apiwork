@@ -3,6 +3,11 @@
 module Api
   module V1
     class InvoiceRepresentation < ApplicationRepresentation
+      object :line_detail do
+        string :label
+        decimal :amount
+      end
+
       with_options filterable: true, sortable: true do
         attribute :created_at
         attribute :id

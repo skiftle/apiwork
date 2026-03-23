@@ -349,6 +349,45 @@ RSpec.describe Apiwork::Representation::Base do
     end
   end
 
+  describe '.object' do
+    context 'with defaults' do
+      it 'registers the type definition' do
+        representation_class = Class.new(described_class) do
+          abstract!
+          object :address do
+            string :street
+          end
+        end
+
+        type_definition = representation_class.type_definitions[:address]
+        expect(type_definition[:kind]).to eq(:object)
+        expect(type_definition[:block]).to be_a(Proc)
+        expect(type_definition[:options][:deprecated]).to be(false)
+        expect(type_definition[:options][:description]).to be_nil
+        expect(type_definition[:options][:example]).to be_nil
+      end
+    end
+
+    context 'with overrides' do
+      it 'forwards all options' do
+        representation_class = Class.new(described_class) do
+          abstract!
+          object :address,
+                 deprecated: true,
+                 description: 'Physical address',
+                 example: { street: '123 Main St' } do
+            string :street
+          end
+        end
+
+        options = representation_class.type_definitions[:address][:options]
+        expect(options[:deprecated]).to be(true)
+        expect(options[:description]).to eq('Physical address')
+        expect(options[:example]).to eq({ street: '123 Main St' })
+      end
+    end
+  end
+
   describe '.polymorphic_name' do
     context 'when type name is set' do
       it 'returns the polymorphic name' do
@@ -503,6 +542,56 @@ RSpec.describe Apiwork::Representation::Base do
       representation_class = Class.new(described_class) { abstract! }
 
       expect(representation_class.type_name).to be_nil
+    end
+  end
+
+  describe '.union' do
+    context 'with defaults' do
+      it 'registers the type definition' do
+        representation_class = Class.new(described_class) do
+          abstract!
+          union :content, discriminator: :kind do
+            variant tag: 'text' do
+              object do
+                string :body
+              end
+            end
+          end
+        end
+
+        type_definition = representation_class.type_definitions[:content]
+        expect(type_definition[:kind]).to eq(:union)
+        expect(type_definition[:block]).to be_a(Proc)
+        expect(type_definition[:options][:deprecated]).to be(false)
+        expect(type_definition[:options][:description]).to be_nil
+        expect(type_definition[:options][:discriminator]).to eq(:kind)
+        expect(type_definition[:options][:example]).to be_nil
+      end
+    end
+
+    context 'with overrides' do
+      it 'forwards all options' do
+        representation_class = Class.new(described_class) do
+          abstract!
+          union :content,
+                deprecated: true,
+                description: 'Content block',
+                discriminator: :type,
+                example: { body: 'Invoice notes', type: 'text' } do
+            variant tag: 'text' do
+              object do
+                string :body
+              end
+            end
+          end
+        end
+
+        options = representation_class.type_definitions[:content][:options]
+        expect(options[:deprecated]).to be(true)
+        expect(options[:description]).to eq('Content block')
+        expect(options[:discriminator]).to eq(:type)
+        expect(options[:example]).to eq({ body: 'Invoice notes', type: 'text' })
+      end
     end
   end
 

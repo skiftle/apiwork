@@ -58,6 +58,8 @@ module Apiwork
           end
 
           def contract_types(contract_class)
+            register_representation_types(contract_class)
+
             builder_class = self.class.contract_builder
             return unless builder_class
 
@@ -76,6 +78,19 @@ module Apiwork
           # @return [Hash]
           def serialize(resource, context:, serialize_options:)
             raise NotImplementedError
+          end
+
+          private
+
+          def register_representation_types(contract_class)
+            representation_class.type_definitions.each do |name, type_definition|
+              case type_definition[:kind]
+              when :object
+                contract_class.object(name, **type_definition[:options], &type_definition[:block])
+              when :union
+                contract_class.union(name, **type_definition[:options], &type_definition[:block])
+              end
+            end
           end
         end
       end

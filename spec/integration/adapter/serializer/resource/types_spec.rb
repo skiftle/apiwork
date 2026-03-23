@@ -131,6 +131,17 @@ RSpec.describe 'Resource serializer types', type: :integration do
     end
   end
 
+  describe 'representation-defined types' do
+    it 'includes object types from representation in introspection' do
+      type = types[:invoice_line_detail]
+
+      expect(type.type).to eq(:object)
+      expect(type.shape.keys).to contain_exactly(:amount, :label)
+      expect(type.shape[:label].type).to eq(:string)
+      expect(type.shape[:amount].type).to eq(:decimal)
+    end
+  end
+
   describe 'enum types' do
     it 'has invoice_status enum' do
       expect(enums[:invoice_status].values).to contain_exactly('draft', 'overdue', 'paid', 'sent', 'void')

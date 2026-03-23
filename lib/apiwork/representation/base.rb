@@ -69,6 +69,7 @@ module Apiwork
       class_attribute :inheritance, default: nil, instance_accessor: false
 
       class_attribute :_adapter_config, default: {}, instance_accessor: false
+      class_attribute :type_definitions, default: {}, instance_accessor: false
 
       # @!attribute [r] context
       #   @api public
@@ -537,6 +538,110 @@ module Apiwork
               sortable:,
               writable:,
             ),
+          )
+        end
+
+        # @api public
+        # Defines an object type for this representation.
+        #
+        # The type is copied to the contract that uses this representation. Attributes can reference
+        # it by name via `type:`. In exports, the type is scoped to the contract.
+        #
+        # @param name [Symbol]
+        #   The object name.
+        # @param deprecated [Boolean] (false)
+        #   Whether deprecated. Metadata included in exports.
+        # @param description [String, nil] (nil)
+        #   The description. Metadata included in exports.
+        # @param example [Object, nil] (nil)
+        #   The example. Metadata included in exports.
+        # @yieldparam object [API::Object]
+        # @return [void]
+        #
+        # @example Define and reference
+        #   object :address do
+        #     string :street
+        #     string :city
+        #     string :postal_code
+        #   end
+        #
+        #   attribute :shipping_address, type: :address
+        #   attribute :billing_address, type: :address
+        def object(
+          name,
+          deprecated: false,
+          description: nil,
+          example: nil,
+          &block
+        )
+          self.type_definitions = type_definitions.merge(
+            name.to_sym => {
+              block:,
+              kind: :object,
+              options: {
+                deprecated:,
+                description:,
+                example:,
+              },
+            },
+          )
+        end
+
+        # @api public
+        # Defines a union type for this representation.
+        #
+        # The type is copied to the contract that uses this representation. Attributes can reference
+        # it by name via `type:`. In exports, the type is scoped to the contract.
+        #
+        # @param name [Symbol]
+        #   The union name.
+        # @param deprecated [Boolean] (false)
+        #   Whether deprecated. Metadata included in exports.
+        # @param description [String, nil] (nil)
+        #   The description. Metadata included in exports.
+        # @param discriminator [Symbol, nil] (nil)
+        #   The discriminator field name.
+        # @param example [Object, nil] (nil)
+        #   The example. Metadata included in exports.
+        # @yieldparam union [API::Union]
+        # @return [void]
+        #
+        # @example Define and reference
+        #   union :content_block, discriminator: :kind do
+        #     variant tag: 'text' do
+        #       object do
+        #         string :body
+        #       end
+        #     end
+        #     variant tag: 'image' do
+        #       object do
+        #         string :url
+        #         integer :width
+        #         integer :height
+        #       end
+        #     end
+        #   end
+        #
+        #   attribute :content, type: :content_block
+        def union(
+          name,
+          deprecated: false,
+          description: nil,
+          discriminator: nil,
+          example: nil,
+          &block
+        )
+          self.type_definitions = type_definitions.merge(
+            name.to_sym => {
+              block:,
+              kind: :union,
+              options: {
+                deprecated:,
+                description:,
+                discriminator:,
+                example:,
+              },
+            },
           )
         end
 
