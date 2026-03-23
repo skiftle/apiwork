@@ -4,7 +4,7 @@ module CalmTurtle
   class CustomersController < ApplicationController
     def create
       customer = Customer.create(contract.body[:customer])
-      expose({ customer: customer.as_json })
+      expose({ customer: })
     end
   end
 end

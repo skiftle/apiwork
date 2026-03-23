@@ -4,7 +4,7 @@ module CalmTurtle
   class OrdersController < ApplicationController
     def create
       order = Order.create(contract.body[:order])
-      expose({ order: order.as_json })
+      expose({ order: })
     end
   end
 end
