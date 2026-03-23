@@ -141,7 +141,7 @@ module Apiwork
                data
              end
 
-      response = Response.new(body:)
+      response = Response.new(body: deep_as_json(body))
 
       if Rails.env.development?
         result = contract_class.parse_response(response, action_name)
@@ -222,6 +222,19 @@ module Apiwork
     end
 
     private
+
+    def deep_as_json(value)
+      case value
+      when Hash
+        value.transform_values { |nested_value| deep_as_json(nested_value) }
+      when Array
+        value.map { |element| deep_as_json(element) }
+      when String, Integer, Float, TrueClass, FalseClass, NilClass, Symbol
+        value
+      else
+        value.as_json
+      end
+    end
 
     def validate_contract
       return unless resource
