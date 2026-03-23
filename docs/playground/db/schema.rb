@@ -61,9 +61,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_23_000005) do
   end
 
   create_table "calm_turtle_customers", id: :string, force: :cascade do |t|
-    t.string "billing_city"
-    t.string "billing_country"
-    t.string "billing_street"
+    t.json "billing_address"
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
@@ -71,11 +69,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_23_000005) do
 
   create_table "calm_turtle_orders", id: :string, force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "customer_id", null: false
     t.string "order_number", null: false
-    t.string "shipping_city"
-    t.string "shipping_country"
-    t.string "shipping_street"
+    t.json "shipping_address"
     t.datetime "updated_at", null: false
   end
 
@@ -319,7 +314,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_23_000005) do
   add_foreign_key "bold_falcon_articles", "bold_falcon_categories", column: "category_id"
   add_foreign_key "brave_eagle_comments", "brave_eagle_tasks", column: "task_id"
   add_foreign_key "brave_eagle_tasks", "brave_eagle_users", column: "assignee_id"
-  add_foreign_key "calm_turtle_orders", "calm_turtle_customers", column: "customer_id"
   add_foreign_key "clever_rabbit_line_items", "clever_rabbit_orders", column: "order_id"
   add_foreign_key "clever_rabbit_shipping_addresses", "clever_rabbit_orders", column: "order_id"
   add_foreign_key "eager_lion_invoices", "eager_lion_customers", column: "customer_id"
