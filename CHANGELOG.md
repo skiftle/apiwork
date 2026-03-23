@@ -1,5 +1,42 @@
 # Changelog
 
+## [0.5.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.4.0...apiwork/v0.5.0) (2026-03-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* make OP required in nested payload discriminated union
+* move default and example to concrete param types
+
+### Features
+
+* add builders option to TypeScript, Zod, and Sorbus exports ([91f1c11](https://github.com/skiftle/apiwork/commit/91f1c119accbdbb6493b5b6b05e2f1ec584a6071))
+* add object() and union() type definitions to representations ([105ce8c](https://github.com/skiftle/apiwork/commit/105ce8c6a6e0631f2cb5764579740e4e0a40808c))
+* add record param type for key-value maps with typed values ([e2339f3](https://github.com/skiftle/apiwork/commit/e2339f37ef358809f89188dd9fafbdc7ccf994c3))
+* add unknown as a param type ([46e4765](https://github.com/skiftle/apiwork/commit/46e47652c132e8ebd389a4ca859b2bb89899c108))
+* move default and example to concrete param types ([f20e082](https://github.com/skiftle/apiwork/commit/f20e0821a7378eca839a663d0c876bf6648e51ab))
+* support union types inside array elements ([2f0d05e](https://github.com/skiftle/apiwork/commit/2f0d05e65e59bf611d46efbcea84ef9284e435b5))
+* treat boolean options without arguments as setter to true ([392112d](https://github.com/skiftle/apiwork/commit/392112dcd05279ec6aef7c44ca71ffb4c16dc971))
+
+
+### Bug Fixes
+
+* add boolean type validation to configuration options ([a5940fe](https://github.com/skiftle/apiwork/commit/a5940fec08fe8462181a5c190d5b4f2181f06ddd))
+* allow referencing types named after DSL keywords in union variants ([be526bb](https://github.com/skiftle/apiwork/commit/be526bbf23e95bdb0b536ce094d665dd1b76951d))
+* boolean export options ignoring default false ([0098b76](https://github.com/skiftle/apiwork/commit/0098b769091981a35ff582556cff87ccd30dfb2e))
+* broken union type and kebab-case playground examples ([a8202cd](https://github.com/skiftle/apiwork/commit/a8202cd4383265ba9cfdcd66d892e93d05379af0))
+* make OP required in nested payload discriminated union ([04f2c86](https://github.com/skiftle/apiwork/commit/04f2c8666ce609e65719dfa0f6b970dc37be3d8a))
+* omit ErrorSchema from sorbus contract when no raises are declared ([df06c22](https://github.com/skiftle/apiwork/commit/df06c2230857fd791c23aa7fb19dddee880f5128))
+* preserve ALL-CAPS keys in response key transformation and extract key transform methods ([1e813c9](https://github.com/skiftle/apiwork/commit/1e813c9c6d475f05631c59be3b7020958f171aa2))
+* preserve path segments in sorbus export transform_path ([8768597](https://github.com/skiftle/apiwork/commit/8768597dc81c8992576a99dfdd7eacc68d4a3b83))
+* produce complete param hashes for of-elements in introspection dump ([99b7ec4](https://github.com/skiftle/apiwork/commit/99b7ec43e8a47fa2e8e9746fcb8498c53bbc36e9))
+* resolve :id from resource path segment in playground scenario runner ([10328d7](https://github.com/skiftle/apiwork/commit/10328d74c2aaa007036ff6978b93360e73c1532d))
+* return null body for no_content responses in introspection ([5f8845b](https://github.com/skiftle/apiwork/commit/5f8845b90afaf91f2c94fb512984763c0d0f11bc))
+* select hub node as cycle breaker and iterate until all cycles resolved ([c66bfb2](https://github.com/skiftle/apiwork/commit/c66bfb28fbc362b7de622ab40792e85276748ef4))
+* skip primitive types when resolving type references in introspection dump ([0970b5b](https://github.com/skiftle/apiwork/commit/0970b5b2d31b4c765955134fcb0501ea7c7e8eb8))
+* use custom_type to resolve type references in introspection ([41d1c5b](https://github.com/skiftle/apiwork/commit/41d1c5be74840b6bb9c1d2da5412dbb6cce79aed))
+* use type definition scope for enum resolution during type expansion ([70fbdbf](https://github.com/skiftle/apiwork/commit/70fbdbf7932ffb5aebc913274ded6b1aabfe2023))
+
 ## [0.4.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.3.1...apiwork/v0.4.0) (2026-03-09)
 
 
