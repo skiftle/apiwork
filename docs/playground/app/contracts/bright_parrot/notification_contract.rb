@@ -41,7 +41,9 @@ module BrightParrot
     action :index do
       response do
         body do
-          reference :preference
+          array :preferences do
+            reference :preference
+          end
         end
       end
     end

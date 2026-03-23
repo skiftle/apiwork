@@ -119,7 +119,7 @@ class RequestRunner
     if path.include?(':id') && ids.any?
       segments = path.split('/')
       resource_segment = segments.each_cons(2).find { |_, b| b.start_with?(':id') }.first
-      model_key = resource_segment.singularize.to_sym
+      model_key = resource_segment.singularize.underscore.to_sym
       path = path.gsub(':id', ids[model_key].to_s)
     end
 

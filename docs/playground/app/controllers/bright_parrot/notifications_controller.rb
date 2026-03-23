@@ -4,7 +4,7 @@ module BrightParrot
   class NotificationsController < ApplicationController
     def index
       expose(
-        [
+        { preferences: [
           {
             address: 'alice@example.com',
             channel: 'email',
@@ -19,7 +19,7 @@ module BrightParrot
             device_token: 'abc123def456',
             silent: false,
           },
-        ],
+        ] },
       )
     end
 

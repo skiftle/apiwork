@@ -26,7 +26,7 @@ scenarios:
     description: "Request uses PascalCase keys like `CookTime` and `ServingSize`"
     order: 1
     method: POST
-    path: /nimble_gecko/meal-plans
+    path: /nimble-gecko/meal-plans
     body:
       MealPlan:
         Title: Pasta Carbonara
@@ -47,7 +47,7 @@ scenarios:
     description: Response returns PascalCase keys on kebab-case path
     order: 2
     method: GET
-    path: /nimble_gecko/meal-plans
+    path: /nimble-gecko/meal-plans
     setup:
       - create: meal_plan
         fields:
@@ -64,7 +64,7 @@ scenarios:
     description: Partial update using PascalCase keys
     order: 3
     method: PATCH
-    path: /nimble_gecko/meal-plans/:id
+    path: /nimble-gecko/meal-plans/:id
     setup:
       - create: meal_plan
         fields:
