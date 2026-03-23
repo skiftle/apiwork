@@ -37,6 +37,7 @@
 # Claude Code - local files
 /.claude/*.local.json
 /.claude/plans/
+/.claude/worktrees/
 
 
 docs/node_modules
