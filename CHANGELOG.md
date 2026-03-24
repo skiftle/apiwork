@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.5.1](https://github.com/skiftle/apiwork/compare/apiwork/v0.5.0...apiwork/v0.5.1) (2026-03-24)
+
+
+### Features
+
+* auto-serialize domain objects in expose responses ([920f0dc](https://github.com/skiftle/apiwork/commit/920f0dcab41eacfb74d564f502fec74f827f558d))
+
+
+### Bug Fixes
+
+* expose min/max options on array params ([8a342e5](https://github.com/skiftle/apiwork/commit/8a342e53c912668ae88719576f554ecc653ae915))
+* preserve native types in expose serialization ([409f206](https://github.com/skiftle/apiwork/commit/409f206e641820ef98533be2c8a4a82923bac88d))
+* symbolize keys in contract-only expose responses ([d9589d7](https://github.com/skiftle/apiwork/commit/d9589d758522c431a0ee031a2e53b6489e71a1d7))
+
 ## [0.5.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.4.0...apiwork/v0.5.0) (2026-03-23)
 
 
