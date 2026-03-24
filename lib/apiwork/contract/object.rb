@@ -189,6 +189,10 @@ module Apiwork
       #   Whether deprecated. Metadata included in exports.
       # @param description [String, nil] (nil)
       #   The description. Metadata included in exports.
+      # @param max [Integer, nil] (nil)
+      #   The maximum number of elements.
+      # @param min [Integer, nil] (nil)
+      #   The minimum number of elements.
       # @param nullable [Boolean] (false)
       #   Whether the value can be `null`.
       # @param optional [Boolean] (false)
@@ -214,6 +218,8 @@ module Apiwork
         default: nil,
         deprecated: false,
         description: nil,
+        max: nil,
+        min: nil,
         nullable: false,
         optional: false,
         required: false,
@@ -231,6 +237,8 @@ module Apiwork
           default:,
           deprecated:,
           description:,
+          max:,
+          min:,
           nullable:,
           optional:,
           required:,

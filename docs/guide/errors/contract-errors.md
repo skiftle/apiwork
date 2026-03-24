@@ -29,20 +29,20 @@ end
 
 ## Error Codes
 
-| Code               | Detail            | Meta                              |
-| ------------------ | ----------------- | --------------------------------- |
-| `field_missing`    | Required          | `field`, `type`                   |
-| `field_unknown`    | Unknown field     | `field`, `allowed`                |
-| `type_invalid`     | Invalid type      | `field`, `expected`, `actual`     |
-| `value_invalid`    | Invalid value     | `field`, `expected`, `actual`     |
-| `value_null`       | Cannot be null    | `field`, `type`                   |
-| `string_too_short` | Too short         | `field`, `min`, `actual`          |
-| `string_too_long`  | Too long          | `field`, `max`, `actual`          |
-| `number_too_small` | Too small         | `field`, `min`, `actual`          |
-| `number_too_large` | Too large         | `field`, `max`, `actual`          |
-| `array_too_small`  | Too few items     | `min`, `actual`                   |
-| `array_too_large`  | Too many items    | `max`, `actual`                   |
-| `depth_exceeded`   | Too deeply nested | `depth`, `max`                    |
+| Code               | Detail            | Meta                          |
+| ------------------ | ----------------- | ----------------------------- |
+| `field_missing`    | Required          | `field`, `type`               |
+| `field_unknown`    | Unknown field     | `field`, `allowed`            |
+| `type_invalid`     | Invalid type      | `field`, `expected`, `actual` |
+| `value_invalid`    | Invalid value     | `field`, `expected`, `actual` |
+| `value_null`       | Cannot be null    | `field`, `type`               |
+| `string_too_short` | Too short         | `field`, `min`, `actual`      |
+| `string_too_long`  | Too long          | `field`, `max`, `actual`      |
+| `number_too_small` | Too small         | `field`, `min`, `actual`      |
+| `number_too_large` | Too large         | `field`, `max`, `actual`      |
+| `array_too_small`  | Too few items     | `min`, `actual`               |
+| `array_too_large`  | Too many items    | `max`, `actual`               |
+| `depth_exceeded`   | Too deeply nested | `depth`, `max`                |
 
 ## Examples
 
@@ -96,6 +96,28 @@ string :title, min: 5, max: 100
     "actual": 3,
     "field": "title",
     "min": 5
+  }
+}
+```
+
+### array_too_large
+
+```ruby
+array :tags, max: 10 do
+  string
+end
+```
+
+```json
+{
+  "layer": "contract",
+  "code": "array_too_large",
+  "detail": "Too many items",
+  "path": ["post", "tags"],
+  "pointer": "/post/tags",
+  "meta": {
+    "actual": 15,
+    "max": 10
   }
 }
 ```
