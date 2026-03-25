@@ -163,7 +163,7 @@ module Apiwork
         def validate_enum_value(name, value, enum, field_path)
           enum_values = resolve_enum(enum)
           return nil unless enum_values
-          return nil if enum_values.include?(value.to_s) || enum_values.include?(value)
+          return nil if enum_values.any? { |enum_value| enum_value.to_s == value.to_s }
 
           Issue.new(
             :value_invalid,
