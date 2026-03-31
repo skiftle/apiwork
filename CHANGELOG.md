@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.6.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.5.0...apiwork/v0.6.0) (2026-03-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename error types to error_issue and error_layer
+
+### Features
+
+* auto-serialize domain objects in expose responses ([920f0dc](https://github.com/skiftle/apiwork/commit/920f0dcab41eacfb74d564f502fec74f827f558d))
+
+
+### Bug Fixes
+
+* compare enum values as strings in response validator ([0b08fba](https://github.com/skiftle/apiwork/commit/0b08fbaa38e37ef54633def265c2d420a22e77b4))
+* expose min/max options on array params ([8a342e5](https://github.com/skiftle/apiwork/commit/8a342e53c912668ae88719576f554ecc653ae915))
+* preserve native types in expose serialization ([409f206](https://github.com/skiftle/apiwork/commit/409f206e641820ef98533be2c8a4a82923bac88d))
+* rename error types to error_issue and error_layer ([46ad454](https://github.com/skiftle/apiwork/commit/46ad45473acc828032c2d51e58139434425269d8))
+* symbolize keys in contract-only expose responses ([d9589d7](https://github.com/skiftle/apiwork/commit/d9589d758522c431a0ee031a2e53b6489e71a1d7))
+* update vulnerable dependencies ([7152c58](https://github.com/skiftle/apiwork/commit/7152c58894090b31cd61dc1264e4eb498289dc76))
+
 ## [0.5.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.4.0...apiwork/v0.5.0) (2026-03-23)
 
 
