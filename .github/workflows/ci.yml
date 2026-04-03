@@ -75,7 +75,7 @@ jobs:
       - uses: actions/upload-pages-artifact@v4
         with:
           path: docs/.vitepress/dist
-      - uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v5
         id: deploy
 
   all-green:
