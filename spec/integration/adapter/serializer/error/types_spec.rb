@@ -15,30 +15,30 @@ RSpec.describe 'Error serializer types', type: :integration do
       expect(error_type.shape.keys).to contain_exactly(:issues, :layer)
     end
 
-    it 'has issues as array of issue references' do
+    it 'has issues as array of error_issue references' do
       param = types[:error].shape[:issues]
 
       expect(param.type).to eq(:array)
       expect(param.of.type).to eq(:reference)
     end
 
-    it 'has layer as reference to layer enum' do
+    it 'has layer as reference to error_layer enum' do
       param = types[:error].shape[:layer]
 
       expect(param.type).to eq(:reference)
-      expect(param.reference).to eq(:layer)
+      expect(param.reference).to eq(:error_layer)
     end
   end
 
-  describe 'issue object' do
+  describe 'error_issue object' do
     it 'has expected fields' do
-      expect(types[:issue].shape.keys).to contain_exactly(:code, :detail, :meta, :path, :pointer)
+      expect(types[:error_issue].shape.keys).to contain_exactly(:code, :detail, :meta, :path, :pointer)
     end
   end
 
-  describe 'layer enum' do
+  describe 'error_layer enum' do
     it 'has values' do
-      expect(enums[:layer].values).to contain_exactly('contract', 'domain', 'http')
+      expect(enums[:error_layer].values).to contain_exactly('contract', 'domain', 'http')
     end
   end
 end

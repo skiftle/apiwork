@@ -35,7 +35,7 @@ RSpec.describe 'Introspection', type: :integration do
     it 'includes enums from model definitions' do
       enum_keys = introspection.enums.keys
 
-      expect(enum_keys).to include(:invoice_status, :layer, :payment_method, :payment_status)
+      expect(enum_keys).to include(:error_layer, :invoice_status, :payment_method, :payment_status)
     end
 
     it 'includes error codes' do
@@ -174,7 +174,7 @@ RSpec.describe 'Introspection', type: :integration do
 
   describe 'Enum introspection' do
     it 'includes layer values' do
-      expect(introspection.enums[:layer].values).to contain_exactly('contract', 'domain', 'http')
+      expect(introspection.enums[:error_layer].values).to contain_exactly('contract', 'domain', 'http')
     end
 
     it 'includes invoice_status values' do
