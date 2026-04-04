@@ -21,6 +21,8 @@ module Apiwork
         add_discriminator_field(fields) if @representation_class.subclass?
 
         @representation_class.attributes.each do |name, attribute|
+          next if attribute.write_only?
+
           value = @representation.respond_to?(name) ? @representation.public_send(name) : @representation.record.public_send(name)
           value = map_type_column_output(name, value)
           value = attribute.encode(value)

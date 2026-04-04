@@ -63,6 +63,42 @@ The actual request shape (how payloads are shaped) depends on the adapter. See t
 The [Standard Adapter](../../adapters/standard-adapter/writing.md) wraps writable attributes under the resource key in the request body.
 :::
 
+## Write-Only
+
+The `write_only` option excludes an attribute from response serialization and response types while keeping it in writable payloads.
+
+```ruby
+class UserRepresentation < Apiwork::Representation::Base
+  attribute :email, writable: true
+  attribute :password, writable: :create, write_only: true
+  attribute :password_confirmation, writable: :create, write_only: true
+end
+```
+
+The `password` and `password_confirmation` attributes are accepted in create requests but never included in API responses. Generated types reflect this:
+
+**Response type** — excludes write-only attributes:
+
+```typescript
+export interface User {
+  email: string;
+}
+```
+
+**Create payload** — includes write-only attributes:
+
+```typescript
+export interface UserCreatePayload {
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+}
+```
+
+::: tip
+`write_only` is typically combined with `writable` — a write-only attribute that is not writable is excluded from both requests and responses.
+:::
+
 ## Examples
 
 - [Value Transforms](/examples/value-transforms) — Transform values during serialization and handle nil/empty conversion

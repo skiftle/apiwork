@@ -59,6 +59,8 @@ module Apiwork
                 end
 
                 representation_class.attributes.each do |name, attribute|
+                  next if attribute.write_only?
+
                   param_options = {
                     deprecated: attribute.deprecated?,
                     description: attribute.description,

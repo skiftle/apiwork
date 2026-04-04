@@ -27,6 +27,7 @@ RSpec.describe Apiwork::Representation::Attribute do
         expect(attribute.preload).to be_nil
         expect(attribute.sortable?).to be(false)
         expect(attribute.writable?).to be(false)
+        expect(attribute.write_only?).to be(false)
       end
     end
 
@@ -50,6 +51,7 @@ RSpec.describe Apiwork::Representation::Attribute do
           sortable: true,
           type: :string,
           writable: true,
+          write_only: true,
         )
 
         expect(attribute.name).to eq(:number)
@@ -67,6 +69,7 @@ RSpec.describe Apiwork::Representation::Attribute do
         expect(attribute.preload).to eq(:items)
         expect(attribute.sortable?).to be(true)
         expect(attribute.writable?).to be(true)
+        expect(attribute.write_only?).to be(true)
       end
     end
   end
@@ -245,6 +248,22 @@ RSpec.describe Apiwork::Representation::Attribute do
       attribute = described_class.new(:number, representation_class, type: :string, writable: :create)
 
       expect(attribute.writable_for?(:update)).to be(false)
+    end
+  end
+
+  describe '#write_only?' do
+    it 'returns true when write_only' do
+      representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+      attribute = described_class.new(:number, representation_class, type: :string, write_only: true)
+
+      expect(attribute.write_only?).to be(true)
+    end
+
+    it 'returns false when not write_only' do
+      representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+      attribute = described_class.new(:number, representation_class, type: :string)
+
+      expect(attribute.write_only?).to be(false)
     end
   end
 end

@@ -83,7 +83,8 @@ module Apiwork
                   :of,
                   :optional,
                   :preload,
-                  :type
+                  :type,
+                  :write_only
 
       def initialize(
         name,
@@ -105,6 +106,7 @@ module Apiwork
         sortable: false,
         type: nil,
         writable: false,
+        write_only: false,
         &block
       )
         @name = name
@@ -157,6 +159,7 @@ module Apiwork
         @example = example
         @format = format
         @deprecated = deprecated
+        @write_only = write_only
 
         validate_min_max_range!
         validate_format!
@@ -223,6 +226,14 @@ module Apiwork
       # @see #writable?
       def writable_for?(action)
         [true, action].include?(@writable)
+      end
+
+      # @api public
+      # Whether this attribute is write-only.
+      #
+      # @return [Boolean]
+      def write_only?
+        @write_only
       end
 
       def encode(value)

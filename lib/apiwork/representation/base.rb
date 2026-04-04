@@ -222,6 +222,9 @@ module Apiwork
         #   Use an explicit type or block in those cases.
         # @param writable [Boolean, Symbol] (false) [:create, :update]
         #   The write access. `true` for both create and update, `:create` for create only, `:update` for update only.
+        # @param write_only [Boolean] (false)
+        #   Whether the attribute is write-only. Write-only attributes are excluded from response
+        #   serialization and response types but remain in writable payloads.
         # @yieldparam element [Representation::Element]
         # @return [void]
         #
@@ -286,6 +289,7 @@ module Apiwork
           sortable: false,
           type: nil,
           writable: false,
+          write_only: false,
           &block
         )
           self.attributes = attributes.merge(
@@ -309,6 +313,7 @@ module Apiwork
               sortable:,
               type:,
               writable:,
+              write_only:,
               &block
             ),
           )

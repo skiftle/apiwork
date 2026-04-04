@@ -60,6 +60,23 @@ RSpec.describe Apiwork::Representation::Serializer do
       end
     end
 
+    context 'with write_only attribute' do
+      it 'excludes the attribute' do
+        representation_class = Class.new(Apiwork::Representation::Base) do
+          model Invoice
+          attribute :number
+          attribute :notes, write_only: true
+        end
+        invoice = Invoice.new(notes: 'Rush delivery', number: 'INV-001')
+        representation = representation_class.new(invoice)
+        serializer = described_class.new(representation, nil)
+
+        result = serializer.serialize
+
+        expect(result).to eq({ number: 'INV-001' })
+      end
+    end
+
     context 'with explicit includes' do
       it 'returns the serialized hash' do
         item_representation = Class.new(Apiwork::Representation::Base) do

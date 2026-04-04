@@ -47,6 +47,7 @@ Types, nullability, and enums are detected from the database and models.
 | `nullable` | `bool` | auto | Allow null values |
 | `optional` | `bool` | auto | Optional in requests |
 | `writable` | `bool` / `symbol` | `false` | Allow in create/update requests ([details](./writable.md)) |
+| `write_only` | `bool` | `false` | Exclude from responses, keep in payloads ([details](./writable.md#write-only)) |
 | `filterable` | `bool` | `false` | Mark as filterable (adapter-dependent) |
 | `sortable` | `bool` | `false` | Mark as sortable (adapter-dependent) |
 | `preload` | `symbol` / `array` / `hash` | `nil` | Associations to eager load ([details](./custom.md#preloading)) |
