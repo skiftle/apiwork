@@ -763,6 +763,13 @@ module Apiwork
           result.transform { |hash| hash.deep_transform_keys { |key| transform_key(key).to_sym } }
         end
 
+        def prepare_error_response(response)
+          result = prepare_response(response)
+          return result if key_format == :keep
+
+          result.transform { |body| transform_issue_paths(body) }
+        end
+
         def type?(name, scope: nil)
           type_registry.exists?(name, scope:)
         end
@@ -837,6 +844,30 @@ module Apiwork
         end
 
         private
+
+        def transform_issue_paths(body)
+          return body unless body.is_a?(Hash)
+          return body unless body[:issues].is_a?(Array)
+
+          body.merge(issues: body[:issues].map { |issue| transform_issue_path(issue) })
+        end
+
+        def transform_issue_path(issue)
+          return issue unless issue.is_a?(Hash)
+
+          result = issue.dup
+          result[:path] = transform_path_segments(result[:path]) if result[:path].is_a?(Array)
+          result[:pointer] = transform_pointer_segments(result[:pointer]) if result[:pointer].is_a?(String)
+          result
+        end
+
+        def transform_path_segments(segments)
+          segments.map { |segment| segment.is_a?(String) ? transform_key(segment) : segment }
+        end
+
+        def transform_pointer_segments(pointer)
+          pointer.split('/').map { |segment| segment.empty? ? segment : transform_key(segment) }.join('/')
+        end
 
         def extract_namespaces(mount_path)
           return [] if mount_path.nil? || mount_path == '/'

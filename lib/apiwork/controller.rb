@@ -245,8 +245,12 @@ module Apiwork
 
     def render_error(error)
       representation_class = resource ? contract_class.representation_class : nil
-      json = adapter.process_error(error, representation_class, context:)
-      render json:, status: error.status
+      body = adapter.process_error(error, representation_class, context:)
+
+      response = Response.new(body:)
+      response = api_class.prepare_error_response(response)
+
+      render json: response.body, status: error.status
     end
 
     def contract_class

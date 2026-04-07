@@ -325,4 +325,112 @@ RSpec.describe Apiwork::API::Base do
       end
     end
   end
+
+  describe '.prepare_error_response' do
+    let(:error_body) do
+      {
+        issues: [
+          {
+            code: :too_small,
+            detail: 'Too small',
+            meta: { gt: 0 },
+            path: %w[invoice hourly_rate_cents],
+            pointer: '/invoice/hourly_rate_cents',
+          },
+        ],
+        layer: :domain,
+      }
+    end
+
+    context 'when key_format is :keep' do
+      it 'returns the body unchanged' do
+        api_class = Apiwork::API.define('/unit/base-prepare-error-keep') {}
+        response = Apiwork::Response.new(body: error_body)
+
+        result = api_class.prepare_error_response(response)
+
+        issue = result.body[:issues].first
+        expect(issue[:path]).to eq(%w[invoice hourly_rate_cents])
+        expect(issue[:pointer]).to eq('/invoice/hourly_rate_cents')
+      end
+    end
+
+    context 'when key_format is :camel' do
+      it 'transforms object keys' do
+        api_class = Apiwork::API.define '/unit/base-prepare-error-camel-keys' do
+          key_format :camel
+        end
+        response = Apiwork::Response.new(body: error_body)
+
+        result = api_class.prepare_error_response(response)
+
+        expect(result.body).to have_key(:issues)
+        expect(result.body).to have_key(:layer)
+      end
+
+      it 'transforms issue path segments' do
+        api_class = Apiwork::API.define '/unit/base-prepare-error-camel-path' do
+          key_format :camel
+        end
+        response = Apiwork::Response.new(body: error_body)
+
+        result = api_class.prepare_error_response(response)
+
+        issue = result.body[:issues].first
+        expect(issue[:path]).to eq(%w[invoice hourlyRateCents])
+      end
+
+      it 'transforms issue pointer segments' do
+        api_class = Apiwork::API.define '/unit/base-prepare-error-camel-pointer' do
+          key_format :camel
+        end
+        response = Apiwork::Response.new(body: error_body)
+
+        result = api_class.prepare_error_response(response)
+
+        issue = result.body[:issues].first
+        expect(issue[:pointer]).to eq('/invoice/hourlyRateCents')
+      end
+
+      it 'preserves integer path segments' do
+        api_class = Apiwork::API.define '/unit/base-prepare-error-camel-array' do
+          key_format :camel
+        end
+        nested_body = {
+          issues: [
+            {
+              code: :required,
+              detail: 'Required',
+              meta: {},
+              path: ['invoice', 'line_items', 0, 'unit_price'],
+              pointer: '/invoice/line_items/0/unit_price',
+            },
+          ],
+          layer: :contract,
+        }
+        response = Apiwork::Response.new(body: nested_body)
+
+        result = api_class.prepare_error_response(response)
+
+        issue = result.body[:issues].first
+        expect(issue[:path]).to eq(['invoice', 'lineItems', 0, 'unitPrice'])
+        expect(issue[:pointer]).to eq('/invoice/lineItems/0/unitPrice')
+      end
+    end
+
+    context 'when key_format is :kebab' do
+      it 'transforms issue path segments' do
+        api_class = Apiwork::API.define '/unit/base-prepare-error-kebab-path' do
+          key_format :kebab
+        end
+        response = Apiwork::Response.new(body: error_body)
+
+        result = api_class.prepare_error_response(response)
+
+        issue = result.body[:issues].first
+        expect(issue[:path]).to eq(%w[invoice hourly-rate-cents])
+        expect(issue[:pointer]).to eq('/invoice/hourly-rate-cents')
+      end
+    end
+  end
 end
