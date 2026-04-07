@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/skiftle/apiwork/compare/apiwork/v0.6.0...apiwork/v0.6.1) (2026-04-04)
+
+
+### Features
+
+* add write_only attribute option ([02c6898](https://github.com/skiftle/apiwork/commit/02c6898279203224e23a5d93603fc7ce6f510bd4))
+
 ## [0.6.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.5.0...apiwork/v0.6.0) (2026-03-31)
 
 
