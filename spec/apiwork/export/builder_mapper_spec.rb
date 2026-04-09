@@ -16,7 +16,7 @@ RSpec.describe Apiwork::Export::BuilderMapper do
     end
 
     context 'with object type without defaults' do
-      it 'generates passthrough builder' do
+      it 'generates explicit assignments for all fields' do
         export = stub_export
         surface = build_surface(
           types: {
@@ -32,12 +32,14 @@ RSpec.describe Apiwork::Export::BuilderMapper do
         result = described_class.map(export, surface)
 
         expect(result).to include('export function buildInvoice(fields: Invoice): Invoice {')
-        expect(result).to include('return fields;')
+        expect(result).to include('amount: fields.amount,')
+        expect(result).to include('number: fields.number,')
+        expect(result).not_to include('return fields;')
       end
     end
 
     context 'with all fields defaulted' do
-      it 'uses Partial with optional parameter' do
+      it 'generates explicit assignments with defaults' do
         export = stub_export
         surface = build_surface(
           types: {
@@ -53,13 +55,14 @@ RSpec.describe Apiwork::Export::BuilderMapper do
         result = described_class.map(export, surface)
 
         expect(result).to include('fields?: Partial<Invoice>')
-        expect(result).to include('notes: null,')
-        expect(result).to include('sent: false,')
+        expect(result).to include('notes: fields?.notes !== undefined ? fields?.notes : null,')
+        expect(result).to include('sent: fields?.sent !== undefined ? fields?.sent : false,')
+        expect(result).not_to include('...fields')
       end
     end
 
     context 'with mix of required and defaulted fields' do
-      it 'uses Pick for required and Partial for defaults' do
+      it 'generates explicit assignments for all fields' do
         export = stub_export
         surface = build_surface(
           types: {
@@ -75,13 +78,14 @@ RSpec.describe Apiwork::Export::BuilderMapper do
         result = described_class.map(export, surface)
 
         expect(result).to include("Pick<Invoice, 'number'> & Partial<Invoice>")
-        expect(result).to include('sent: false,')
-        expect(result).to include('...fields,')
+        expect(result).to include('number: fields.number,')
+        expect(result).to include('sent: fields.sent !== undefined ? fields.sent : false,')
+        expect(result).not_to include('...fields')
       end
     end
 
     context 'with nullable fields' do
-      it 'prefills nullable fields with null' do
+      it 'generates nullable field with null default' do
         export = stub_export
         surface = build_surface(
           types: {
@@ -97,7 +101,8 @@ RSpec.describe Apiwork::Export::BuilderMapper do
         result = described_class.map(export, surface)
 
         expect(result).to include("Pick<Invoice, 'number'> & Partial<Invoice>")
-        expect(result).to include('notes: null,')
+        expect(result).to include('notes: fields.notes !== undefined ? fields.notes : null,')
+        expect(result).to include('number: fields.number,')
       end
     end
 
@@ -118,13 +123,14 @@ RSpec.describe Apiwork::Export::BuilderMapper do
         result = described_class.map(export, surface)
 
         expect(result).to include('export function buildInvoice(fields: Invoice): Invoice {')
-        expect(result).to include('return fields;')
-        expect(result).not_to include('undefined')
+        expect(result).to include('notes: fields.notes,')
+        expect(result).to include('number: fields.number,')
+        expect(result).not_to include('return fields;')
       end
     end
 
     context 'with discriminated union' do
-      it 'generates passthrough builder and per-variant builders' do
+      it 'generates per-variant builders with explicit assignments' do
         export = stub_export
         surface = build_surface(
           types: {
@@ -140,17 +146,18 @@ RSpec.describe Apiwork::Export::BuilderMapper do
 
         result = described_class.map(export, surface)
 
-        expect(result).to include('export function buildCustomer(fields: Customer): Customer {')
-        expect(result).to include('return fields;')
+        expect(result).not_to include('export function buildCustomer(fields: Customer): Customer {')
         expect(result).to include('export function buildCustomerOrganization(')
         expect(result).to include("kind: 'organization',")
+        expect(result).to include('name: fields.name,')
         expect(result).to include('export function buildCustomerIndividual(')
         expect(result).to include("kind: 'individual',")
+        expect(result).not_to include('...fields')
       end
     end
 
     context 'with union without discriminator' do
-      it 'generates only passthrough builder' do
+      it 'generates no builders' do
         export = stub_export
         surface = build_surface(
           types: {
@@ -165,13 +172,12 @@ RSpec.describe Apiwork::Export::BuilderMapper do
 
         result = described_class.map(export, surface)
 
-        expect(result).to include('export function buildPaymentMethod(fields: PaymentMethod): PaymentMethod {')
-        expect(result).not_to include('buildPaymentMethodString')
+        expect(result).not_to include('buildPaymentMethod')
       end
     end
 
     context 'with camel key_format' do
-      it 'transforms field names in defaults and type params' do
+      it 'transforms field names in assignments and type params' do
         export = stub_export
         export.define_singleton_method(:transform_key) { |key| key.to_s.camelize(:lower) }
         surface = build_surface(
@@ -188,12 +194,13 @@ RSpec.describe Apiwork::Export::BuilderMapper do
         result = described_class.map(export, surface)
 
         expect(result).to include("Pick<Invoice, 'dueOn'> & Partial<Invoice>")
-        expect(result).to include('isSent: false,')
+        expect(result).to include('dueOn: fields.dueOn,')
+        expect(result).to include('isSent: fields.isSent !== undefined ? fields.isSent : false,')
       end
     end
 
     context 'with string default value' do
-      it 'serializes as quoted string' do
+      it 'serializes as quoted string with fallback' do
         export = stub_export
         surface = build_surface(
           types: {
@@ -208,12 +215,12 @@ RSpec.describe Apiwork::Export::BuilderMapper do
 
         result = described_class.map(export, surface)
 
-        expect(result).to include("status: 'draft',")
+        expect(result).to include("status: fields.status !== undefined ? fields.status : 'draft',")
       end
     end
 
     context 'with string default containing single quotes' do
-      it 'escapes single quotes' do
+      it 'escapes single quotes in fallback' do
         export = stub_export
         surface = build_surface(
           types: {
@@ -228,7 +235,7 @@ RSpec.describe Apiwork::Export::BuilderMapper do
 
         result = described_class.map(export, surface)
 
-        expect(result).to include("note: 'it\\'s pending',")
+        expect(result).to include("note: fields.note !== undefined ? fields.note : 'it\\'s pending',")
       end
     end
 
@@ -257,7 +264,9 @@ RSpec.describe Apiwork::Export::BuilderMapper do
 
         expect(result).to include("Omit<Extract<Customer, { kind: 'organization' }>, 'kind'>")
         expect(result).to include("Pick<Omit<Extract<Customer, { kind: 'organization' }>, 'kind'>, 'name'>")
-        expect(result).to include('active: true,')
+        expect(result).to include('active: fields.active !== undefined ? fields.active : true,')
+        expect(result).to include('name: fields.name,')
+        expect(result).not_to include('...fields')
         expect(result).not_to include("Partial<Extract<Customer, { kind: 'organization' }>>")
       end
     end

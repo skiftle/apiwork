@@ -36,7 +36,7 @@ module Apiwork
         defaulted, required = classify_fields(type.shape)
 
         if defaulted.empty?
-          build_passthrough_builder(type_name)
+          build_required_only_builder(type_name, required)
         elsif required.empty?
           build_all_defaulted_builder(type_name, defaulted)
         else
@@ -44,19 +44,22 @@ module Apiwork
         end
       end
 
-      def build_passthrough_builder(type_name)
+      def build_required_only_builder(type_name, required)
+        assignments = build_assignments_body(required, defaulted: {})
+
         "export function build#{type_name}(fields: #{type_name}): #{type_name} {\n" \
-          "  return fields;\n" \
+          "  return {\n" \
+          "#{assignments}\n" \
+          "  };\n" \
           '}'
       end
 
       def build_all_defaulted_builder(type_name, defaulted)
-        defaults = build_defaults_body(defaulted)
+        assignments = build_assignments_body(defaulted, optional_fields: true)
 
         "export function build#{type_name}(fields?: Partial<#{type_name}>): #{type_name} {\n" \
           "  return {\n" \
-          "#{defaults}\n" \
-          "    ...fields,\n" \
+          "#{assignments}\n" \
           "  };\n" \
           '}'
       end
@@ -64,33 +67,38 @@ module Apiwork
       def build_mixed_builder(type_name, defaulted, required)
         required_keys = required.keys.map { |name| "'#{@export.transform_key(name)}'" }.sort.join(' | ')
         fields_type = "Pick<#{type_name}, #{required_keys}> & Partial<#{type_name}>"
-        defaults = build_defaults_body(defaulted)
+        assignments = build_assignments_body(defaulted.merge(required), defaulted:)
 
         "export function build#{type_name}(fields: #{fields_type}): #{type_name} {\n" \
           "  return {\n" \
-          "#{defaults}\n" \
-          "    ...fields,\n" \
+          "#{assignments}\n" \
           "  };\n" \
           '}'
       end
 
-      def build_defaults_body(defaulted)
-        defaulted.sort_by { |name, _param| name.to_s }.map do |name, param|
-          "    #{@export.transform_key(name)}: #{serialize_default(param)},"
+      def build_assignments_body(fields, defaulted: fields, optional_fields: false)
+        accessor = optional_fields ? 'fields?.' : 'fields.'
+        fields.sort_by { |name, _param| name.to_s }.map do |name, param|
+          key = @export.transform_key(name)
+          if defaulted.key?(name)
+            "    #{key}: #{accessor}#{key} !== undefined ? #{accessor}#{key} : #{serialize_default(param)},"
+          else
+            "    #{key}: #{accessor}#{key},"
+          end
         end.join("\n")
       end
 
       def build_union_builders(name, type, types)
         type_name = pascal_case(name)
-        builders = [build_passthrough_builder(type_name)]
+        builders = []
 
-        if type.discriminator
-          type.variants.each do |variant|
-            next unless variant.tag
-            next if variant.reference? && types.key?(variant.reference)
+        return builders unless type.discriminator
 
-            builders << build_variant_builder(type_name, type.discriminator, variant)
-          end
+        type.variants.each do |variant|
+          next unless variant.tag
+          next if variant.reference? && types.key?(variant.reference)
+
+          builders << build_variant_builder(type_name, type.discriminator, variant)
         end
 
         builders
@@ -108,11 +116,16 @@ module Apiwork
 
         fields_type = build_variant_fields_type(extract_type, discriminator_key, variant_defaults, variant_required)
 
+        all_variant_fields = variant_defaults.merge(variant_required)
         body_lines = ["    #{discriminator_key}: '#{variant.tag}',"]
-        variant_defaults.sort_by { |name, _param| name.to_s }.each do |name, param|
-          body_lines << "    #{@export.transform_key(name)}: #{serialize_default(param)},"
+        all_variant_fields.sort_by { |name, _param| name.to_s }.each do |name, param|
+          key = @export.transform_key(name)
+          body_lines << if variant_defaults.key?(name)
+                          "    #{key}: fields.#{key} !== undefined ? fields.#{key} : #{serialize_default(param)},"
+                        else
+                          "    #{key}: fields.#{key},"
+                        end
         end
-        body_lines << '    ...fields,'
 
         "export function #{builder_name}(fields: #{fields_type}): #{type_name} {\n" \
           "  return {\n" \
