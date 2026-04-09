@@ -56,7 +56,7 @@ module Apiwork
         code: code,
         detail: detail,
         meta: meta,
-        path: path.map(&:to_s),
+        path: path.map { |segment| segment.is_a?(Integer) ? segment : segment.to_s },
         pointer: pointer,
       }
     end

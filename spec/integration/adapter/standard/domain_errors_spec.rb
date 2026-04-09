@@ -106,7 +106,7 @@ RSpec.describe 'Domain errors', type: :request do
       expect(response).to have_http_status(:unprocessable_content)
       body = response.parsed_body
       issue = body['issues'].find { |issue| issue['code'] == 'required' }
-      expect(issue['path']).to eq(%w[invoice items 1 description])
+      expect(issue['path']).to eq(['invoice', 'items', 1, 'description'])
       expect(issue['pointer']).to eq('/invoice/items/1/description')
     end
 
@@ -127,7 +127,7 @@ RSpec.describe 'Domain errors', type: :request do
       body = response.parsed_body
       issue = body['issues'].find { |issue| issue['code'] == 'gt' }
       expect(issue['detail']).to eq('Too small')
-      expect(issue['path']).to eq(%w[invoice items 0 quantity])
+      expect(issue['path']).to eq(['invoice', 'items', 0, 'quantity'])
       expect(issue['meta']).to eq({ 'gt' => 0 })
     end
 
@@ -148,7 +148,7 @@ RSpec.describe 'Domain errors', type: :request do
       body = response.parsed_body
       issue = body['issues'].find { |issue| issue['code'] == 'lt' }
       expect(issue['detail']).to eq('Too large')
-      expect(issue['path']).to eq(%w[invoice items 0 quantity])
+      expect(issue['path']).to eq(['invoice', 'items', 0, 'quantity'])
       expect(issue['meta']).to eq({ 'lt' => 10_000 })
     end
 
@@ -169,7 +169,7 @@ RSpec.describe 'Domain errors', type: :request do
       body = response.parsed_body
       issue = body['issues'].find { |issue| issue['code'] == 'gte' }
       expect(issue['detail']).to eq('Too small')
-      expect(issue['path']).to eq(%w[invoice items 0 unit_price])
+      expect(issue['path']).to eq(['invoice', 'items', 0, 'unit_price'])
       expect(issue['meta']).to eq({ 'gte' => 0 })
     end
   end

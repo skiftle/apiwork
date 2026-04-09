@@ -12,7 +12,12 @@ module Apiwork
               object(:error_issue) do |object|
                 object.string(:code)
                 object.string(:detail)
-                object.array(:path, &:string)
+                object.array(:path) do |array|
+                  array.of(:union) do |union|
+                    union.variant(&:string)
+                    union.variant(&:integer)
+                  end
+                end
                 object.string(:pointer)
                 object.object(:meta)
               end

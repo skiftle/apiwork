@@ -89,6 +89,12 @@ RSpec.describe Apiwork::Issue do
         },
       )
     end
+
+    it 'preserves integer segments in path' do
+      issue = described_class.new(:required, 'Required', path: [:items, 0, :name])
+
+      expect(issue.to_h[:path]).to eq(['items', 0, 'name'])
+    end
   end
 
   describe '#to_s' do
