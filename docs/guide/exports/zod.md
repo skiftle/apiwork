@@ -18,7 +18,6 @@ end
 
 ```ruby
 export :zod do
-  builders true               # Generate builder functions for types
   path '/schemas.ts'          # Custom endpoint path
   key_format :camel           # Transform keys to camelCase
 end
@@ -26,7 +25,6 @@ end
 
 | Option     | Values          | Default | Description                                                      |
 | ---------- | --------------- | ------- | ---------------------------------------------------------------- |
-| `builders` | `true`, `false` | `false` | Generate builder functions with defaults pre-filled for each type |
 | `version`  | `4`             | `4`     |                                                                  |
 
 ## Output

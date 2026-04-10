@@ -7,7 +7,6 @@ module Apiwork
       output :string
       file_extension '.ts'
 
-      option :builders, default: false, type: :boolean
       option :version, default: '4', enum: %w[4], type: :string
 
       def generate
@@ -25,14 +24,6 @@ module Apiwork
         if typescript_types.present?
           parts << typescript_types
           parts << ''
-        end
-
-        if options[:builders]
-          builder_output = BuilderMapper.map(self, surface)
-          if builder_output.present?
-            parts << builder_output
-            parts << ''
-          end
         end
 
         parts.join("\n")

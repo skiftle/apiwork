@@ -7,12 +7,8 @@ module Apiwork
       output :string
       file_extension '.ts'
 
-      option :builders, default: false, type: :boolean
-
       def generate
-        output = SorbusMapper.map(self, surface)
-        output += "\n\n#{BuilderMapper.map(self, surface)}" if options[:builders]
-        output
+        SorbusMapper.map(self, surface)
       end
 
       private

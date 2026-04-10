@@ -20,15 +20,10 @@ end
 
 ```ruby
 export :sorbus do
-  builders true               # Generate builder functions for types
   path '/contract.ts'         # Custom endpoint path
   key_format :camel           # Transform keys to camelCase
 end
 ```
-
-| Option     | Values          | Default | Description                                                      |
-| ---------- | --------------- | ------- | ---------------------------------------------------------------- |
-| `builders` | `true`, `false` | `false` | Generate builder functions with defaults pre-filled for each type |
 
 ## Output
 
