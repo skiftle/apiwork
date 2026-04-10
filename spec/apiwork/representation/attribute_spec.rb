@@ -72,6 +72,102 @@ RSpec.describe Apiwork::Representation::Attribute do
         expect(attribute.write_only?).to be(true)
       end
     end
+
+    context 'with string column with limit' do
+      it 'auto-detects max from column limit' do
+        representation_class = Class.new(Apiwork::Representation::Base) { model Invoice }
+        attribute = described_class.new(:reference_code, representation_class)
+
+        expect(attribute.max).to eq(20)
+      end
+
+      it 'clamps explicit max to column limit' do
+        representation_class = Class.new(Apiwork::Representation::Base) { model Invoice }
+        attribute = described_class.new(:reference_code, representation_class, max: 1000)
+
+        expect(attribute.max).to eq(20)
+      end
+
+      it 'preserves explicit max within column limit' do
+        representation_class = Class.new(Apiwork::Representation::Base) { model Invoice }
+        attribute = described_class.new(:reference_code, representation_class, max: 10)
+
+        expect(attribute.max).to eq(10)
+      end
+    end
+
+    context 'with string column without limit' do
+      it 'does not set max' do
+        representation_class = Class.new(Apiwork::Representation::Base) { model Invoice }
+        attribute = described_class.new(:number, representation_class)
+
+        expect(attribute.max).to be_nil
+      end
+    end
+
+    context 'with decimal column' do
+      it 'auto-detects min and max from precision and scale' do
+        representation_class = Class.new(Apiwork::Representation::Base) { model Item }
+        attribute = described_class.new(:unit_price, representation_class)
+
+        expect(attribute.min).to eq(-99_999_999.99)
+        expect(attribute.max).to eq(99_999_999.99)
+      end
+
+      it 'clamps explicit min to column bounds' do
+        representation_class = Class.new(Apiwork::Representation::Base) { model Item }
+        attribute = described_class.new(:unit_price, representation_class, min: -999_999_999)
+
+        expect(attribute.min).to eq(-99_999_999.99)
+      end
+
+      it 'clamps explicit max to column bounds' do
+        representation_class = Class.new(Apiwork::Representation::Base) { model Item }
+        attribute = described_class.new(:unit_price, representation_class, max: 999_999_999)
+
+        expect(attribute.max).to eq(99_999_999.99)
+      end
+
+      it 'preserves explicit bounds within column precision' do
+        representation_class = Class.new(Apiwork::Representation::Base) { model Item }
+        attribute = described_class.new(:unit_price, representation_class, max: 1000, min: 0)
+
+        expect(attribute.min).to eq(0)
+        expect(attribute.max).to eq(1000)
+      end
+    end
+
+    context 'with integer column' do
+      it 'auto-detects min and max from column limit' do
+        representation_class = Class.new(Apiwork::Representation::Base) { model Item }
+        attribute = described_class.new(:quantity, representation_class)
+
+        expect(attribute.min).to eq(-2_147_483_648)
+        expect(attribute.max).to eq(2_147_483_647)
+      end
+
+      it 'clamps explicit min to column bounds' do
+        representation_class = Class.new(Apiwork::Representation::Base) { model Item }
+        attribute = described_class.new(:quantity, representation_class, min: -5_000_000_000)
+
+        expect(attribute.min).to eq(-2_147_483_648)
+      end
+
+      it 'clamps explicit max to column bounds' do
+        representation_class = Class.new(Apiwork::Representation::Base) { model Item }
+        attribute = described_class.new(:quantity, representation_class, max: 5_000_000_000)
+
+        expect(attribute.max).to eq(2_147_483_647)
+      end
+
+      it 'preserves explicit bounds within column limits' do
+        representation_class = Class.new(Apiwork::Representation::Base) { model Item }
+        attribute = described_class.new(:quantity, representation_class, max: 100, min: 0)
+
+        expect(attribute.min).to eq(0)
+        expect(attribute.max).to eq(100)
+      end
+    end
   end
 
   describe '#decode' do

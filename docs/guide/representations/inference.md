@@ -19,6 +19,9 @@ Everything detected can be overridden when needed.
 | Nullable                  | Column NULL constraint   | `nullable: true`        |
 | Optional                  | NULL allowed or has default | `optional: true`     |
 | Enum values               | Rails enum definition    | `enum: [:a, :b]`        |
+| String max length         | Column character limit   | `max: 50`               |
+| Decimal bounds            | Column precision + scale | `min: 0, max: 1000`    |
+| Integer bounds            | Column byte limit        | `min: 0, max: 100`     |
 | Association representation        | Association name         | `representation: CommentRepresentation` |
 | Association nullable      | Foreign key constraint   | `nullable: true`        |
 | Foreign key column        | Rails reflection         | (automatic)             |
@@ -178,6 +181,63 @@ The detected enum values can be overridden:
 attribute :status, enum: [:pending, :approved]  # Custom values
 ```
 
+### Bounds Detection
+
+Apiwork detects min/max constraints from database column definitions. Explicit values are clamped to column limits — they can be stricter, never wider. This prevents values from passing contract validation but failing at the database level with a range error.
+
+#### String
+
+Detected from column character limit. Columns without a limit (PostgreSQL `text`, `varchar` without length) produce no constraint.
+
+```ruby
+# Database: reference_code VARCHAR(20), notes TEXT
+class InvoiceRepresentation < Apiwork::Representation::Base
+  attribute :reference_code  # max: 20 (auto)
+  attribute :notes           # max: nil (no limit)
+end
+```
+
+#### Decimal
+
+Detected from column precision and scale:
+
+```ruby
+# Database: unit_price DECIMAL(10, 2)
+class ItemRepresentation < Apiwork::Representation::Base
+  attribute :unit_price  # min: -99999999.99, max: 99999999.99 (auto)
+end
+```
+
+Explicit values are clamped:
+
+```ruby
+attribute :unit_price, min: 0                   # Preserved (within bounds)
+attribute :unit_price, max: 999_999_999         # max clamped to 99,999,999.99
+```
+
+#### Integer
+
+Detected from column byte size using signed 2's complement bounds:
+
+| Column         | Min              | Max             |
+| -------------- | ---------------- | --------------- |
+| `smallint` (2) | -32,768          | 32,767          |
+| `integer` (4)  | -2,147,483,648   | 2,147,483,647   |
+| `bigint` (8)   | -9.2 quintillion | 9.2 quintillion |
+
+```ruby
+class ItemRepresentation < Apiwork::Representation::Base
+  attribute :quantity  # min: -2147483648, max: 2147483647 (auto, 4-byte integer)
+end
+```
+
+Explicit values are clamped to column bounds:
+
+```ruby
+attribute :quantity, min: 0, max: 100              # Preserved (within bounds)
+attribute :quantity, min: 0, max: 5_000_000_000    # max clamped to 2,147,483,647
+```
+
 ## Association Inference
 
 ### Representation Detection
@@ -321,8 +381,7 @@ Auto-detection should be overridden when:
 
 1. **Names don't match** - Representation/model/association names differ from convention
 2. **Virtual attributes** - Attribute doesn't exist in database
-3. **Stricter validation** - API should be stricter than database allows
-4. **Looser validation** - API should accept values database rejects
+3. **Stricter constraints** - Tighter bounds, stricter nullability, or narrower enum than database allows
 5. **Custom types** - Need specific serialization behavior
 
 ```ruby
@@ -340,7 +399,6 @@ The following are not automatically detected and must be specified manually:
 
 | Option        | Why Not Detected                                      |
 | ------------- | ----------------------------------------------------- |
-| `min` / `max` | Column length limits don't always match API needs     |
 | `filterable`  | Query capability is a design decision (adapter interprets) |
 | `sortable`    | Query capability is a design decision (adapter interprets) |
 | `writable`    | Write permissions are security-sensitive              |

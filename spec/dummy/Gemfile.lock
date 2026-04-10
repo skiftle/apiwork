@@ -1,7 +1,7 @@
 PATH
   remote: ../..
   specs:
-    apiwork (0.5.0)
+    apiwork (0.6.1)
       rails (>= 8.0)
 
 GEM

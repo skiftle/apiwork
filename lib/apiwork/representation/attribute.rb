@@ -134,6 +134,23 @@ module Apiwork
             type = :string if detected_enum && type == :integer
             optional = detect_optional(name) if optional.nil?
             nullable = detect_nullable(name) if nullable.nil?
+
+            if @db_column && type == :string
+              detected_max = detect_string_max_length(name)
+              max = [max, detected_max].compact.min
+            end
+
+            if @db_column && type == :decimal
+              detected_min, detected_max = detect_decimal_bounds(name)
+              min = [min, detected_min].compact.max
+              max = [max, detected_max].compact.min
+            end
+
+            if @db_column && type == :integer
+              detected_min, detected_max = detect_integer_bounds(name)
+              min = [min, detected_min].compact.max
+              max = [max, detected_max].compact.min
+            end
           rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
             @db_column = false
           end
@@ -274,6 +291,32 @@ module Apiwork
         when :float then :number
         else type
         end
+      end
+
+      def detect_string_max_length(name)
+        column = column_for(name)
+        return nil unless column
+
+        column.limit
+      end
+
+      def detect_decimal_bounds(name)
+        column = column_for(name)
+        return [nil, nil] unless column
+        return [nil, nil] unless column.precision
+
+        scale = column.scale || 0
+        max = (10**(column.precision - scale) - 10.0**(-scale)).to_f
+        [-max, max]
+      end
+
+      def detect_integer_bounds(name)
+        column = column_for(name)
+        return [nil, nil] unless column
+
+        limit = column.limit || 4
+        max = 2**(8 * limit - 1) - 1
+        [-max - 1, max]
       end
 
       def detect_optional(name)

@@ -71,6 +71,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_01_000012) do
     t.json "metadata"
     t.text "notes"
     t.string "number", null: false
+    t.string "reference_code", limit: 20
     t.boolean "sent", default: false
     t.integer "status", default: 0
     t.datetime "updated_at", null: false
