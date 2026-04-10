@@ -324,6 +324,12 @@ module Apiwork
 
         schema[:format] = param.format.to_s if param.formattable? && param.format
 
+        if param.respond_to?(:default) && !param.default.nil?
+          schema[:default] = param.default
+        elsif param.optional? && param.nullable?
+          schema[:default] = nil
+        end
+
         apply_nullable(schema, param.nullable?)
       end
 

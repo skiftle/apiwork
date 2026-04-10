@@ -121,7 +121,7 @@ interface Example {
 const ExampleSchema = z.object({
   title: z.string().min(1).max(255),
   count: z.number().int().min(0).optional(),
-  notes: z.string().nullable().optional(),
+  notes: z.string().nullable().default(null),
 });
 ```
 

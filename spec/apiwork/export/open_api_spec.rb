@@ -52,6 +52,9 @@ RSpec.describe Apiwork::Export::OpenAPI do
           string :old_field, deprecated: true
           string :email, format: :email
           integer :min_field, max: 100, min: 0
+          boolean :archived, default: false, optional: true
+          string :category, default: 'general', optional: true
+          string :memo, nullable: true, optional: true
         end
 
         object :receipt do
@@ -234,6 +237,26 @@ RSpec.describe Apiwork::Export::OpenAPI do
 
         expect(property[:minimum]).to eq(0)
         expect(property[:maximum]).to eq(100)
+      end
+    end
+
+    context 'with default values' do
+      it 'includes null default for nullable optional field' do
+        property = schemas['invoice'][:properties]['memo']
+
+        expect(property[:default]).to be_nil
+      end
+
+      it 'includes boolean default' do
+        property = schemas['invoice'][:properties]['archived']
+
+        expect(property[:default]).to be(false)
+      end
+
+      it 'includes string default' do
+        property = schemas['invoice'][:properties]['category']
+
+        expect(property[:default]).to eq('general')
       end
     end
 
