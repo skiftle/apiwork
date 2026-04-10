@@ -88,6 +88,12 @@ attribute :name, empty: true, writable: true
 
 The database stores `NULL` for missing values, but the frontend expects empty strings. `empty: true` handles the conversion.
 
+In the Zod export, `empty: true` produces `default('')` instead of `nullable()`:
+
+```typescript
+name: z.string().default('')
+```
+
 ## Examples
 
 - [Value Transforms](/examples/value-transforms) — Transform values during serialization and handle nil/empty conversion

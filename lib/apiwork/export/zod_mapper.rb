@@ -458,9 +458,32 @@ module Apiwork
 
       def apply_modifiers(type, param, force_optional: nil)
         type += '.nullable()' if param.nullable?
+
+        has_default = param.respond_to?(:default) && !param.default.nil?
         optional = force_optional.nil? ? param.optional? : force_optional
-        type += '.optional()' if optional
+
+        if has_default
+          type += ".default(#{serialize_default(param.default)})"
+        elsif optional && param.nullable?
+          type += '.default(null)'
+        elsif optional
+          type += '.optional()'
+        end
+
         type
+      end
+
+      def serialize_default(value)
+        case value
+        when String then "'#{value.gsub("'", "\\\\'")}'"
+        when Integer, Float then value.to_s
+        when BigDecimal then value.to_s('F')
+        when TrueClass, FalseClass then value.to_s
+        when Array then '[]'
+        when Hash then '{}'
+        when NilClass then 'null'
+        else value.to_s
+        end
       end
     end
   end

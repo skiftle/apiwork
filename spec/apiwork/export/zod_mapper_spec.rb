@@ -342,10 +342,34 @@ RSpec.describe Apiwork::Export::ZodMapper do
     end
 
     context 'with nullable and optional' do
-      it 'appends both modifiers' do
+      it 'appends nullable with null default' do
         param = build_param(nullable: true, optional: true, type: :string)
 
-        expect(mapper.map_field(param)).to eq('z.string().nullable().optional()')
+        expect(mapper.map_field(param)).to eq('z.string().nullable().default(null)')
+      end
+    end
+
+    context 'with explicit default' do
+      it 'appends default value' do
+        param = build_param(default: false, optional: true, type: :boolean)
+
+        expect(mapper.map_field(param)).to eq('z.boolean().default(false)')
+      end
+    end
+
+    context 'with explicit string default' do
+      it 'appends quoted default value' do
+        param = build_param(default: 'draft', optional: true, type: :string)
+
+        expect(mapper.map_field(param)).to eq("z.string().default('draft')")
+      end
+    end
+
+    context 'with explicit default and nullable' do
+      it 'appends nullable and default value' do
+        param = build_param(default: 'active', nullable: true, optional: true, type: :string)
+
+        expect(mapper.map_field(param)).to eq("z.string().nullable().default('active')")
       end
     end
 
