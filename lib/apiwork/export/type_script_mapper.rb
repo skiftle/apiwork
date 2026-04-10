@@ -28,7 +28,7 @@ module Apiwork
         properties = type.shape.sort_by { |name, _param| name.to_s }.map do |name, param|
           key = @export.transform_key(name)
           ts_type = map_field(param)
-          optional_marker = param.optional? ? '?' : ''
+          optional_marker = optional_in_output?(param) ? '?' : ''
 
           prop_jsdoc = jsdoc(description: param.description, example: param.concrete? ? param.example : nil)
           if prop_jsdoc
@@ -85,7 +85,7 @@ module Apiwork
         properties = query_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
           key = @export.transform_key(param_name)
           ts_type = map_field(param)
-          optional_marker = param.optional? ? '?' : ''
+          optional_marker = optional_in_output?(param) ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
@@ -96,7 +96,7 @@ module Apiwork
         properties = body_params.sort_by { |name, _param| name.to_s }.map do |param_name, param|
           key = @export.transform_key(param_name)
           ts_type = map_field(param)
-          optional_marker = param.optional? ? '?' : ''
+          optional_marker = optional_in_output?(param) ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
@@ -186,7 +186,7 @@ module Apiwork
         properties = param.shape.sort_by { |name, _field| name.to_s }.map do |name, field|
           key = @export.transform_key(name)
           ts_type = map_field(field)
-          optional_marker = partial || field.optional? ? '?' : ''
+          optional_marker = partial || optional_in_output?(field) ? '?' : ''
           "#{key}#{optional_marker}: #{ts_type}"
         end.join('; ')
 
@@ -250,6 +250,14 @@ module Apiwork
         return 'boolean' if param.boolean?
 
         'unknown'
+      end
+
+      def optional_in_output?(param)
+        return false unless param.optional?
+        return false if param.respond_to?(:default) && !param.default.nil?
+        return false if param.nullable?
+
+        true
       end
 
       def type_reference(symbol)
