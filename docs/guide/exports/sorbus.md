@@ -54,7 +54,7 @@ export const InvoiceSchema = z.object({
 
 export const InvoiceCreatePayloadSchema = z.object({
   number: z.string(),
-  status: StatusSchema.nullable().optional(),
+  status: StatusSchema.nullable().default(null),
 });
 
 // TypeScript types

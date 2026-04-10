@@ -57,8 +57,8 @@ export const InvoiceSchema = z.object({
 // Payload schema (inner fields)
 export const InvoiceCreatePayloadSchema = z.object({
   number: z.string(),
-  status: StatusSchema.nullable().optional(),
-  issuedOn: z.iso.date().nullable().optional(),
+  status: StatusSchema.nullable().default(null),
+  issuedOn: z.iso.date().nullable().default(null),
 });
 
 // Request body schema (with root key wrapper)
