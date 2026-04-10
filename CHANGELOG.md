@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.7.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.6.1...apiwork/v0.7.0) (2026-04-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove builder generation from exports
+
+### Features
+
+* auto-detect column bounds for integer, decimal, and string attributes ([8be59c6](https://github.com/skiftle/apiwork/commit/8be59c657cdda8874e861b8ab2da000cfb4727a4))
+* generate .default() in OpenAPI for fields with default ([aeaaa11](https://github.com/skiftle/apiwork/commit/aeaaa11b8ec874554a792c2d341abb2268bbe50b))
+* generate .default() in Zod export for fields with defaults ([6e1de99](https://github.com/skiftle/apiwork/commit/6e1de9977ed10dd37d20b4d9d72c83d120ade048))
+
+
+### Bug Fixes
+
+* mark defaulted fields as required in TypeScript output ([e7de202](https://github.com/skiftle/apiwork/commit/e7de202673327d71f619601bdf65c0dd8b9e6475))
+* preserve integer segments in issue paths ([fc59ef5](https://github.com/skiftle/apiwork/commit/fc59ef51d6c2e2b7cce0b17ea1b7237b296cdabe))
+* replace spread with explicit property assignment in builders ([e1f83bd](https://github.com/skiftle/apiwork/commit/e1f83bdb1974561a5311973f7c1fe49b463ccccf))
+* transform issue paths and pointers via key_format ([de1af81](https://github.com/skiftle/apiwork/commit/de1af810cd9472d0e83eccf0e6c31ecdcaa792b4))
+
+
+### Code Refactoring
+
+* remove builder generation from exports ([d3646b1](https://github.com/skiftle/apiwork/commit/d3646b100b39fb73208a2eac0fb0ac812a3721bc))
+
 ## [0.6.1](https://github.com/skiftle/apiwork/compare/apiwork/v0.6.0...apiwork/v0.6.1) (2026-04-04)
 
 
