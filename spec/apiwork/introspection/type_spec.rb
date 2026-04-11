@@ -11,6 +11,7 @@ RSpec.describe Apiwork::Introspection::Type do
         discriminator: :type,
         example: { amount: 42 },
         extends: [:invoice],
+        scope: 'invoice',
         shape: {},
         type: :object,
         variants: [],
@@ -21,6 +22,7 @@ RSpec.describe Apiwork::Introspection::Type do
       expect(type.discriminator).to eq(:type)
       expect(type.example).to eq({ amount: 42 })
       expect(type.extends).to eq([:invoice])
+      expect(type.scope).to eq('invoice')
       expect(type.shape).to eq({})
       expect(type.variants).to eq([])
     end
@@ -147,6 +149,7 @@ RSpec.describe Apiwork::Introspection::Type do
         discriminator: nil,
         example: nil,
         extends: [],
+        scope: nil,
         shape: {},
         type: :object,
         variants: [],
@@ -159,6 +162,7 @@ RSpec.describe Apiwork::Introspection::Type do
           discriminator: nil,
           example: nil,
           extends: [],
+          scope: nil,
           shape: {},
           type: :object,
           variants: [],

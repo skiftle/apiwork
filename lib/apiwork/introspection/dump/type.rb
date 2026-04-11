@@ -39,8 +39,11 @@ module Apiwork
         end
 
         def build_type(qualified_name, type_definition)
+          scope = resolve_scope(type_definition.scope)
+
           if type_definition.union?
             {
+              scope:,
               deprecated: type_definition.deprecated?,
               description: resolve_type_description(qualified_name, type_definition),
               discriminator: type_definition.discriminator,
@@ -52,6 +55,7 @@ module Apiwork
             }
           else
             {
+              scope:,
               deprecated: type_definition.deprecated?,
               description: resolve_type_description(qualified_name, type_definition),
               discriminator: nil,
@@ -260,11 +264,19 @@ module Apiwork
             deprecated: enum_definition.deprecated?,
             description: resolve_enum_description(qualified_name, enum_definition),
             example: enum_definition.example,
+            scope: resolve_scope(enum_definition.scope),
             values: enum_definition.values || [],
           }
         end
 
         private
+
+        def resolve_scope(scope)
+          return nil unless scope
+          return nil unless scope.respond_to?(:scope_prefix)
+
+          scope.scope_prefix.to_s
+        end
 
         def resolve_param_description(name, options, scope)
           return options[:description] if options[:description]

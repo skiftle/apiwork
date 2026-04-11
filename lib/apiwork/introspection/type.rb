@@ -101,6 +101,14 @@ module Apiwork
       end
 
       # @api public
+      # The scope for this type.
+      #
+      # @return [String, nil]
+      def scope
+        @dump[:scope]
+      end
+
+      # @api public
       # Whether this type is deprecated.
       #
       # @return [Boolean]
@@ -119,6 +127,7 @@ module Apiwork
           discriminator: discriminator,
           example: example,
           extends: extends,
+          scope: scope,
           shape: shape.transform_values(&:to_h),
           type: type,
           variants: variants.map(&:to_h),

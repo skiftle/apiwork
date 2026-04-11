@@ -9,12 +9,14 @@ RSpec.describe Apiwork::Introspection::Enum do
         deprecated: false,
         description: 'Ruby developer',
         example: 'draft',
+        scope: 'invoice',
         values: %w[draft published],
       )
 
       expect(enum.values).to contain_exactly('draft', 'published')
       expect(enum.description).to eq('Ruby developer')
       expect(enum.example).to eq('draft')
+      expect(enum.scope).to eq('invoice')
     end
   end
 
@@ -38,6 +40,7 @@ RSpec.describe Apiwork::Introspection::Enum do
         deprecated: false,
         description: 'Ruby developer',
         example: 'draft',
+        scope: 'invoice',
         values: %w[draft published],
       )
 
@@ -46,6 +49,7 @@ RSpec.describe Apiwork::Introspection::Enum do
           deprecated: false,
           description: 'Ruby developer',
           example: 'draft',
+          scope: 'invoice',
           values: %w[draft published],
         },
       )

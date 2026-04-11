@@ -39,6 +39,14 @@ module Apiwork
       end
 
       # @api public
+      # The scope for this enum.
+      #
+      # @return [String, nil]
+      def scope
+        @dump[:scope]
+      end
+
+      # @api public
       # Whether this enum is deprecated.
       #
       # @return [Boolean]
@@ -55,6 +63,7 @@ module Apiwork
           deprecated: deprecated?,
           description: description,
           example: example,
+          scope: scope,
           values: values,
         }
       end
