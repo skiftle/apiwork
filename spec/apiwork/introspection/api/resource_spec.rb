@@ -11,8 +11,10 @@ RSpec.describe Apiwork::Introspection::API::Resource do
         parent_identifiers: %w[customers],
         path: 'customers/:customer_id/invoices',
         resources: {},
+        scope: 'invoice',
       )
 
+      expect(resource.scope).to eq('invoice')
       expect(resource.identifier).to eq('invoices')
       expect(resource.path).to eq('customers/:customer_id/invoices')
       expect(resource.parent_identifiers).to eq(%w[customers])
@@ -70,6 +72,7 @@ RSpec.describe Apiwork::Introspection::API::Resource do
         parent_identifiers: [],
         path: 'invoices',
         resources: {},
+        scope: 'invoice',
       )
 
       expect(resource.to_h).to eq(
@@ -79,6 +82,7 @@ RSpec.describe Apiwork::Introspection::API::Resource do
           parent_identifiers: [],
           path: 'invoices',
           resources: {},
+          scope: 'invoice',
         },
       )
     end

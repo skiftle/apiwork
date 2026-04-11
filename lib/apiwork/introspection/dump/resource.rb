@@ -19,13 +19,15 @@ module Apiwork
           )
 
           resource_path = build_resource_path(formatted_segment)
+          contract_class = resolve_contract_class
 
           {
-            actions: build_actions(resolve_contract_class, resource_path),
+            actions: build_actions(contract_class, resource_path),
             identifier: @resource.name.to_s,
             parent_identifiers: @parent_identifiers,
             path: resource_path,
             resources: build_nested_resources(resource_path),
+            scope: contract_class&.scope_prefix&.to_s,
           }
         end
 

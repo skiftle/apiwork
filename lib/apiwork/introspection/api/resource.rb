@@ -24,6 +24,14 @@ module Apiwork
         end
 
         # @api public
+        # The scope for this resource.
+        #
+        # @return [String, nil]
+        def scope
+          @dump[:scope]
+        end
+
+        # @api public
         # The identifier for this resource.
         #
         # @return [String]
@@ -75,6 +83,7 @@ module Apiwork
             parent_identifiers: parent_identifiers,
             path: path,
             resources: resources.transform_values(&:to_h),
+            scope: scope,
           }
         end
       end
