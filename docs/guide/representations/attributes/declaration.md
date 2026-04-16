@@ -55,7 +55,7 @@ Types, nullability, and enums are detected from the database and models.
 | `encode` | `callable` | `nil` | Transform on response ([details](./encode-decode.md)) |
 | `decode` | `callable` | `nil` | Transform on request ([details](./encode-decode.md)) |
 | `default` | `any` | auto | Default value ([details](../inference.md#default-detection)) |
-| `enum` | `array` | auto | Enum values ([details](../inference.md#enums)) |
+| `enum` | `array` | auto | Enum values ([details](../inference.md#enum-detection)) |
 | `empty` | `bool` | `false` | Convert nil to empty string ([details](./encode-decode.md#empty-nullable)) |
 | `format` | `symbol` | `nil` | Format hint ([details](./metadata.md#format)) |
 | `min` / `max` | `integer` | `nil` | Value/length constraints |

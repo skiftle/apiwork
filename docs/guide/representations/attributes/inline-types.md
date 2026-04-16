@@ -548,10 +548,6 @@ Named types on representations are copied to the [contract](../../contracts/type
 Use inline blocks for one-off shapes. Use named types when the shape is reused or represents a domain concept.
 :::
 
-## Examples
-
-- [Representation Types](/examples/representation-types) — Object shapes, named types, arrays, and derived methods
-
 #### See also
 
 - [Representation::Element](/reference/representation/element.md) — block context reference
