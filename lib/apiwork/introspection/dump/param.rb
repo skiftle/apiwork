@@ -33,10 +33,9 @@ module Apiwork
 
           reference = resolve_type_reference(options[:type])
 
-          {
+          result = {
             reference:,
             as: options[:as],
-            default: options[:default],
             deprecated: options[:deprecated] == true,
             description: resolve_attribute_description(options),
             discriminator: nil,
@@ -55,14 +54,15 @@ module Apiwork
             value: options[:type] == :literal ? options[:value] : nil,
             variants: [],
           }
+          result[:default] = options[:default] if options.key?(:default)
+          result
         end
 
         def build_union_param(options)
           union_dump = build_union(options[:union])
 
-          {
+          result = {
             as: options[:as],
-            default: options[:default],
             deprecated: options[:deprecated] == true,
             description: resolve_attribute_description(options),
             discriminator: union_dump[:discriminator],
@@ -82,15 +82,16 @@ module Apiwork
             value: nil,
             variants: union_dump[:variants],
           }
+          result[:default] = options[:default] if options.key?(:default)
+          result
         end
 
         def build_custom_type_param(options)
           custom_type_name = options[:custom_type]
           custom_type_name = qualified_name(custom_type_name, @contract_param) if @contract_param.contract_class.resolve_custom_type(custom_type_name)
 
-          {
+          result = {
             as: options[:as],
-            default: options[:default],
             deprecated: options[:deprecated] == true,
             description: resolve_attribute_description(options),
             discriminator: nil,
@@ -110,6 +111,8 @@ module Apiwork
             value: nil,
             variants: [],
           }
+          result[:default] = options[:default] if options.key?(:default)
+          result
         end
 
         def resolve_type_reference(type_value)
@@ -163,7 +166,6 @@ module Apiwork
           result = {
             reference:,
             as: nil,
-            default: nil,
             deprecated: false,
             description: nil,
             discriminator: nil,
@@ -205,7 +207,6 @@ module Apiwork
           {
             reference:,
             as: nil,
-            default: nil,
             deprecated: false,
             description: nil,
             discriminator: nil,
@@ -312,7 +313,6 @@ module Apiwork
 
           result = {
             as: nil,
-            default: nil,
             deprecated: false,
             description: nil,
             discriminator: union ? of.discriminator : nil,
@@ -343,7 +343,6 @@ module Apiwork
         def build_api_variant(variant)
           {
             as: nil,
-            default: nil,
             deprecated: false,
             description: nil,
             discriminator: nil,

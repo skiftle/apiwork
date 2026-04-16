@@ -459,13 +459,11 @@ module Apiwork
       def apply_modifiers(type, param, force_optional: nil)
         type += '.nullable()' if param.nullable?
 
-        has_default = param.respond_to?(:default) && !param.default.nil?
+        has_default = param.respond_to?(:default) && param.default?
         optional = force_optional.nil? ? param.optional? : force_optional
 
         if has_default
           type += ".default(#{serialize_default(param.default)})"
-        elsif optional && param.nullable?
-          type += '.default(null)'
         elsif optional
           type += '.optional()'
         end

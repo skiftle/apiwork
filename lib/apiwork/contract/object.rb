@@ -60,8 +60,8 @@ module Apiwork
       #   The param type.
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
-      # @param default [Object, nil] (nil)
-      #   The default value.
+      # @param default [Object] (UNSET)
+      #   The default value. Omit to declare no default. Pass `nil` for an explicit null default.
       # @param deprecated [Boolean] (false)
       #   Whether deprecated. Metadata included in exports.
       # @param description [String, nil] (nil)
@@ -110,7 +110,7 @@ module Apiwork
         type: nil,
         as: nil,
         custom_type: nil,
-        default: nil,
+        default: UNSET,
         deprecated: false,
         description: nil,
         discriminator: nil,
@@ -183,8 +183,8 @@ module Apiwork
       #   The param name.
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
-      # @param default [Object, nil] (nil)
-      #   The default value.
+      # @param default [Object] (UNSET)
+      #   The default value. Omit to declare no default. Pass `nil` for an explicit null default.
       # @param deprecated [Boolean] (false)
       #   Whether deprecated. Metadata included in exports.
       # @param description [String, nil] (nil)
@@ -215,7 +215,7 @@ module Apiwork
       def array(
         name,
         as: nil,
-        default: nil,
+        default: UNSET,
         deprecated: false,
         description: nil,
         max: nil,
@@ -254,8 +254,8 @@ module Apiwork
       #   The param name.
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
-      # @param default [Object, nil] (nil)
-      #   The default value.
+      # @param default [Object] (UNSET)
+      #   The default value. Omit to declare no default. Pass `nil` for an explicit null default.
       # @param deprecated [Boolean] (false)
       #   Whether deprecated. Metadata included in exports.
       # @param description [String, nil] (nil)
@@ -282,7 +282,7 @@ module Apiwork
       def record(
         name,
         as: nil,
-        default: nil,
+        default: UNSET,
         deprecated: false,
         description: nil,
         nullable: false,
@@ -395,18 +395,18 @@ module Apiwork
       def define_literal_param(name, as:, default:, deprecated:, description:, optional:, value:)
         raise ConfigurationError, 'Literal type requires a value parameter' if value.nil?
 
-        @params[name] = (@params[name] || {}).merge(
-          {
-            as:,
-            default:,
-            deprecated:,
-            description:,
-            name:,
-            optional:,
-            value:,
-            type: :literal,
-          }.compact,
-        )
+        params = {
+          as:,
+          deprecated:,
+          description:,
+          name:,
+          optional:,
+          value:,
+          type: :literal,
+        }.compact
+        params[:default] = default unless UNSET.equal?(default)
+
+        @params[name] = (@params[name] || {}).merge(params)
       end
 
       def define_union_param(name, as:, default:, discriminator:, optional:, options:, resolved_enum:, &block)
@@ -415,19 +415,19 @@ module Apiwork
         union = Union.new(@contract_class, discriminator:)
         block.arity.positive? ? yield(union) : union.instance_eval(&block)
 
-        @params[name] = (@params[name] || {}).merge(
-          {
-            as:,
-            default:,
-            discriminator:,
-            enum: resolved_enum,
-            name:,
-            optional:,
-            type: :union,
-            union:,
-            **options,
-          }.compact,
-        )
+        params = {
+          as:,
+          discriminator:,
+          enum: resolved_enum,
+          name:,
+          optional:,
+          type: :union,
+          union:,
+          **options,
+        }.compact
+        params[:default] = default unless UNSET.equal?(default)
+
+        @params[name] = (@params[name] || {}).merge(params)
       end
 
       def define_regular_param(name, as:, default:, of:, optional:, options:, resolved_enum:, shape:, type:, visited_types:, &block)
@@ -514,20 +514,20 @@ module Apiwork
           end
         end
 
-        @params[name] = (@params[name] || {}).merge(
-          {
-            as:,
-            custom_type: type,
-            default:,
-            discriminator: type_definition.discriminator,
-            enum: resolved_enum,
-            name:,
-            optional:,
-            type: :union,
-            union:,
-            **options,
-          }.compact,
-        )
+        params = {
+          as:,
+          custom_type: type,
+          discriminator: type_definition.discriminator,
+          enum: resolved_enum,
+          name:,
+          optional:,
+          type: :union,
+          union:,
+          **options,
+        }.compact
+        params[:default] = default unless UNSET.equal?(default)
+
+        @params[name] = (@params[name] || {}).merge(params)
       end
 
       def define_custom_type_param(
@@ -557,38 +557,38 @@ module Apiwork
           block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
         end
 
-        @params[name] = (@params[name] || {}).merge(
-          {
-            as:,
-            custom_type: type,
-            default:,
-            enum: resolved_enum,
-            name:,
-            of:,
-            optional:,
-            shape:,
-            type: :object,
-            **options,
-          }.compact,
-        )
+        params = {
+          as:,
+          custom_type: type,
+          enum: resolved_enum,
+          name:,
+          of:,
+          optional:,
+          shape:,
+          type: :object,
+          **options,
+        }.compact
+        params[:default] = default unless UNSET.equal?(default)
+
+        @params[name] = (@params[name] || {}).merge(params)
       end
 
       def define_standard_param(name, as:, default:, of:, optional:, options:, resolved_enum:, shape:, type:, &block)
         resolved_of = resolve_of(of, type, &block)
         resolved_shape = resolve_shape(shape, type, &block)
 
-        @params[name] = (@params[name] || {}).merge(
-          {
-            as:,
-            default:,
-            enum: resolved_enum,
-            name:,
-            of: resolved_of,
-            optional:,
-            type:,
-            **options,
-          }.compact,
-        )
+        params = {
+          as:,
+          enum: resolved_enum,
+          name:,
+          of: resolved_of,
+          optional:,
+          type:,
+          **options,
+        }.compact
+        params[:default] = default unless UNSET.equal?(default)
+
+        @params[name] = (@params[name] || {}).merge(params)
 
         @params[name][:shape] = resolved_shape if resolved_shape
       end

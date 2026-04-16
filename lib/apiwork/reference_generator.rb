@@ -47,6 +47,26 @@ module Apiwork
         .sort_by { |mod| mod[:path] }
     end
 
+    def extract_constants
+      YARD::Registry.all(:constant)
+        .select do |yard_object|
+          yard_object.path.start_with?('Apiwork') &&
+            yard_object.docstring.to_s.strip.present? &&
+            yard_object.docstring.tags(:api).any? { |tag| tag.text == 'public' }
+        end
+        .map { |yard_object| serialize_constant(yard_object) }
+        .sort_by { |constant| constant[:name] }
+    end
+
+    def serialize_constant(yard_object)
+      {
+        docstring: yard_object.docstring.to_s,
+        file: relative_path(yard_object.file),
+        line: yard_object.line,
+        name: yard_object.name.to_s,
+      }
+    end
+
     def public_api?(yard_object)
       api_tag = yard_object.docstring.tags(:api).find { |tag| tag.text == 'public' }
 
@@ -247,6 +267,29 @@ module Apiwork
       end
 
       write_namespace_indexes
+      write_constant_files(extract_constants)
+    end
+
+    def write_constant_files(constants)
+      constants.each.with_index(@modules.size + 1) do |constant, order|
+        filepath = File.join(OUTPUT_DIR, "#{dasherize(constant[:name])}.md")
+        File.write(filepath, render_constant(constant, order))
+      end
+    end
+
+    def render_constant(constant, order)
+      parts = []
+      parts << "---\norder: #{order}\nprev: false\nnext: false\n---\n"
+      parts << "# #{constant[:name]}\n"
+
+      if constant[:file] && constant[:line]
+        github_link = "#{GITHUB_URL}/#{constant[:file]}#L#{constant[:line]}"
+        parts << "[GitHub](#{github_link})\n"
+      end
+
+      parts << "#{linkify_yard_refs(constant[:docstring])}\n" if constant[:docstring].present?
+
+      parts.join("\n")
     end
 
     def write_root_index

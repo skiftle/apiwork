@@ -73,6 +73,26 @@ RSpec.describe Apiwork::Introspection::Param::Base do
     end
   end
 
+  describe '#default?' do
+    it 'returns true when default key is present' do
+      param = described_class.new(default: 'value', type: :string)
+
+      expect(param.default?).to be(true)
+    end
+
+    it 'returns true when default key is present with nil value' do
+      param = described_class.new(default: nil, type: :string)
+
+      expect(param.default?).to be(true)
+    end
+
+    it 'returns false when default key is absent' do
+      param = described_class.new(type: :string)
+
+      expect(param.default?).to be(false)
+    end
+  end
+
   describe '#deprecated?' do
     it 'returns true when deprecated' do
       param = described_class.new(deprecated: true, type: :string)

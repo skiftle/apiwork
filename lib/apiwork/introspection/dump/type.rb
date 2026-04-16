@@ -114,10 +114,9 @@ module Apiwork
                         resolve_type_reference(options[:type], scope)
                       end
 
-          {
+          result = {
             reference:,
             as: options[:as],
-            default: options[:default],
             deprecated: options[:deprecated] == true,
             description: resolve_param_description(name, options, scope),
             discriminator: nil,
@@ -136,6 +135,8 @@ module Apiwork
             value: options[:type] == :literal ? options[:value] : nil,
             variants: build_nested_variants(options[:shape]),
           }
+          result[:default] = options[:default] if options.key?(:default)
+          result
         end
 
         def build_variant(variant, scope)
@@ -145,7 +146,6 @@ module Apiwork
           {
             reference:,
             as: nil,
-            default: nil,
             deprecated: false,
             description: nil,
             discriminator: nil,
@@ -221,7 +221,6 @@ module Apiwork
 
           result = {
             as: nil,
-            default: nil,
             deprecated: false,
             description: nil,
             discriminator: union ? of.discriminator : nil,

@@ -4,6 +4,10 @@ require 'zeitwerk'
 require_relative 'apiwork/version'
 
 module Apiwork
+  # @api public
+  # Sentinel for an unset value. Distinguishes from explicit `nil`.
+  UNSET = Object.new.freeze
+
   class << self
     def call(env)
       routes.call(env)

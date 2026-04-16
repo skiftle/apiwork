@@ -254,7 +254,7 @@ module Apiwork
 
       def optional_in_output?(param)
         return false unless param.optional?
-        return false if param.respond_to?(:default) && !param.default.nil?
+        return false if param.respond_to?(:default) && param.default?
         return false if param.nullable?
 
         true

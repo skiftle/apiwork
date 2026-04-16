@@ -27,6 +27,9 @@ module Apiwork
         # @api public
         # The default for this param.
         #
+        # Returns `nil` for both "no default" and "default is explicitly `nil`".
+        # Use {#default?} to distinguish these cases.
+        #
         # @return [Object, nil]
         def default
           @dump[:default]

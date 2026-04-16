@@ -49,6 +49,17 @@ module Apiwork
         end
 
         # @api public
+        # Whether this param has a default value.
+        #
+        # Use this to distinguish "no default" from "default is explicitly `nil`".
+        # The {#default} accessor returns `nil` in both cases.
+        #
+        # @return [Boolean]
+        def default?
+          @dump.key?(:default)
+        end
+
+        # @api public
         # The tag for this param.
         #
         # @return [String, nil]

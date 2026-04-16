@@ -36,8 +36,8 @@ module Apiwork
       #   The param type.
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
-      # @param default [Object, nil] (nil)
-      #   The default value.
+      # @param default [Object] (UNSET)
+      #   The default value. Omit to declare no default. Pass `nil` for an explicit null default.
       # @param deprecated [Boolean] (false)
       #   Whether deprecated. Metadata included in exports.
       # @param description [String, nil] (nil)
@@ -86,7 +86,7 @@ module Apiwork
         type: nil,
         as: nil,
         custom_type: nil,
-        default: nil,
+        default: UNSET,
         deprecated: false,
         description: nil,
         discriminator: nil,
@@ -110,7 +110,6 @@ module Apiwork
         param_hash = {
           as:,
           custom_type:,
-          default:,
           deprecated:,
           description:,
           discriminator:,
@@ -126,10 +125,11 @@ module Apiwork
           type:,
           value:,
           of: resolved_of,
-        }
+        }.compact
+        param_hash[:default] = default unless UNSET.equal?(default)
         param_hash[:shape] = resolved_shape if resolved_shape
 
-        @params[name] = (@params[name] || {}).merge(param_hash.compact)
+        @params[name] = (@params[name] || {}).merge(param_hash)
       end
 
       # @api public
@@ -139,8 +139,8 @@ module Apiwork
       #   The param name.
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
-      # @param default [Object, nil] (nil)
-      #   The default value.
+      # @param default [Object] (UNSET)
+      #   The default value. Omit to declare no default. Pass `nil` for an explicit null default.
       # @param deprecated [Boolean] (false)
       #   Whether deprecated. Metadata included in exports.
       # @param description [String, nil] (nil)
@@ -167,7 +167,7 @@ module Apiwork
       def array(
         name,
         as: nil,
-        default: nil,
+        default: UNSET,
         deprecated: false,
         description: nil,
         nullable: false,
@@ -202,8 +202,8 @@ module Apiwork
       #   The param name.
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
-      # @param default [Object, nil] (nil)
-      #   The default value.
+      # @param default [Object] (UNSET)
+      #   The default value. Omit to declare no default. Pass `nil` for an explicit null default.
       # @param deprecated [Boolean] (false)
       #   Whether deprecated. Metadata included in exports.
       # @param description [String, nil] (nil)
@@ -230,7 +230,7 @@ module Apiwork
       def record(
         name,
         as: nil,
-        default: nil,
+        default: UNSET,
         deprecated: false,
         description: nil,
         nullable: false,
