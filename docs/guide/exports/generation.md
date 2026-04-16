@@ -19,6 +19,7 @@ Each declared export is available as an endpoint at the API's base path:
 | Format     | Endpoint                  |
 | ---------- | ------------------------- |
 | OpenAPI    | `GET /api/v1/.openapi`    |
+| Apiwork    | `GET /api/v1/.apiwork`    |
 | TypeScript | `GET /api/v1/.typescript` |
 | Zod        | `GET /api/v1/.zod`        |
 | Sorbus     | `GET /api/v1/.sorbus`     |
@@ -47,7 +48,7 @@ curl http://localhost:3000/api/v1/.typescript?key_format=camel
 | --------- | -------------- | ------- |
 | `format`  | `json`, `yaml` | `json`  |
 
-Each export may define additional options — see [OpenAPI](./openapi.md), [TypeScript](./typescript.md), [Zod](./zod.md).
+Each export may define additional options — see [OpenAPI](./openapi.md), [Apiwork](./apiwork.md), [TypeScript](./typescript.md), [Zod](./zod.md).
 
 ### Option Precedence
 
@@ -112,6 +113,7 @@ public/exports/
 ├── api/
 │   └── v1/
 │       ├── openapi.json
+│       ├── apiwork.json
 │       ├── typescript.ts
 │       ├── zod.ts
 │       └── sorbus.ts

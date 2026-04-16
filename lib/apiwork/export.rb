@@ -71,6 +71,7 @@ module Apiwork
       end
 
       def register_defaults!
+        register(Apiwork)
         register(OpenAPI)
         register(TypeScript)
         register(Zod)

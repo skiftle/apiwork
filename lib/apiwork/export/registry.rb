@@ -2,7 +2,7 @@
 
 module Apiwork
   module Export
-    class Registry < Apiwork::Registry
+    class Registry < ::Apiwork::Registry
       class << self
         def register(export_class)
           raise ArgumentError, 'Export must inherit from Apiwork::Export::Base' unless export_class < Base

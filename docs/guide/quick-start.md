@@ -30,6 +30,7 @@ The API definition exposes posts as a resource:
 # config/apis/api_v1.rb
 Apiwork::API.define '/api/v1' do
   export :openapi
+  export :apiwork
   export :typescript
   export :zod
   export :sorbus
@@ -38,7 +39,7 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-The `export` declarations tell Apiwork to generate exports at `/.openapi`, `/.typescript`, `/.zod`, and `/.sorbus`.
+The `export` declarations tell Apiwork to generate exports at `/.openapi`, `/.apiwork`, `/.typescript`, `/.zod`, and `/.sorbus`.
 
 ## 3. Routes
 

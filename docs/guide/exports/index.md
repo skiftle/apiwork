@@ -1,9 +1,9 @@
 ---
-order: 8
+order: 9
 ---
 # Exports
 
-Exports describe the API in formats that external tools understand. They come from [introspection](../introspection/) — the same structure that drives runtime validation.
+Exports describe the API in formats that other tools understand. They come from [introspection](../introspection/) — the same structure that drives runtime validation.
 
 ## What Exports Do
 
@@ -32,6 +32,7 @@ Once declared, exports can be generated via endpoints, rake tasks, or code.
 
 - [Generation](./generation.md) — endpoints, rake tasks, and programmatic generation
 - [OpenAPI](./openapi.md) — OpenAPI specification
+- [Apiwork](./apiwork.md) — schema for the Apiwork ecosystem
 - [TypeScript](./typescript.md) — TypeScript type definitions
 - [Zod](./zod.md) — Zod schemas
 - [Sorbus](./sorbus.md) — Sorbus contract
