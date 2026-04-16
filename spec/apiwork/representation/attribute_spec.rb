@@ -199,6 +199,108 @@ RSpec.describe Apiwork::Representation::Attribute do
     end
   end
 
+  describe '#default' do
+    it 'returns the explicit value' do
+      representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+      attribute = described_class.new(:number, representation_class, default: 'INV-000', type: :string)
+
+      expect(attribute.default).to eq('INV-000')
+    end
+
+    it 'returns nil when explicitly set to nil' do
+      representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+      attribute = described_class.new(:number, representation_class, default: nil, type: :string)
+
+      expect(attribute.default).to be_nil
+    end
+
+    it 'returns nil when not set and column has no default' do
+      representation_class = Class.new(Apiwork::Representation::Base) { model Invoice }
+      attribute = described_class.new(:number, representation_class)
+
+      expect(attribute.default).to be_nil
+    end
+
+    it 'auto-detects from column with static default' do
+      representation_class = Class.new(Apiwork::Representation::Base) { model Invoice }
+      attribute = described_class.new(:sent, representation_class)
+
+      expect(attribute.default).to be(false)
+    end
+
+    it 'prefers explicit value over column default' do
+      representation_class = Class.new(Apiwork::Representation::Base) { model Invoice }
+      attribute = described_class.new(:sent, representation_class, default: true)
+
+      expect(attribute.default).to be(true)
+    end
+
+    it 'returns empty string when empty is true and no other default' do
+      representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+      attribute = described_class.new(:notes, representation_class, empty: true, type: :string)
+
+      expect(attribute.default).to eq('')
+    end
+
+    it 'returns nil when column is nullable and optional with no other default' do
+      representation_class = Class.new(Apiwork::Representation::Base) { model Customer }
+      attribute = described_class.new(:email, representation_class)
+
+      expect(attribute.default).to be_nil
+    end
+
+    it 'does not auto-default when column is nullable but explicitly required' do
+      representation_class = Class.new(Apiwork::Representation::Base) { model Customer }
+      attribute = described_class.new(:email, representation_class, optional: false)
+
+      expect(attribute.default?).to be(false)
+    end
+  end
+
+  describe '#default?' do
+    it 'returns true when explicitly set to a value' do
+      representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+      attribute = described_class.new(:number, representation_class, default: 'INV-000', type: :string)
+
+      expect(attribute.default?).to be(true)
+    end
+
+    it 'returns true when explicitly set to nil' do
+      representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+      attribute = described_class.new(:number, representation_class, default: nil, type: :string)
+
+      expect(attribute.default?).to be(true)
+    end
+
+    it 'returns true when auto-detected from column default' do
+      representation_class = Class.new(Apiwork::Representation::Base) { model Invoice }
+      attribute = described_class.new(:sent, representation_class)
+
+      expect(attribute.default?).to be(true)
+    end
+
+    it 'returns false when not set and column has no default' do
+      representation_class = Class.new(Apiwork::Representation::Base) { model Invoice }
+      attribute = described_class.new(:number, representation_class)
+
+      expect(attribute.default?).to be(false)
+    end
+
+    it 'returns true when empty is true and no other default' do
+      representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+      attribute = described_class.new(:notes, representation_class, empty: true, type: :string)
+
+      expect(attribute.default?).to be(true)
+    end
+
+    it 'returns true when column is nullable and optional with no other default' do
+      representation_class = Class.new(Apiwork::Representation::Base) { model Customer }
+      attribute = described_class.new(:email, representation_class)
+
+      expect(attribute.default?).to be(true)
+    end
+  end
+
   describe '#deprecated?' do
     it 'returns true when deprecated' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }

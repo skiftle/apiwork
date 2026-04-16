@@ -168,7 +168,7 @@ module Apiwork
                 type: attribute.type,
               }
 
-              options[:default] = '' if attribute.empty
+              options[:default] = attribute.default if attribute.default? && action_name == :create
               options[:min] = attribute.min if attribute.min
               options[:max] = attribute.max if attribute.max
               options[:of] = attribute.of if attribute.of

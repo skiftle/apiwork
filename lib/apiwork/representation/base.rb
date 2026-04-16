@@ -184,6 +184,8 @@ module Apiwork
         #   The attribute name.
         # @param decode [Proc, nil] (nil)
         #   Transform for request input (API to database). Must preserve the attribute type.
+        # @param default [Object] (UNSET)
+        #   The default value. Omit to declare no default. Pass `nil` for an explicit null default. If omitted and name maps to a database column, auto-detected from the column's static default.
         # @param deprecated [Boolean] (false)
         #   Whether deprecated. Metadata included in exports.
         # @param description [String, nil] (nil)
@@ -273,6 +275,7 @@ module Apiwork
         def attribute(
           name,
           decode: nil,
+          default: UNSET,
           deprecated: false,
           description: nil,
           empty: nil,
@@ -297,6 +300,7 @@ module Apiwork
               name,
               self,
               decode:,
+              default:,
               deprecated:,
               description:,
               empty:,

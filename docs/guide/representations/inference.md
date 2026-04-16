@@ -18,6 +18,7 @@ Everything detected can be overridden when needed.
 | Attribute type            | Database column type     | `type: :string`         |
 | Nullable                  | Column NULL constraint   | `nullable: true`        |
 | Optional                  | NULL allowed or has default | `optional: true`     |
+| Default                   | Column default or implicit null | `default: 'pending'`    |
 | Enum values               | Rails enum definition    | `enum: [:a, :b]`        |
 | String max length         | Column character limit   | `max: 50`               |
 | Decimal bounds            | Column precision + scale | `min: 0, max: 1000`    |
@@ -151,6 +152,42 @@ class PostRepresentation < Apiwork::Representation::Base
   attribute :body    # optional (allows NULL)
   attribute :status  # optional (has default)
 end
+```
+
+### Default Detection
+
+Defaults are inherited from the database in two ways:
+
+- **Static column defaults** — value from `DEFAULT 'X'`, `DEFAULT 0`, `DEFAULT true`, etc.
+- **Implicit `null` for nullable optional attributes** — a nullable column without an explicit non-null default has implicit `DEFAULT NULL` in SQL. Apiwork inherits this when the attribute is both nullable and optional.
+
+```ruby
+# Database:
+#   status VARCHAR DEFAULT 'pending'
+#   count INTEGER DEFAULT 0
+#   active BOOLEAN DEFAULT true
+#   email VARCHAR NULL          (no DEFAULT)
+#   id INTEGER NOT NULL
+class UserRepresentation < Apiwork::Representation::Base
+  attribute :status  # default: 'pending' (auto)
+  attribute :count   # default: 0 (auto)
+  attribute :active  # default: true (auto)
+  attribute :email   # default: nil (auto, nullable + optional)
+  attribute :id      # no default (required)
+end
+```
+
+Defaults are skipped when:
+
+- **The column has a default function** — `CURRENT_TIMESTAMP`, `gen_random_uuid()`, sequences. These are runtime expressions, not static values the client can replicate.
+- **The attribute is required** — non-nullable columns or `optional: false` overrides.
+
+The detected default can be overridden:
+
+```ruby
+attribute :status, default: 'archived'  # Override DB default
+attribute :status, default: nil         # Explicit null default (preserved)
+attribute :email, optional: false       # Mark required — no default applied
 ```
 
 ### Enum Detection

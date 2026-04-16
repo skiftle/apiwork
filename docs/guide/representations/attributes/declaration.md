@@ -26,6 +26,7 @@ Apiwork automatically detects from the database and model:
 | `type` | Column type (string, integer, boolean, datetime, etc.) |
 | `nullable` | Column NULL constraint |
 | `optional` | Column allows NULL or has default value |
+| `default` | Column default value (or implicit null for nullable + optional) |
 | `enum` | Rails enum definition |
 
 ```ruby
@@ -53,6 +54,7 @@ Types, nullability, and enums are detected from the database and models.
 | `preload` | `symbol` / `array` / `hash` | `nil` | Associations to eager load ([details](./custom.md#preloading)) |
 | `encode` | `callable` | `nil` | Transform on response ([details](./encode-decode.md)) |
 | `decode` | `callable` | `nil` | Transform on request ([details](./encode-decode.md)) |
+| `default` | `any` | auto | Default value ([details](../inference.md#default-detection)) |
 | `enum` | `array` | auto | Enum values ([details](../inference.md#enums)) |
 | `empty` | `bool` | `false` | Convert nil to empty string ([details](./encode-decode.md#empty-nullable)) |
 | `format` | `symbol` | `nil` | Format hint ([details](./metadata.md#format)) |

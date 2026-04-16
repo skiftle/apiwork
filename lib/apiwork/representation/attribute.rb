@@ -21,6 +21,14 @@ module Apiwork
         string: %i[date datetime email hostname ipv4 ipv6 password text url uuid],
       }.freeze
 
+      # @!attribute [r] default
+      #   @api public
+      #   The default for this attribute.
+      #
+      #   Returns `nil` for both "no default" and "default is explicitly `nil`".
+      #   Use {#default?} to distinguish these cases.
+      #
+      #   @return [Object, nil]
       # @!attribute [r] description
       #   @api public
       #   The description for this attribute.
@@ -71,7 +79,8 @@ module Apiwork
       #   The type for this attribute.
       #
       #   @return [Symbol]
-      attr_reader :description,
+      attr_reader :default,
+                  :description,
                   :element,
                   :empty,
                   :enum,
@@ -90,6 +99,7 @@ module Apiwork
         name,
         owner_representation_class,
         decode: nil,
+        default: UNSET,
         deprecated: false,
         description: nil,
         empty: false,
@@ -134,6 +144,7 @@ module Apiwork
             type = :string if detected_enum && type == :integer
             optional = detect_optional(name) if optional.nil?
             nullable = detect_nullable(name) if nullable.nil?
+            default = detect_default(name, nullable:, optional:) if UNSET.equal?(default)
 
             if @db_column && type == :string
               detected_max = detect_string_max_length(name)
@@ -158,6 +169,7 @@ module Apiwork
 
         optional = false if optional.nil?
         nullable = false if nullable.nil?
+        default = '' if UNSET.equal?(default) && empty
 
         @filterable = filterable
         @preload = preload
@@ -177,10 +189,23 @@ module Apiwork
         @format = format
         @deprecated = deprecated
         @write_only = write_only
+        @default_set = !UNSET.equal?(default)
+        @default = @default_set ? default : nil
 
         validate_min_max_range!
         validate_format!
         validate_empty!
+      end
+
+      # @api public
+      # Whether this attribute has a default value.
+      #
+      # Use this to distinguish "no default" from "default is explicitly `nil`".
+      # The {#default} accessor returns `nil` in both cases.
+      #
+      # @return [Boolean]
+      def default?
+        @default_set
       end
 
       # @api public
@@ -329,6 +354,22 @@ module Apiwork
         return true if column.default.present?
 
         column.null
+      end
+
+      def detect_default(name, nullable:, optional:)
+        return UNSET unless @model_class
+        return UNSET unless db_column?
+
+        column = column_for(name)
+        return UNSET unless column
+        return UNSET if column.default_function
+
+        default = @model_class.column_defaults[name.to_s]
+        return default unless default.nil?
+
+        return nil if nullable && optional
+
+        UNSET
       end
 
       def detect_nullable(name)
