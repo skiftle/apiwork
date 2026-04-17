@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.7.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.6.1...apiwork/v0.7.0) (2026-04-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* auto-detect attribute defaults from DB columns
+* distinguish unset from explicit nil default
+* remove builder generation from exports
+
+### Features
+
+* add :apiwork export format ([740830c](https://github.com/skiftle/apiwork/commit/740830cb74eda661e8b7e1287e4c684ae4c0f7c4))
+* add scope to resource introspection ([017d40d](https://github.com/skiftle/apiwork/commit/017d40d7af3eeb0835dd06d5ed050bddaa691b4f))
+* add scope to type and enum introspection ([883757e](https://github.com/skiftle/apiwork/commit/883757e675b643be12243cd73cd4c74999252fe3))
+* auto-detect attribute defaults from DB columns ([19a5524](https://github.com/skiftle/apiwork/commit/19a55249a15bb8538a798b86cbe0dc2cc556bc1b))
+* auto-detect column bounds for integer, decimal, and string attributes ([8be59c6](https://github.com/skiftle/apiwork/commit/8be59c657cdda8874e861b8ab2da000cfb4727a4))
+* distinguish unset from explicit nil default ([49123f8](https://github.com/skiftle/apiwork/commit/49123f8a1a80e1a9c6d5e2f6c290f0788df3fede))
+* generate .default() in OpenAPI for fields with default ([aeaaa11](https://github.com/skiftle/apiwork/commit/aeaaa11b8ec874554a792c2d341abb2268bbe50b))
+* generate .default() in Zod export for fields with defaults ([6e1de99](https://github.com/skiftle/apiwork/commit/6e1de9977ed10dd37d20b4d9d72c83d120ade048))
+
+
+### Bug Fixes
+
+* mark defaulted fields as required in TypeScript output ([e7de202](https://github.com/skiftle/apiwork/commit/e7de202673327d71f619601bdf65c0dd8b9e6475))
+* preserve integer segments in issue paths ([fc59ef5](https://github.com/skiftle/apiwork/commit/fc59ef51d6c2e2b7cce0b17ea1b7237b296cdabe))
+* replace spread with explicit property assignment in builders ([e1f83bd](https://github.com/skiftle/apiwork/commit/e1f83bdb1974561a5311973f7c1fe49b463ccccf))
+* respect empty flag when auto-detecting null default ([44ea2ff](https://github.com/skiftle/apiwork/commit/44ea2ffcbea2c7db5e9617dd848a018862880c4c))
+* transform issue paths and pointers via key_format ([de1af81](https://github.com/skiftle/apiwork/commit/de1af810cd9472d0e83eccf0e6c31ecdcaa792b4))
+
+
+### Code Refactoring
+
+* remove builder generation from exports ([d3646b1](https://github.com/skiftle/apiwork/commit/d3646b100b39fb73208a2eac0fb0ac812a3721bc))
+
 ## [0.6.1](https://github.com/skiftle/apiwork/compare/apiwork/v0.6.0...apiwork/v0.6.1) (2026-04-04)
 
 
