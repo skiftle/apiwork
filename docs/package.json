@@ -18,10 +18,5 @@
   "devDependencies": {
     "vitepress": "2.0.0-alpha.16",
     "vitepress-sidebar": "^1.33.1"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
   }
 }
