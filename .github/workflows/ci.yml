@@ -65,7 +65,7 @@ jobs:
           bundle exec rake docs:generate
       - uses: pnpm/action-setup@v6
         with:
-          version: latest
+          package_json_file: docs/package.json
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
