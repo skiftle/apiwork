@@ -144,7 +144,7 @@ module Apiwork
             type = :string if detected_enum && type == :integer
             optional = detect_optional(name) if optional.nil?
             nullable = detect_nullable(name) if nullable.nil?
-            default = detect_default(name, nullable:, optional:) if UNSET.equal?(default)
+            default = detect_default(name, empty:, nullable:, optional:) if UNSET.equal?(default)
 
             if @db_column && type == :string
               detected_max = detect_string_max_length(name)
@@ -356,7 +356,7 @@ module Apiwork
         column.null
       end
 
-      def detect_default(name, nullable:, optional:)
+      def detect_default(name, empty:, nullable:, optional:)
         return UNSET unless @model_class
         return UNSET unless db_column?
 
@@ -367,6 +367,7 @@ module Apiwork
         default = @model_class.column_defaults[name.to_s]
         return default unless default.nil?
 
+        return '' if empty && nullable && optional
         return nil if nullable && optional
 
         UNSET

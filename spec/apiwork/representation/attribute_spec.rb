@@ -249,6 +249,13 @@ RSpec.describe Apiwork::Representation::Attribute do
       expect(attribute.default).to be_nil
     end
 
+    it 'returns empty string when column is nullable and optional and empty is true' do
+      representation_class = Class.new(Apiwork::Representation::Base) { model Customer }
+      attribute = described_class.new(:email, representation_class, empty: true)
+
+      expect(attribute.default).to eq('')
+    end
+
     it 'does not auto-default when column is nullable but explicitly required' do
       representation_class = Class.new(Apiwork::Representation::Base) { model Customer }
       attribute = described_class.new(:email, representation_class, optional: false)
