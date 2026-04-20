@@ -2,11 +2,8 @@
 
 ![Apiwork](docs/public/banner.png)
 
----
-
+> [!WARNING]
 > 🚧 **Apiwork is pre-1.0 and working toward a stable 1.0.** Minor versions can still bring breaking changes, so follow the [changelog](./CHANGELOG.md).
-
----
 
 [![Gem Version](https://img.shields.io/gem/v/apiwork)](https://rubygems.org/gems/apiwork)
 [![CI](https://github.com/skiftle/apiwork/actions/workflows/ci.yml/badge.svg)](https://github.com/skiftle/apiwork/actions/workflows/ci.yml)
