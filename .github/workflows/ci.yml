@@ -55,14 +55,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
-      - env:
-          RAILS_ENV: test
-        run: |
-          cd docs/playground
-          bundle install
-          bundle exec rake db:setup
-          bundle exec rake apiwork:docs:reference
-          bundle exec rake docs:generate
       - uses: pnpm/action-setup@v6
         with:
           package_json_file: docs/package.json
@@ -71,7 +63,16 @@ jobs:
           node-version-file: docs/.nvmrc
           cache: pnpm
           cache-dependency-path: docs/pnpm-lock.yaml
-      - run: cd docs && pnpm install --frozen-lockfile && pnpm run build
+      - run: cd docs && pnpm install --frozen-lockfile
+      - env:
+          RAILS_ENV: test
+        run: |
+          cd docs/playground
+          bundle install
+          bundle exec rake db:setup
+          bundle exec rake apiwork:docs:reference
+          bundle exec rake docs:generate
+      - run: cd docs && pnpm run build
       - uses: actions/upload-pages-artifact@v4
         with:
           path: docs/.vitepress/dist
