@@ -4,6 +4,14 @@ order: 6
 
 # Zod
 
+::: warning
+Deprecated and scheduled for removal. Use [Apiwork JS](../apiwork-js.md#zod) — it consumes the [`.apiwork` export](./apiwork.md) and generates the same Zod schemas. What Apiwork JS adds:
+
+- Output verified against the TypeScript compiler
+- Split across per-domain and per-resource files instead of one file
+- Configurable file case, import extensions, and identifier names
+:::
+
 The Zod export generates validation schemas for runtime use.
 
 ## Configuration

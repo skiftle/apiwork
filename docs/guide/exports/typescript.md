@@ -4,6 +4,14 @@ order: 5
 
 # TypeScript
 
+::: warning
+Deprecated and scheduled for removal. Use [Apiwork JS](../apiwork-js.md#typescript) — it consumes the [`.apiwork` export](./apiwork.md) and generates the same TypeScript. What Apiwork JS adds:
+
+- Output verified against the TypeScript compiler
+- Split across per-domain and per-resource files instead of one file
+- Configurable file case, import extensions, and identifier names
+:::
+
 The TypeScript export generates type definitions.
 
 ## Configuration

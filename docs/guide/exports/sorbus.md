@@ -4,6 +4,15 @@ order: 7
 
 # Sorbus
 
+::: warning
+Deprecated and scheduled for removal. Use [Apiwork JS](../apiwork-js.md#sorbus) — it consumes the [`.apiwork` export](./apiwork.md) and generates the same Sorbus contract. What Apiwork JS adds:
+
+- Output verified against the TypeScript compiler
+- Split across per-domain and per-resource files instead of one file
+- Pre-materialized `Client` interface for [type performance](https://sorbus.dev/guide/type-performance/)
+- Configurable file case, import extensions, and identifier names
+:::
+
 The Sorbus export generates a typed client contract — Zod schemas, TypeScript types, and an endpoint tree in a single file.
 
 Where [TypeScript](./typescript.md) and [Zod](./zod.md) exports produce standalone type definitions and validation schemas, the Sorbus export combines both and adds endpoint metadata: paths, methods, request/response shapes, and error codes. The output is a contract that [Sorbus](https://sorbus.dev) consumes to provide typed API calls.
