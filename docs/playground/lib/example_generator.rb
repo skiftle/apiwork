@@ -134,9 +134,8 @@ class ExampleGenerator
     docs_dir = Rails.root.join('..').to_s
 
     unless system('pnpm', 'exec', 'apiwork', generator.to_s, apiwork_json.to_s, '--outdir', outdir.to_s, chdir: docs_dir)
-      Rails.logger.warn "    codegen #{generator} failed for #{api_class.base_path}"
       FileUtils.rm_rf(outdir)
-      return
+      raise "codegen #{generator} failed for #{api_class.base_path}"
     end
 
     system('pnpm', 'exec', 'biome', 'check', '--write', outdir.to_s, chdir: docs_dir)
