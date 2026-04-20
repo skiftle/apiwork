@@ -4,8 +4,7 @@ Apiwork::API.define '/happy_zebra' do
   key_format :camel
 
   export :openapi
-  export :typescript
-  export :zod
+  export :apiwork
 
   resources :users
   resources :posts, only: %i[index]

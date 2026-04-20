@@ -4,8 +4,7 @@ Apiwork::API.define '/gentle_owl' do
   key_format :camel
 
   export :openapi
-  export :typescript
-  export :zod
+  export :apiwork
 
   resources :comments
 end

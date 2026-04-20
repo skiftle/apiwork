@@ -4,8 +4,7 @@ Apiwork::API.define '/curious_cat' do
   key_format :camel
 
   export :openapi
-  export :typescript
-  export :zod
+  export :apiwork
 
   resources :profiles
 end

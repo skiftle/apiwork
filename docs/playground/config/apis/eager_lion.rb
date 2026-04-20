@@ -4,8 +4,7 @@ Apiwork::API.define '/eager_lion' do
   key_format :camel
 
   export :openapi
-  export :typescript
-  export :zod
+  export :apiwork
 
   resources :invoices
 end

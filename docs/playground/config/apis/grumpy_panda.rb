@@ -4,8 +4,7 @@ Apiwork::API.define '/grumpy_panda' do
   key_format :camel
 
   export :openapi
-  export :typescript
-  export :zod
+  export :apiwork
 
   resources :activities
 end

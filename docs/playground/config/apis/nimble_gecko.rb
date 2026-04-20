@@ -5,8 +5,7 @@ Apiwork::API.define '/nimble_gecko' do
   path_format :kebab
 
   export :openapi
-  export :typescript
-  export :zod
+  export :apiwork
 
   resources :meal_plans
 end

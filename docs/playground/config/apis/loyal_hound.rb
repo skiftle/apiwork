@@ -4,8 +4,7 @@ Apiwork::API.define '/loyal_hound' do
   key_format :camel
 
   export :openapi
-  export :typescript
-  export :zod
+  export :apiwork
 
   resources :books
 end

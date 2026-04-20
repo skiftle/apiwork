@@ -4,8 +4,7 @@ Apiwork::API.define '/brave_eagle' do
   key_format :camel
 
   export :openapi
-  export :typescript
-  export :zod
+  export :apiwork
 
   info do
     title 'Task Management API'

@@ -4,8 +4,7 @@ Apiwork::API.define '/clever_rabbit' do
   key_format :camel
 
   export :openapi
-  export :typescript
-  export :zod
+  export :apiwork
 
   resources :orders
 end

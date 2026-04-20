@@ -4,8 +4,7 @@ Apiwork::API.define '/bright_parrot' do
   key_format :camel
 
   export :openapi
-  export :typescript
-  export :zod
+  export :apiwork
 
   resources :notifications, only: %i[index create]
 end
