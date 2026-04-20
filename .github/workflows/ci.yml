@@ -73,7 +73,7 @@ jobs:
           bundle exec rake apiwork:docs:reference
           bundle exec rake docs:generate
       - run: cd docs && pnpm run build
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: docs/.vitepress/dist
       - uses: actions/deploy-pages@v5
