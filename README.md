@@ -1,6 +1,6 @@
 # Apiwork
 
-![Apiwork](docs/public/banner.png)
+![Apiwork](docs/public/banner.svg)
 
 ---
 
