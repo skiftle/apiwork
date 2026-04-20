@@ -2,6 +2,7 @@
 
 require 'fileutils'
 require 'json'
+require 'pathname'
 require 'yaml'
 require_relative 'request_runner'
 
@@ -32,6 +33,8 @@ class ExampleGenerator
     each_api do |api_class, namespace, metadata|
       generate_for_api(api_class, namespace, metadata, temp_public, temp_examples)
       examples << metadata.merge(namespace:)
+    rescue StandardError => e
+      Rails.logger.warn "  Failed: #{namespace} — #{e.message}"
     end
 
     generate_index(examples, temp_examples)
@@ -105,36 +108,43 @@ class ExampleGenerator
 
     Rails.logger.debug "  Generating: #{locale_key}/"
 
-    write_specs(api_class, output_dir)
+    write_exports(api_class, output_dir)
     write_requests(namespace, output_dir, metadata[:scenarios]) if metadata[:scenarios]
     write_markdown(namespace, locale_key, metadata, temp_examples, temp_public)
   end
 
-  def write_specs(api_class, dir)
-    write_typescript(api_class, dir) if api_class.export_configs.key?(:typescript)
-    write_zod(api_class, dir) if api_class.export_configs.key?(:zod)
+  def write_exports(api_class, dir)
+    write_apiwork(api_class, dir)
     write_openapi(api_class, dir) if api_class.export_configs.key?(:openapi)
-    write_introspection(api_class, dir)
+    write_codegen(api_class, dir, :typescript)
+    write_codegen(api_class, dir, :zod)
+    write_codegen(api_class, dir, :sorbus)
   end
 
-  def write_typescript(api_class, dir)
-    content = Apiwork::Export::TypeScript.generate(api_class.base_path)
-    File.write(dir.join('typescript.ts'), content)
+  def write_apiwork(api_class, dir)
+    content = Apiwork::Export::Apiwork.generate(api_class.base_path)
+    File.write(dir.join('apiwork.json'), content)
   end
 
-  def write_zod(api_class, dir)
-    content = Apiwork::Export::Zod.generate(api_class.base_path)
-    File.write(dir.join('zod.ts'), content)
+  def write_codegen(api_class, dir, generator)
+    outdir = dir.join(generator.to_s)
+    FileUtils.mkdir_p(outdir)
+
+    apiwork_json = dir.join('apiwork.json')
+    docs_dir = Rails.root.join('..').to_s
+
+    unless system('pnpm', 'exec', 'apiwork', generator.to_s, apiwork_json.to_s, '--outdir', outdir.to_s, chdir: docs_dir)
+      Rails.logger.warn "    codegen #{generator} failed for #{api_class.base_path}"
+      FileUtils.rm_rf(outdir)
+      return
+    end
+
+    system('pnpm', 'exec', 'biome', 'check', '--write', outdir.to_s, chdir: docs_dir)
   end
 
   def write_openapi(api_class, dir)
     content = Apiwork::Export::OpenAPI.generate(api_class.base_path, format: :yaml)
     File.write(dir.join('openapi.yml'), content)
-  end
-
-  def write_introspection(api_class, dir)
-    content = api_class.introspect.to_h
-    File.write(dir.join('introspection.json'), JSON.pretty_generate(content))
   end
 
   def write_requests(namespace, dir, scenarios)
@@ -165,7 +175,7 @@ class ExampleGenerator
     parts << metadata[:description]
     parts << sections_content(namespace, metadata)
     parts << requests_section(locale_key, metadata[:scenarios], temp_public)
-    parts << generated_output_section(locale_key)
+    parts << generated_output_section(locale_key, temp_public)
 
     parts.compact.join("\n\n")
   end
@@ -358,34 +368,70 @@ class ExampleGenerator
     parts.join("\n")
   end
 
-  def generated_output_section(locale_key)
-    <<~MD.strip
-      ## Generated Output
+  def generated_output_section(locale_key, temp_public)
+    parts = []
+    public_dir = temp_public.join(locale_key)
 
-      ::: details Introspection
+    # Exports
+    parts << '## Exports'
 
-      <<< @/playground/public/#{locale_key}/introspection.json
+    if File.exist?(public_dir.join('openapi.yml'))
+      parts << <<~MD.strip
+        ::: details OpenAPI
 
-      :::
+        <<< @/playground/public/#{locale_key}/openapi.yml
 
-      ::: details TypeScript
+        :::
+      MD
+    end
 
-      <<< @/playground/public/#{locale_key}/typescript.ts
+    if File.exist?(public_dir.join('apiwork.json'))
+      parts << <<~MD.strip
+        ::: details Apiwork
 
-      :::
+        <<< @/playground/public/#{locale_key}/apiwork.json
 
-      ::: details Zod
+        :::
+      MD
+    end
 
-      <<< @/playground/public/#{locale_key}/zod.ts
+    # Codegen
+    parts << '## Codegen'
 
-      :::
+    parts << code_group_section('TypeScript', locale_key, 'typescript', public_dir) if File.directory?(public_dir.join('typescript'))
+    parts << code_group_section('Zod', locale_key, 'zod', public_dir) if File.directory?(public_dir.join('zod'))
+    parts << code_group_section('Sorbus', locale_key, 'sorbus', public_dir) if File.directory?(public_dir.join('sorbus'))
 
-      ::: details OpenAPI
+    parts.compact.join("\n\n")
+  end
 
-      <<< @/playground/public/#{locale_key}/openapi.yml
+  def code_group_section(title, locale_key, subdir, public_dir)
+    dir = public_dir.join(subdir)
+    return nil unless File.directory?(dir)
 
-      :::
-    MD
+    files = Dir.glob(dir.join('**/*.ts')).sort.map do |path|
+      relative = Pathname.new(path).relative_path_from(dir).to_s
+      relative
+    end
+
+    return nil if files.empty?
+
+    lines = []
+    lines << ":::: details #{title}"
+    lines << ''
+    lines << '::: code-group'
+    lines << ''
+
+    files.each do |file|
+      lines << "<<< @/playground/public/#{locale_key}/#{subdir}/#{file} [#{file}]"
+    end
+
+    lines << ''
+    lines << ':::'
+    lines << ''
+    lines << '::::'
+
+    lines.join("\n")
   end
 
   def file_block(path)
@@ -428,10 +474,8 @@ class ExampleGenerator
 
       Each example includes:
       - API definition, models, representations, contracts, and controllers
-      - Generated TypeScript types
-      - Generated Zod validators
-      - Generated OpenAPI export
-      - Introspection output
+      - Exports: OpenAPI, Apiwork
+      - Codegen: TypeScript, Zod, Sorbus
 
       ## Available Examples
 
