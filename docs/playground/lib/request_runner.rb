@@ -28,7 +28,7 @@ class RequestRunner
   attr_reader :namespace
 
   def run_scenario(scenario)
-    travel_to(Time.utc(2024, 1, 1, 12, 0, 0)) do
+    travel_to(Time.utc(2026, 4, 1, 12, 0, 0)) do
       ids = run_setup(scenario[:setup])
       path = build_path(scenario[:path], ids)
       body = resolve_body_references(scenario[:body], ids)

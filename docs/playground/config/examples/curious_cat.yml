@@ -35,10 +35,6 @@ scenarios:
         tags:
           - developer
           - typescript
-        primary_address:
-          street: 123 Main St
-          city: Stockholm
-          zip: "12345"
         addresses:
           - street: 123 Main St
             city: Stockholm
@@ -62,10 +58,6 @@ scenarios:
             language: en
           tags:
             - developer
-          primary_address:
-            street: 123 Main St
-            city: Stockholm
-            zip: "12345"
           addresses:
             - street: 123 Main St
               city: Stockholm
