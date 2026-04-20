@@ -1,12 +1,20 @@
 ---
-order: 1
+order: 4
 ---
 
-# Sorbus (TypeScript)
+# Sorbus
 
-[Sorbus](https://sorbus.dev) is the typed TypeScript client, purpose-built for Apiwork. It reads the generated contract and gives you typed API calls — filtering, sorting, pagination, nested writes, and error handling — with zero configuration.
+Sorbus is a typed fetch client. [Apiwork JS](./apiwork-js.md) generates a Sorbus contract that exposes every endpoint as a typed call — filtering, sorting, pagination, nested writes, and error handling.
 
-You describe your domain in Ruby. Apiwork generates a contract. Sorbus turns it into a typed client. The database is the source of truth, and every change flows from Rails to TypeScript automatically.
+Install:
+
+```bash
+pnpm add sorbus
+# or
+npm install sorbus
+```
+
+Full documentation: [sorbus.dev](https://sorbus.dev).
 
 ## Setup
 

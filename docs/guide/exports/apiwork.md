@@ -6,7 +6,7 @@ order: 4
 
 The Apiwork export generates an Apiwork schema — a portable JSON description of the API. The schema mirrors Apiwork's internal model exactly, with no translation losses between runtime and output.
 
-Apiwork-aware tools consume it for code generation, API exploration, validation, and other integrations.
+The schema is the input for [Apiwork JS](../apiwork-js.md), which generates TypeScript types, Zod schemas, or a [Sorbus](../sorbus.md) contract. Anything else that reads JSON can consume it directly.
 
 ## Configuration
 

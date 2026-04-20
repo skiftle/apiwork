@@ -37,7 +37,7 @@ const sidebar = generateSidebar([
 ]) as Record<string, { items: any[] }>;
 
 const guideItems = sidebar["/guide/"].items;
-const ecosystem = ["Apiwork RSpec", "Sorbus (TypeScript)"];
+const ecosystem = ["Apiwork JS", "Apiwork RSpec", "Sorbus"];
 sidebar["/guide/"].items = [
   {
     text: "Getting Started",

@@ -1,20 +1,20 @@
 ---
-order: 0
+order: 3
 ---
 
 # Apiwork RSpec
 
-Apiwork validates requests, typechecks params, and serializes responses at runtime. All of that is tested in Apiwork's own test suite. What's left for you to test is whether your declarations are correct — that the right fields are filterable, that enums have the right values, that actions accept the right params.
+Apiwork RSpec is an RSpec extension for Apiwork. It reads your Apiwork definitions and asserts their structure — attributes, enums, filters, and actions.
 
-`apiwork-rspec` reads your definitions and verifies the structure you declared.
-
-It does not replace integration tests. Whether your `index` action returns invoices with correct data still requires HTTP tests against your running app. But the structural layer is just data, and you can test it without touching the database.
-
-## Setup
+Install:
 
 ```ruby
 gem 'apiwork-rspec', group: :test
 ```
+
+Full documentation: [apiwork-rspec](https://github.com/skiftle/apiwork-rspec).
+
+## Setup
 
 ```ruby
 RSpec.configure do |config|
