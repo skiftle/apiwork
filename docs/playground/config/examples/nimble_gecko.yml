@@ -33,13 +33,16 @@ scenarios:
         CookTime: 30
         ServingSize: 4
         CookingSteps:
-          - StepNumber: 1
+          - OP: 'create'
+            StepNumber: 1
             Instruction: Boil salted water
             DurationMinutes: 10
-          - StepNumber: 2
+          - OP: 'create'
+            StepNumber: 2
             Instruction: Cook pasta until al dente
             DurationMinutes: 8
-          - StepNumber: 3
+          - OP: 'create'
+            StepNumber: 3
             Instruction: Mix with egg yolk sauce
             DurationMinutes: 5
 

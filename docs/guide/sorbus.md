@@ -119,6 +119,7 @@ const { invoice } = await api.invoices.create({
     issuedOn: '2024-06-01',
     items: [
       {
+        OP: 'create',
         description: 'Consulting',
         quantity: 10,
         rate: 150,

@@ -56,13 +56,16 @@ scenarios:
       order:
         orderNumber: ORD-001
         lineItems:
-          - productName: Widget
+          - OP: 'create'
+            productName: Widget
             quantity: 2
             unitPrice: 29.99
-          - productName: Gadget
+          - OP: 'create'
+            productName: Gadget
             quantity: 1
             unitPrice: 49.99
         shippingAddress:
+          OP: 'create'
           street: 123 Main St
           city: Springfield
           postalCode: "12345"
@@ -80,7 +83,8 @@ scenarios:
     body:
       order:
         lineItems:
-          - productName: New Item
+          - OP: 'create'
+            productName: New Item
             quantity: 3
             unitPrice: 19.99
 
