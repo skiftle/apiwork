@@ -170,6 +170,48 @@ RSpec.describe Apiwork::Contract::Object::Validator do
       end
     end
 
+    context 'when a field with a false default is omitted' do
+      it 'returns the default value' do
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                boolean? :sent, default: false
+              end
+            end
+          end
+        end
+        shape = contract_class.action_for(:create).request.body
+        validator = described_class.new(shape)
+
+        result = validator.validate({})
+
+        expect(result).to be_valid
+        expect(result.params).to eq({ sent: false })
+      end
+    end
+
+    context 'when a field with a default is provided' do
+      it 'returns the provided value' do
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                boolean? :sent, default: false
+              end
+            end
+          end
+        end
+        shape = contract_class.action_for(:create).request.body
+        validator = described_class.new(shape)
+
+        result = validator.validate({ sent: true })
+
+        expect(result).to be_valid
+        expect(result.params).to eq({ sent: true })
+      end
+    end
+
     context 'when string exceeds max length' do
       it 'returns string_too_long issue' do
         contract_class = create_test_contract do

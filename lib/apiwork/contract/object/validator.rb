@@ -76,7 +76,7 @@ module Apiwork
           required_error = validate_required(name, value, param_options, data, field_path)
           return [[required_error], NOT_SET] if required_error
 
-          value = param_options[:default] if value.nil? && param_options[:default]
+          value = param_options[:default] if value.nil? && param_options.key?(:default)
 
           nullable_error = validate_nullable(name, value, param_options, data, field_path)
           return [[nullable_error], NOT_SET] if nullable_error

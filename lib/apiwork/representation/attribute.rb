@@ -351,7 +351,7 @@ module Apiwork
         column = column_for(name)
         return false unless column
 
-        return true if column.default.present?
+        return true unless column.default.nil?
 
         column.null
       end

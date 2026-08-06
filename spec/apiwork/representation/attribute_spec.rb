@@ -406,6 +406,15 @@ RSpec.describe Apiwork::Representation::Attribute do
 
       expect(attribute.optional?).to be(false)
     end
+
+    context 'when a non-null column has a false default' do
+      it 'returns true' do
+        representation_class = Class.new(Apiwork::Representation::Base) { model Activity }
+        attribute = described_class.new(:read, representation_class)
+
+        expect(attribute.optional?).to be(true)
+      end
+    end
   end
 
   describe '#sortable?' do

@@ -4,7 +4,7 @@ class CreateActivities < ActiveRecord::Migration[8.1]
   def change
     create_table :activities do |t|
       t.string :action
-      t.boolean :read, default: false
+      t.boolean :read, default: false, null: false
       t.string :target_type
       t.bigint :target_id
       t.timestamps

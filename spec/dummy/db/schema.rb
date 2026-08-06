@@ -14,7 +14,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_01_000012) do
   create_table "activities", force: :cascade do |t|
     t.string "action"
     t.datetime "created_at", null: false
-    t.boolean "read", default: false
+    t.boolean "read", default: false, null: false
     t.bigint "target_id"
     t.string "target_type"
     t.datetime "updated_at", null: false
