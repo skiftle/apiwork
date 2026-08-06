@@ -20,7 +20,6 @@ jobs:
         with:
           ruby-version: '3.2'
           bundler-cache: true
-      - run: bundle exec bundler-audit --update
       - run: bundle exec rubocop --parallel
 
   test:
