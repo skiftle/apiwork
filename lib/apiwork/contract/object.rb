@@ -61,7 +61,7 @@ module Apiwork
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
       # @param default [Object] (UNSET)
-      #   The default value. Omit to declare no default. Pass `nil` for an explicit null default.
+      #   The default value. Omit to declare no default. Pass `nil` for an explicit null default. A param with a default is always optional.
       # @param deprecated [Boolean] (false)
       #   Whether deprecated. Metadata included in exports.
       # @param description [String, nil] (nil)
@@ -85,7 +85,7 @@ module Apiwork
       # @param of [Symbol, Hash, nil] (nil)
       #   The element or value type. Arrays and records only.
       # @param optional [Boolean] (false)
-      #   Whether the param is optional.
+      #   Whether the param is optional. Always `true` for params with a `default`.
       # @param required [Boolean] (false)
       #   Whether the param is required.
       # @param shape [Contract::Object, Contract::Union, nil] (nil)
@@ -140,6 +140,8 @@ module Apiwork
 
         raise ConfigurationError, 'discriminator can only be used with type: :union' if discriminator && type != :union
 
+        optional = normalize_optional(optional, default)
+
         visited_types ||= @visited_types
         visited_types ||= Set.new
 
@@ -184,7 +186,7 @@ module Apiwork
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
       # @param default [Object] (UNSET)
-      #   The default value. Omit to declare no default. Pass `nil` for an explicit null default.
+      #   The default value. Omit to declare no default. Pass `nil` for an explicit null default. A param with a default is always optional.
       # @param deprecated [Boolean] (false)
       #   Whether deprecated. Metadata included in exports.
       # @param description [String, nil] (nil)
@@ -196,7 +198,7 @@ module Apiwork
       # @param nullable [Boolean] (false)
       #   Whether the value can be `null`.
       # @param optional [Boolean] (false)
-      #   Whether the param is optional.
+      #   Whether the param is optional. Always `true` for params with a `default`.
       # @param required [Boolean] (false)
       #   Whether the param is required.
       # @yield block for defining element type
@@ -255,7 +257,7 @@ module Apiwork
       # @param as [Symbol, nil] (nil)
       #   The target attribute name.
       # @param default [Object] (UNSET)
-      #   The default value. Omit to declare no default. Pass `nil` for an explicit null default.
+      #   The default value. Omit to declare no default. Pass `nil` for an explicit null default. A param with a default is always optional.
       # @param deprecated [Boolean] (false)
       #   Whether deprecated. Metadata included in exports.
       # @param description [String, nil] (nil)
@@ -263,7 +265,7 @@ module Apiwork
       # @param nullable [Boolean] (false)
       #   Whether the value can be `null`.
       # @param optional [Boolean] (false)
-      #   Whether the param is optional.
+      #   Whether the param is optional. Always `true` for params with a `default`.
       # @param required [Boolean] (false)
       #   Whether the param is required.
       # @yield block for defining value type

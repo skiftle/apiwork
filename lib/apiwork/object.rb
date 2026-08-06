@@ -157,8 +157,8 @@ module Apiwork
     #   Whether the param is required.
     # @return [void]
     #
-    # @example Optional string with default
-    #   string? :nickname, default: 'Anonymous'
+    # @example Optional string
+    #   string? :nickname
     def string?(
       name,
       as: nil,
@@ -284,7 +284,7 @@ module Apiwork
     # @return [void]
     #
     # @example Optional page number
-    #   integer? :page, min: 1, default: 1
+    #   integer? :page, min: 1
     def integer?(
       name,
       as: nil,
@@ -619,7 +619,7 @@ module Apiwork
     # @return [void]
     #
     # @example Optional notification flag
-    #   boolean? :notify, default: true
+    #   boolean? :notify
     def boolean?(
       name,
       as: nil,
@@ -1863,6 +1863,14 @@ module Apiwork
 
     def param(name, type: nil, **options, &block)
       raise NotImplementedError, "#{self.class} must implement #param"
+    end
+
+    private
+
+    def normalize_optional(optional, default)
+      return true unless UNSET.equal?(default)
+
+      optional
     end
   end
 end

@@ -692,6 +692,17 @@ RSpec.describe Apiwork::Contract::Object do
         expect(param[:type]).to eq(:decimal)
       end
     end
+
+    context 'with a default value' do
+      it 'registers the param as optional' do
+        contract_class = create_test_contract
+        object = described_class.new(contract_class)
+        object.param(:sent, default: false, type: :boolean)
+
+        expect(object.params[:sent][:optional]).to be(true)
+        expect(object.params[:sent][:default]).to be(false)
+      end
+    end
   end
 
   describe '#reference' do

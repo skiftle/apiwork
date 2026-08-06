@@ -58,7 +58,7 @@ module Api
             string :recipient_email, format: :email
             string? :callback_url, format: :url
             string? :message, max: 500, min: 1
-            boolean? :notify_customer, default: true
+            boolean :notify_customer, default: true
           end
         end
 
@@ -87,7 +87,7 @@ module Api
       action :search do
         request do
           query do
-            string? :q, default: ''
+            string :q, default: ''
           end
         end
 
@@ -102,11 +102,11 @@ module Api
       action :bulk_create do
         request do
           body do
-            array? :invoices, default: [] do
+            array :invoices, default: [] do
               object do
                 string :number
                 integer :customer_id
-                boolean? :sent, default: false
+                boolean :sent, default: false
               end
             end
           end

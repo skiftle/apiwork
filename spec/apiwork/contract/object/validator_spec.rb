@@ -176,7 +176,7 @@ RSpec.describe Apiwork::Contract::Object::Validator do
           action :create do
             request do
               body do
-                boolean? :sent, default: false
+                boolean :sent, default: false
               end
             end
           end
@@ -197,7 +197,7 @@ RSpec.describe Apiwork::Contract::Object::Validator do
           action :create do
             request do
               body do
-                boolean? :sent, default: false
+                boolean :sent, default: false
               end
             end
           end

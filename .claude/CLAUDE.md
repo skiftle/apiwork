@@ -802,8 +802,14 @@ Use the `?` shorthand for optional params. Never pass `optional: true` explicitl
 |-----|------|
 | `string :notes, optional: true` | `string? :notes` |
 | `integer :count, optional: true` | `integer? :count` |
-| `boolean :sent, default: false, optional: true` | `boolean? :sent, default: false` |
-| `array :items, default: [], optional: true do` | `array? :items, default: [] do` |
+| `datetime :sent_at, optional: true` | `datetime? :sent_at` |
+
+A param with a `default` is always optional. Never add `?` or `optional: true` alongside it.
+
+| Bad | Good |
+|-----|------|
+| `boolean? :sent, default: false` | `boolean :sent, default: false` |
+| `array? :items, default: [] do` | `array :items, default: [] do` |
 
 ---
 

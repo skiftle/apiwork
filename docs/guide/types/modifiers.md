@@ -61,6 +61,14 @@ integer :count, default: 0
 array :tags, default: []
 ```
 
+A param with a default is always optional. Adding `?` or `optional: true` alongside it is redundant:
+
+```ruby
+boolean :sent, default: false
+```
+
+A falsy default works like any other value. Omitting `sent` produces `false`, not a missing param.
+
 ## Constraints
 
 ### min & max
