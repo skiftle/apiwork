@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.1](https://github.com/skiftle/apiwork/compare/apiwork/v0.7.0...apiwork/v0.7.1) (2026-08-07)
+
+
+### Features
+
+* make a default imply optional ([40372cb](https://github.com/skiftle/apiwork/commit/40372cb64baa013e9db5f467685ed51f7ea6f55b))
+
+
+### Bug Fixes
+
+* apply falsy defaults ([fc2f3e9](https://github.com/skiftle/apiwork/commit/fc2f3e9d6b1924acb6f39aeff779fcb7d6461a49))
+
 ## [0.7.0](https://github.com/skiftle/apiwork/compare/apiwork/v0.6.1...apiwork/v0.7.0) (2026-04-17)
 
 
