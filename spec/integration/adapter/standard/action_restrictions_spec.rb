@@ -13,7 +13,6 @@ RSpec.describe 'Action restrictions', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body).to have_key('invoices')
     end
 
@@ -22,7 +21,6 @@ RSpec.describe 'Action restrictions', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body['invoice']['number']).to eq('INV-001')
     end
 
@@ -61,7 +59,6 @@ RSpec.describe 'Action restrictions', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body).to have_key('items')
     end
 
@@ -70,7 +67,6 @@ RSpec.describe 'Action restrictions', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body['item']['description']).to eq('Consulting hours')
     end
 

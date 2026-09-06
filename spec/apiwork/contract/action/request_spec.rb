@@ -24,6 +24,7 @@ RSpec.describe Apiwork::Contract::Action::Request do
     it 'defines a body' do
       contract_class = create_test_contract
       request = described_class.new(contract_class, :create)
+
       request.body do
         string :title
       end
@@ -36,6 +37,7 @@ RSpec.describe Apiwork::Contract::Action::Request do
     it 'defines a query' do
       contract_class = create_test_contract
       request = described_class.new(contract_class, :index)
+
       request.query do
         string? :title
       end

@@ -97,6 +97,7 @@ module Apiwork
 
               def collect_association_issues(association_type)
                 result = []
+
                 @record.class.reflect_on_all_associations(association_type).each do |association|
                   associated = @record.send(association.name)
                   next unless associated
@@ -112,6 +113,7 @@ module Apiwork
                     result.concat(self.class.map(item, @translator, root_path: nested_path))
                   end
                 end
+
                 result
               end
 
@@ -131,6 +133,7 @@ module Apiwork
                 code = normalize_code(error)
                 attribute = resolve_attribute(error.attribute)
                 path = attribute == :base ? @root_path : @root_path + [attribute]
+
                 Issue.new(
                   code,
                   detail_for(code),

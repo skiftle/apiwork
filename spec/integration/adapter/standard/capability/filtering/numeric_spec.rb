@@ -16,7 +16,6 @@ RSpec.describe 'Numeric filtering', type: :request do
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
-
         expect(body['items'].length).to eq(1)
         expect(body['items'][0]['description']).to eq('Consulting hours')
       end
@@ -28,7 +27,6 @@ RSpec.describe 'Numeric filtering', type: :request do
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
-
         expect(body['items'].length).to eq(1)
         expect(body['items'][0]['description']).to eq('Consulting hours')
       end
@@ -42,7 +40,6 @@ RSpec.describe 'Numeric filtering', type: :request do
         body = response.parsed_body
         expect(body['items'].length).to eq(2)
         descriptions = body['items'].map { |item| item['description'] }
-
         expect(descriptions).to contain_exactly('Consulting hours', 'Support contract')
       end
     end
@@ -53,7 +50,6 @@ RSpec.describe 'Numeric filtering', type: :request do
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
-
         expect(body['items'].length).to eq(1)
         expect(body['items'][0]['description']).to eq('Consulting hours')
       end
@@ -67,7 +63,6 @@ RSpec.describe 'Numeric filtering', type: :request do
         body = response.parsed_body
         expect(body['items'].length).to eq(2)
         descriptions = body['items'].map { |item| item['description'] }
-
         expect(descriptions).to contain_exactly('Consulting hours', 'Support contract')
       end
     end
@@ -80,7 +75,6 @@ RSpec.describe 'Numeric filtering', type: :request do
         body = response.parsed_body
         expect(body['items'].length).to eq(2)
         descriptions = body['items'].map { |item| item['description'] }
-
         expect(descriptions).to contain_exactly('Consulting hours', 'Support contract')
       end
     end
@@ -93,7 +87,6 @@ RSpec.describe 'Numeric filtering', type: :request do
         body = response.parsed_body
         expect(body['items'].length).to eq(2)
         descriptions = body['items'].map { |item| item['description'] }
-
         expect(descriptions).to contain_exactly('Consulting hours', 'Software license')
       end
     end
@@ -105,7 +98,6 @@ RSpec.describe 'Numeric filtering', type: :request do
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
-
         expect(body['items'].length).to eq(1)
         expect(body['items'][0]['description']).to eq('Free trial')
       end

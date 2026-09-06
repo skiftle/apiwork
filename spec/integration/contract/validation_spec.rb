@@ -162,7 +162,6 @@ RSpec.describe 'Contract validation', type: :integration do
 
       expect(result).to be_invalid
       issue = result.issues.find { |issue| issue.code == :field_unknown }
-
       expect(issue.meta[:field]).to eq(:nonexistent)
     end
 
@@ -171,14 +170,12 @@ RSpec.describe 'Contract validation', type: :integration do
 
       expect(result).to be_invalid
       codes = result.issues.map(&:code)
-
       expect(codes).to include(:field_missing)
       expect(result.issues.length).to eq(2)
     end
 
     it 'includes code, detail, path, and meta on each issue' do
       result = shape.validate({})
-
       issue = result.issues.first
 
       expect(issue.code).to eq(:field_missing)

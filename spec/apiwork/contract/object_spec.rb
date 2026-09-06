@@ -22,6 +22,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.array(
           :tags,
           as: :labels,
@@ -78,6 +79,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.record(
           :scores,
           as: :results,
@@ -134,6 +136,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.binary(
           :content,
           as: :data,
@@ -192,6 +195,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.boolean(
           :published,
           as: :active,
@@ -250,6 +254,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.date(
           :due_date,
           as: :deadline,
@@ -308,6 +313,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.datetime(
           :created_at,
           as: :timestamp,
@@ -366,6 +372,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.decimal(
           :amount,
           as: :total,
@@ -438,6 +445,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.integer(
           :quantity,
           as: :count,
@@ -500,6 +508,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.literal(
           :version,
           as: :api_version,
@@ -551,6 +560,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.number(
           :latitude,
           as: :lat,
@@ -613,6 +623,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.object(
           :address,
           as: :location,
@@ -670,6 +681,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.param(
           :amount,
           as: :total,
@@ -736,6 +748,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.reference(
           :billing_address,
           as: :address,
@@ -793,6 +806,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.string(
           :title,
           as: :name,
@@ -859,6 +873,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.time(
           :opens_at,
           as: :opening_time,
@@ -903,6 +918,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'defines a union param' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.union(:payment_method, discriminator: :type) do
           variant tag: 'card' do
             object { string :last_four }
@@ -921,6 +937,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.union(
           :payment_method,
           as: :payment,
@@ -955,6 +972,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'defines an optional union param' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.union?(:notification, discriminator: :type) do
           variant tag: 'email' do
             object { string :address }
@@ -986,6 +1004,7 @@ RSpec.describe Apiwork::Contract::Object do
       it 'forwards all options' do
         contract_class = create_test_contract
         object = described_class.new(contract_class)
+
         object.uuid(
           :id,
           as: :identifier,

@@ -12,12 +12,14 @@ class RequestRunner
 
   def run_all
     results = {}
+
     @scenarios.each do |scenario|
       scenario = scenario.deep_symbolize_keys
       slug = scenario[:title].parameterize
       clear_database
       results[slug.to_sym] = run_scenario(scenario)
     end
+
     results
   end
 
@@ -45,6 +47,7 @@ class RequestRunner
     return {} unless setup
 
     ids = {}
+
     setup.each do |step|
       step = step.deep_symbolize_keys
       model_name = step[:create]
@@ -53,6 +56,7 @@ class RequestRunner
       record = model_class.create!(attrs)
       ids[model_name.to_sym] = record.id
     end
+
     ids
   end
 
@@ -103,20 +107,24 @@ class RequestRunner
             end
       return ids[key] if ids.key?(key)
     end
+
     value
   end
 
   def build_path(path_template, ids)
     path = path_template.dup
+
     ids.each do |key, id|
       path = path.gsub(":#{key}_id", id.to_s)
     end
+
     if path.include?(':id') && ids.any?
       segments = path.split('/')
       resource_segment = segments.each_cons(2).find { |_, b| b.start_with?(':id') }.first
       model_key = resource_segment.singularize.underscore.to_sym
       path = path.gsub(':id', ids[model_key].to_s)
     end
+
     path
   end
 
@@ -133,12 +141,14 @@ class RequestRunner
       method:,
       path:,
     }
+
     data[:body] = body if body
     data
   end
 
   def build_response_data
     body = response.body.present? ? response.parsed_body : nil
+
     {
       body:,
       status: response.status,
@@ -153,11 +163,13 @@ class RequestRunner
     namespace_prefix = namespace.underscore
     connection = ActiveRecord::Base.connection
     connection.execute('PRAGMA foreign_keys = OFF')
+
     connection.tables.each do |table|
       next unless table.start_with?(namespace_prefix)
 
       connection.execute("DELETE FROM #{table}")
     end
+
     connection.execute('PRAGMA foreign_keys = ON')
     reset_model_sequences
   end

@@ -107,6 +107,7 @@ module Apiwork
         resolved_of = resolve_of(of, type, &block)
         resolved_shape = [:array, :record].include?(type) ? nil : (shape || build_shape(type, discriminator, &block))
         discriminator = resolved_of&.discriminator if type == :array
+
         param_hash = {
           as:,
           custom_type:,
@@ -126,6 +127,7 @@ module Apiwork
           value:,
           of: resolved_of,
         }.compact
+
         param_hash[:default] = default unless UNSET.equal?(default)
         param_hash[:shape] = resolved_shape if resolved_shape
         @params[name] = (@params[name] || {}).merge(param_hash)
@@ -179,6 +181,7 @@ module Apiwork
         element = Element.new
         block.arity.positive? ? yield(element) : element.instance_eval(&block)
         element.validate!
+
         param(
           name,
           as:,
@@ -241,6 +244,7 @@ module Apiwork
         element = Element.new
         block.arity.positive? ? yield(element) : element.instance_eval(&block)
         element.validate!
+
         param(
           name,
           as:,

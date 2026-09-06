@@ -6,6 +6,7 @@ RSpec.describe Apiwork::API::Element do
   describe '#array' do
     it 'defines the type' do
       element = described_class.new
+
       element.array do
         string
       end
@@ -89,6 +90,7 @@ RSpec.describe Apiwork::API::Element do
   describe '#record' do
     it 'defines the type' do
       element = described_class.new
+
       element.record do
         integer
       end
@@ -100,6 +102,7 @@ RSpec.describe Apiwork::API::Element do
   describe '#object' do
     it 'defines the type' do
       element = described_class.new
+
       element.object do
         string :title
       end
@@ -122,6 +125,7 @@ RSpec.describe Apiwork::API::Element do
     context 'when type is :object' do
       it 'defines the element type and shape' do
         element = described_class.new
+
         element.of(:object) do
           string :title
         end
@@ -161,6 +165,7 @@ RSpec.describe Apiwork::API::Element do
     context 'when type is :union' do
       it 'defines the element type' do
         element = described_class.new
+
         element.of(:union, discriminator: :type) do
           variant tag: 'card' do
             object { string :last_four }
@@ -213,6 +218,7 @@ RSpec.describe Apiwork::API::Element do
   describe '#union' do
     it 'defines the type' do
       element = described_class.new
+
       element.union(discriminator: :type) do
         variant tag: 'card' do
           object do

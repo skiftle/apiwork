@@ -122,6 +122,7 @@ module Apiwork
         @name = name
         @owner_representation_class = owner_representation_class
         @of = nil
+
         if block
           element = Element.new
           block.arity.positive? ? yield(element) : element.instance_eval(&block)
@@ -130,6 +131,7 @@ module Apiwork
           type = element.type
           @of = element.inner&.type if [:array, :record].include?(element.type)
         end
+
         if owner_representation_class.model_class.present?
           @model_class = owner_representation_class.model_class
 
@@ -164,6 +166,7 @@ module Apiwork
             @db_column = false
           end
         end
+
         optional = false if optional.nil?
         nullable = false if nullable.nil?
         default = '' if UNSET.equal?(default) && empty
@@ -345,7 +348,6 @@ module Apiwork
 
         column = column_for(name)
         return false unless column
-
         return true unless column.default.nil?
 
         column.null
@@ -361,7 +363,6 @@ module Apiwork
 
         default = @model_class.column_defaults[name.to_s]
         return default unless default.nil?
-
         return '' if empty && nullable && optional
         return nil if nullable && optional
 
@@ -400,10 +401,12 @@ module Apiwork
         return if @type == :unknown
 
         allowed_formats = ALLOWED_FORMATS[@type]
+
         unless allowed_formats
           raise ConfigurationError,
                 "Attribute #{@name}: format option is not supported for type :#{@type}"
         end
+
         return if allowed_formats.include?(@format.to_sym)
 
         raise ConfigurationError,

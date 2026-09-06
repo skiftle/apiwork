@@ -24,6 +24,7 @@ RSpec.describe Apiwork::Adapter::Base do
       capability_class = Class.new(Apiwork::Adapter::Capability::Base) do
         capability_name :unit_test_capability
       end
+
       adapter_class = Class.new(described_class) do
         capability capability_class
       end
@@ -61,6 +62,7 @@ RSpec.describe Apiwork::Adapter::Base do
       parent = Class.new(described_class) do
         collection_wrapper Apiwork::Adapter::Wrapper::Collection::Default
       end
+
       child = Class.new(parent)
 
       expect(child.collection_wrapper).to eq(Apiwork::Adapter::Wrapper::Collection::Default)
@@ -96,6 +98,7 @@ RSpec.describe Apiwork::Adapter::Base do
       parent = Class.new(described_class) do
         error_serializer Apiwork::Adapter::Serializer::Error::Default
       end
+
       child = Class.new(parent)
 
       expect(child.error_serializer).to eq(Apiwork::Adapter::Serializer::Error::Default)
@@ -131,6 +134,7 @@ RSpec.describe Apiwork::Adapter::Base do
       parent = Class.new(described_class) do
         error_wrapper Apiwork::Adapter::Wrapper::Error::Default
       end
+
       child = Class.new(parent)
 
       expect(child.error_wrapper).to eq(Apiwork::Adapter::Wrapper::Error::Default)
@@ -166,6 +170,7 @@ RSpec.describe Apiwork::Adapter::Base do
       parent = Class.new(described_class) do
         member_wrapper Apiwork::Adapter::Wrapper::Member::Default
       end
+
       child = Class.new(parent)
 
       expect(child.member_wrapper).to eq(Apiwork::Adapter::Wrapper::Member::Default)
@@ -201,6 +206,7 @@ RSpec.describe Apiwork::Adapter::Base do
       parent = Class.new(described_class) do
         resource_serializer Apiwork::Adapter::Serializer::Resource::Default
       end
+
       child = Class.new(parent)
 
       expect(child.resource_serializer).to eq(Apiwork::Adapter::Serializer::Resource::Default)
@@ -212,6 +218,7 @@ RSpec.describe Apiwork::Adapter::Base do
       capability_class = Class.new(Apiwork::Adapter::Capability::Base) do
         capability_name :unit_test_skip
       end
+
       adapter_class = Class.new(described_class) do
         capability capability_class
         skip_capability :unit_test_skip

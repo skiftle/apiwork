@@ -138,6 +138,7 @@ module Apiwork
       #   end
       def raises(*error_code_keys)
         error_code_keys = error_code_keys.flatten
+
         error_code_keys.each do |error_code_key|
           unless error_code_key.is_a?(Symbol)
             hint = error_code_key.is_a?(Integer) ? " Use :#{ErrorCode.key_for_status(error_code_key)} instead." : ''
@@ -150,6 +151,7 @@ module Apiwork
                 "Unknown error code :#{error_code_key}. Register it with: " \
                 "Apiwork::ErrorCode.register :#{error_code_key}, status: <status>"
         end
+
         @raises |= error_code_keys
       end
 
@@ -190,9 +192,11 @@ module Apiwork
       def request(replace: false, &block)
         @reset_request = replace if replace
         @request ||= Request.new(contract_class, name)
+
         if block
           block.arity.positive? ? yield(@request) : @request.instance_eval(&block)
         end
+
         @request
       end
 
@@ -234,9 +238,11 @@ module Apiwork
       def response(replace: false, &block)
         @reset_response = replace if replace
         @response ||= Response.new(contract_class, name)
+
         if block
           block.arity.positive? ? yield(@response) : @response.instance_eval(&block)
         end
+
         @response
       end
 

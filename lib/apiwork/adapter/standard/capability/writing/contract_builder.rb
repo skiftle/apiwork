@@ -9,6 +9,7 @@ module Apiwork
             def build
               build_enums
               build_nested_payload_union if api_class.representation_registry.nested_writable?(representation_class)
+
               %i[create update].each do |action_name|
                 next unless scope.action?(action_name)
 
@@ -26,6 +27,7 @@ module Apiwork
                   end
                 end
               end
+
               return unless representation_class.subclass?
 
               build_payload_type(:create)
@@ -86,6 +88,7 @@ module Apiwork
               return if type?(type_name)
 
               writable = action_name != :delete
+
               object(type_name) do |object|
                 object.literal(Constants::OP, value: action_name.to_s)
                 object.param(:id, optional: action_name != :delete, type: primary_key_type) unless action_name == :create
@@ -116,6 +119,7 @@ module Apiwork
 
             def build_sti_payload_union(action_name)
               representation_inheritance = representation_class.inheritance
+
               variant_refs = representation_inheritance.subclasses.filter_map do |subclass|
                 subclass_contract = contract_for(subclass)
                 next unless subclass_contract
@@ -125,6 +129,7 @@ module Apiwork
 
                 { tag: subclass.sti_name, type: [alias_name, action_name, 'payload'].join('_').to_sym }
               end
+
               union([action_name, 'payload'].join('_').to_sym, discriminator: representation_inheritance.column) do |union|
                 variant_refs.each do |variant_ref|
                   union.variant(tag: variant_ref[:tag]) do |element|
@@ -136,16 +141,19 @@ module Apiwork
 
             def collect_writable_params(action_name)
               params = []
+
               representation_class.attributes.each do |name, attribute|
                 next unless attribute.writable_for?(action_name)
 
                 params << { name:, options: attribute_options(attribute, action_name) }
               end
+
               representation_class.associations.each do |name, association|
                 next unless association.writable_for?(action_name)
 
                 params << { name:, options: association_options(association) }
               end
+
               params
             end
 
@@ -159,11 +167,13 @@ module Apiwork
                 optional: action_name == :update || attribute.optional?,
                 type: attribute.type,
               }
+
               options[:default] = attribute.default if attribute.default? && action_name == :create
               options[:min] = attribute.min if attribute.min
               options[:max] = attribute.max if attribute.max
               options[:of] = attribute.of if attribute.of
               options[:enum] = attribute.name if attribute.enum
+
               if attribute.element
                 element = attribute.element
 
@@ -174,6 +184,7 @@ module Apiwork
                   options[:discriminator] = element.discriminator if element.discriminator
                 end
               end
+
               polymorphic_options = polymorphic_type_options(attribute)
               options.merge!(polymorphic_options) if polymorphic_options
               options
@@ -189,6 +200,7 @@ module Apiwork
 
             def association_options(association)
               payload_type = resolve_association_payload_type(association)
+
               options = {
                 as: [association.name, 'attributes'].join('_').to_sym,
                 deprecated: association.deprecated?,
@@ -197,6 +209,7 @@ module Apiwork
                 nullable: association.nullable?,
                 optional: true,
               }
+
               if payload_type
                 if association.collection?
                   options[:type] = :array
@@ -207,6 +220,7 @@ module Apiwork
               else
                 options[:type] = association.collection? ? :array : :object
               end
+
               options
             end
 

@@ -6,7 +6,6 @@ RSpec.describe Apiwork::API::TypeRegistry::Definition do
   describe '#merge' do
     it 'returns the merged definition' do
       definition = described_class.new(:item, block: proc { |shape| shape.string :title }, kind: :object)
-
       merged = definition.merge(block: nil, deprecated: true, description: 'An item', example: nil)
 
       expect(merged.deprecated?).to be(true)
@@ -33,7 +32,6 @@ RSpec.describe Apiwork::API::TypeRegistry::Definition do
   describe '#shape' do
     it 'returns the shape' do
       definition = described_class.new(:item, block: proc { |shape| shape.string :title }, kind: :object)
-
       result = definition.shape
 
       expect(result).to be_a(Apiwork::API::Object)

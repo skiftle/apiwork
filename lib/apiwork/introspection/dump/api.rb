@@ -12,6 +12,7 @@ module Apiwork
         def to_h
           resources = build_resources
           type_dump_hash = @type_dump.to_h
+
           {
             resources:,
             base_path: @api_class.transform_path(@api_class.base_path),

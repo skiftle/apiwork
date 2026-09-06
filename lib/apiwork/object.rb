@@ -1797,6 +1797,7 @@ module Apiwork
       required: false
     )
       reference_type = to || name
+
       param(
         name,
         as:,
@@ -1845,6 +1846,7 @@ module Apiwork
       required: false
     )
       reference_type = to || name
+
       param(
         name,
         as:,

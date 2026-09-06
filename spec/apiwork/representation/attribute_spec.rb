@@ -9,6 +9,7 @@ RSpec.describe Apiwork::Representation::Attribute do
         representation_class = Class.new(Apiwork::Representation::Base) do
           model Invoice
         end
+
         attribute = described_class.new(:number, representation_class)
 
         expect(attribute.name).to eq(:number)
@@ -34,6 +35,7 @@ RSpec.describe Apiwork::Representation::Attribute do
     context 'with overrides' do
       it 'forwards all options' do
         representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+
         attribute = described_class.new(
           :number,
           representation_class,

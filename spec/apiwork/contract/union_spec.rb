@@ -8,6 +8,7 @@ RSpec.describe Apiwork::Contract::Union do
       it 'defines a variant' do
         contract_class = create_test_contract
         union = described_class.new(contract_class, discriminator: :type)
+
         union.variant(tag: 'card') do
           object do
             string :last_four
@@ -27,6 +28,7 @@ RSpec.describe Apiwork::Contract::Union do
       it 'forwards all options' do
         contract_class = create_test_contract
         union = described_class.new(contract_class, discriminator: :type)
+
         union.variant(
           deprecated: true,
           description: 'Card payment',

@@ -17,6 +17,7 @@ RSpec.describe 'Contract imports', type: :integration do
 
     it 'imports object types from another contract' do
       imported_contract = invoice_contract
+
       importing_contract = create_test_contract do
         import imported_contract, as: :invoice
 
@@ -36,6 +37,7 @@ RSpec.describe 'Contract imports', type: :integration do
 
     it 'imports enum types from another contract' do
       imported_contract = invoice_contract
+
       importing_contract = create_test_contract do
         import imported_contract, as: :invoice
 
@@ -55,6 +57,7 @@ RSpec.describe 'Contract imports', type: :integration do
 
     it 'supports multiple imports' do
       first_contract = invoice_contract
+
       second_contract = create_test_contract do
         object :contact do
           string :name
@@ -109,6 +112,7 @@ RSpec.describe 'Contract imports', type: :integration do
           integer :version
         end
       end
+
       importing_contract = create_test_contract do
         import base_contract, as: :base
 
@@ -116,11 +120,11 @@ RSpec.describe 'Contract imports', type: :integration do
           string :version
         end
       end
+
       local_type = importing_contract.resolve_custom_type(:metadata)
+
       expect(local_type).not_to be_nil
-
       imported_type = importing_contract.resolve_custom_type(:base_metadata)
-
       expect(imported_type).not_to be_nil
     end
   end

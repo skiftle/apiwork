@@ -349,7 +349,6 @@ RSpec.describe Apiwork::API::Base do
         api_class = Apiwork::API.define('/unit/base-prepare-error-keep') {}
         response = Apiwork::Response.new(body: error_body)
         result = api_class.prepare_error_response(response)
-
         issue = result.body[:issues].first
 
         expect(issue[:path]).to eq(%w[invoice hourly_rate_cents])
@@ -362,8 +361,8 @@ RSpec.describe Apiwork::API::Base do
         api_class = Apiwork::API.define '/unit/base-prepare-error-camel-keys' do
           key_format :camel
         end
-        response = Apiwork::Response.new(body: error_body)
 
+        response = Apiwork::Response.new(body: error_body)
         result = api_class.prepare_error_response(response)
 
         expect(result.body).to have_key(:issues)
@@ -374,9 +373,9 @@ RSpec.describe Apiwork::API::Base do
         api_class = Apiwork::API.define '/unit/base-prepare-error-camel-path' do
           key_format :camel
         end
+
         response = Apiwork::Response.new(body: error_body)
         result = api_class.prepare_error_response(response)
-
         issue = result.body[:issues].first
 
         expect(issue[:path]).to eq(%w[invoice hourlyRateCents])
@@ -386,9 +385,9 @@ RSpec.describe Apiwork::API::Base do
         api_class = Apiwork::API.define '/unit/base-prepare-error-camel-pointer' do
           key_format :camel
         end
+
         response = Apiwork::Response.new(body: error_body)
         result = api_class.prepare_error_response(response)
-
         issue = result.body[:issues].first
 
         expect(issue[:pointer]).to eq('/invoice/hourlyRateCents')
@@ -398,6 +397,7 @@ RSpec.describe Apiwork::API::Base do
         api_class = Apiwork::API.define '/unit/base-prepare-error-camel-array' do
           key_format :camel
         end
+
         nested_body = {
           issues: [
             {
@@ -410,9 +410,9 @@ RSpec.describe Apiwork::API::Base do
           ],
           layer: :contract,
         }
+
         response = Apiwork::Response.new(body: nested_body)
         result = api_class.prepare_error_response(response)
-
         issue = result.body[:issues].first
 
         expect(issue[:path]).to eq(['invoice', 'lineItems', 0, 'unitPrice'])
@@ -425,9 +425,9 @@ RSpec.describe Apiwork::API::Base do
         api_class = Apiwork::API.define '/unit/base-prepare-error-kebab-path' do
           key_format :kebab
         end
+
         response = Apiwork::Response.new(body: error_body)
         result = api_class.prepare_error_response(response)
-
         issue = result.body[:issues].first
 
         expect(issue[:path]).to eq(%w[invoice hourly-rate-cents])

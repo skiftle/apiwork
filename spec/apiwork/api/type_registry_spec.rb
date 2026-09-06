@@ -6,7 +6,6 @@ RSpec.describe Apiwork::API::TypeRegistry do
   describe '#register' do
     it 'registers the type' do
       registry = described_class.new
-
       registry.register(:item, kind: :object) { string :title }
 
       expect(registry[:item]).to be_a(Apiwork::API::TypeRegistry::Definition)
@@ -16,7 +15,6 @@ RSpec.describe Apiwork::API::TypeRegistry do
       it 'merges the definition' do
         registry = described_class.new
         registry.register(:item, kind: :object) { string :title }
-
         registry.register(:item, description: 'An item', kind: :object)
 
         expect(registry[:item].description).to eq('An item')
@@ -39,7 +37,6 @@ RSpec.describe Apiwork::API::TypeRegistry do
     it 'returns the scoped name' do
       registry = described_class.new
       scope = Struct.new(:scope_prefix).new('invoice')
-
       result = registry.scoped_name(scope, :item)
 
       expect(result).to eq(:invoice_item)
@@ -48,7 +45,6 @@ RSpec.describe Apiwork::API::TypeRegistry do
     context 'without scope' do
       it 'returns the name' do
         registry = described_class.new
-
         result = registry.scoped_name(nil, :item)
 
         expect(result).to eq(:item)
@@ -59,7 +55,6 @@ RSpec.describe Apiwork::API::TypeRegistry do
       it 'returns the name' do
         registry = described_class.new
         scope = Struct.new(:scope_prefix).new(nil)
-
         result = registry.scoped_name(scope, :item)
 
         expect(result).to eq(:item)
@@ -70,7 +65,6 @@ RSpec.describe Apiwork::API::TypeRegistry do
       it 'returns the prefix' do
         registry = described_class.new
         scope = Struct.new(:scope_prefix).new('invoice')
-
         result = registry.scoped_name(scope, nil)
 
         expect(result).to eq(:invoice)

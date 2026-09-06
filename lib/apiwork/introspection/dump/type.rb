@@ -40,6 +40,7 @@ module Apiwork
 
         def build_type(qualified_name, type_definition)
           scope = resolve_scope(type_definition.scope)
+
           if type_definition.union?
             {
               scope:,
@@ -76,9 +77,11 @@ module Apiwork
 
           result = {}
           expand_merged_types(type_definition, result)
+
           type_definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
             result[name] = build_param(name, param_options, type_definition.scope)
           end
+
           result
         end
 
@@ -110,6 +113,7 @@ module Apiwork
                       elsif options[:type] && !PRIMITIVE_TYPES.include?(options[:type])
                         resolve_type_reference(options[:type], scope)
                       end
+
           result = {
             reference:,
             as: options[:as],
@@ -131,6 +135,7 @@ module Apiwork
             value: options[:type] == :literal ? options[:value] : nil,
             variants: build_nested_variants(options[:shape]),
           }
+
           result[:default] = options[:default] if options.key?(:default)
           result
         end
@@ -138,6 +143,7 @@ module Apiwork
         def build_variant(variant, scope)
           reference = resolve_type_reference(variant[:custom_type] || variant[:type], scope)
           resolved_type = reference ? :reference : (variant[:type] || :unknown)
+
           {
             reference:,
             as: nil,
@@ -166,9 +172,11 @@ module Apiwork
           return {} unless shape.respond_to?(:params)
 
           result = {}
+
           shape.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
             result[name] = build_param(name, param_options, nil)
           end
+
           result
         end
 
@@ -213,6 +221,7 @@ module Apiwork
           union_shape = union && of.shape.is_a?(Apiwork::API::Union) ? of.shape : nil
           type_value = of.type
           scoped_name = resolve_scoped_type_name(type_value, scope)
+
           result = {
             as: nil,
             deprecated: false,
@@ -234,6 +243,7 @@ module Apiwork
             value: nil,
             variants: union_shape ? union_shape.variants.map { |variant| build_variant(variant, scope) } : [],
           }
+
           result[:of] = resolve_of({ of: of.inner }, scope) if of.type == :array && of.inner
           result
         end
@@ -283,10 +293,12 @@ module Apiwork
             description = i18n_attribute_description(attribute)
             return description if description
           end
+
           if (association = representation_class.associations[name])
             description = i18n_association_description(association)
             return description if description
           end
+
           nil
         end
 
@@ -323,9 +335,7 @@ module Apiwork
         def resolve_scoped_type_name(type_name, scope)
           return nil unless type_name.is_a?(Symbol)
           return nil unless @api_class
-
           return type_name if @api_class.type_registry.key?(type_name) || @api_class.enum_registry.key?(type_name)
-
           return nil unless scope
 
           scoped_name = @api_class.scoped_type_name(scope, type_name)

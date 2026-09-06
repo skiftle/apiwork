@@ -6,6 +6,7 @@ RSpec.describe Apiwork::Adapter::Capability::Operation::Base do
   describe '.metadata_shape' do
     it 'returns the metadata shape' do
       shape_class = Class.new(Apiwork::Adapter::Capability::Operation::MetadataShape)
+
       operation_class = Class.new(described_class) do
         metadata_shape shape_class
       end
@@ -54,7 +55,6 @@ RSpec.describe Apiwork::Adapter::Capability::Operation::Base do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
       options = {}
       request = Apiwork::Request.new(body: {}, query: {})
-
       operation = described_class.new(data, representation_class, options, request)
 
       expect(operation.data).to eq(data)
@@ -77,7 +77,6 @@ RSpec.describe Apiwork::Adapter::Capability::Operation::Base do
     it 'returns the result' do
       request = Apiwork::Request.new(body: {}, query: {})
       operation = described_class.new([], Object, {}, request)
-
       result = operation.result(data: [])
 
       expect(result).to be_a(Apiwork::Adapter::Capability::Result)
@@ -92,7 +91,9 @@ RSpec.describe Apiwork::Adapter::Capability::Operation::Base do
           apiwork: { adapters: { unit_operation: { capabilities: { unit_capability: { label: 'found' } } } } },
         },
       )
+
       request = Apiwork::Request.new(body: {}, query: {})
+
       operation = described_class.new(
         [],
         Object,
@@ -107,6 +108,7 @@ RSpec.describe Apiwork::Adapter::Capability::Operation::Base do
     context 'when not found' do
       it 'returns the default' do
         request = Apiwork::Request.new(body: {}, query: {})
+
         operation = described_class.new(
           [],
           Object,

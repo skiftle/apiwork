@@ -11,11 +11,11 @@ RSpec.describe 'Singular resource', type: :request do
         name: 'Admin',
         timezone: 'Europe/Stockholm',
       )
+
       get '/api/v1/profile'
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body['profile']['name']).to eq('Admin')
       expect(body['profile']['bio']).to eq('Billing administrator')
       expect(body['profile']['timezone']).to eq('Europe/Stockholm')
@@ -36,11 +36,11 @@ RSpec.describe 'Singular resource', type: :request do
         name: 'Admin',
         timezone: 'Europe/Stockholm',
       )
+
       get '/api/v1/profile'
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body['profile']['id']).to eq(profile.id)
       expect(body['profile']['name']).to eq('Admin')
       expect(body['profile']['email']).to eq('admin@billing.test')
@@ -66,7 +66,6 @@ RSpec.describe 'Singular resource', type: :request do
 
       expect(response).to have_http_status(:created)
       body = response.parsed_body
-
       expect(body['profile']['name']).to eq('Admin')
       expect(body['profile']['timezone']).to eq('Europe/Stockholm')
     end
@@ -89,7 +88,6 @@ RSpec.describe 'Singular resource', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body['profile']['bio']).to eq('Updated bio')
     end
   end

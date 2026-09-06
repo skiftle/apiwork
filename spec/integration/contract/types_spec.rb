@@ -80,10 +80,9 @@ RSpec.describe 'Contract types', type: :integration do
           end
         end
       end
+
       expect(api.type_registry.key?(:notification)).to be(true)
-
       definition = api.type_registry[:notification]
-
       expect(definition.discriminator).to eq(:type)
     end
 

@@ -79,9 +79,9 @@ RSpec.describe 'Attribute preload', type: :integration do
 
         define_method(:item_count) { record.items.size }
       end
+
       runner = Apiwork::Adapter::Capability::Runner.new([], wrapper_type: :member)
       relation = Invoice.all
-
       preloaded_data, = runner.run(relation, representation_class, double(:request))
 
       expect(preloaded_data.includes_values).to include(:items)
@@ -96,9 +96,9 @@ RSpec.describe 'Attribute preload', type: :integration do
         define_method(:item_count) { record.items.size }
         define_method(:payment_count) { record.payments.size }
       end
+
       runner = Apiwork::Adapter::Capability::Runner.new([], wrapper_type: :member)
       relation = Invoice.all
-
       preloaded_data, = runner.run(relation, representation_class, double(:request))
 
       expect(preloaded_data.includes_values).to include(:items, :payments)
@@ -111,9 +111,9 @@ RSpec.describe 'Attribute preload', type: :integration do
 
         define_method(:item_count) { record.items.size }
       end
+
       runner = Apiwork::Adapter::Capability::Runner.new([], wrapper_type: :member)
       relation = Invoice.all
-
       preloaded_data, = runner.run(relation, representation_class, double(:request))
 
       expect(preloaded_data.includes_values).to include({ items: :adjustments })

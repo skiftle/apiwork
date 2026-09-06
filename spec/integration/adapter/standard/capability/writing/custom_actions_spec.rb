@@ -16,7 +16,6 @@ RSpec.describe 'Custom actions', type: :request do
       body = response.parsed_body
       expect(body['invoice']['sent']).to be(true)
       invoice1.reload
-
       expect(invoice1.sent).to be(true)
     end
 
@@ -36,7 +35,6 @@ RSpec.describe 'Custom actions', type: :request do
       expect(response).to have_http_status(:bad_request)
       body = response.parsed_body
       issue = body['issues'].find { |issue| issue['code'] == 'field_unknown' }
-
       expect(issue['code']).to eq('field_unknown')
     end
   end
@@ -49,7 +47,6 @@ RSpec.describe 'Custom actions', type: :request do
       body = response.parsed_body
       expect(body['invoice']['status']).to eq('void')
       invoice1.reload
-
       expect(invoice1.void?).to be(true)
     end
   end
@@ -62,7 +59,6 @@ RSpec.describe 'Custom actions', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body['invoices'].length).to eq(1)
       expect(body['invoices'][0]['number']).to eq('INV-001')
     end
@@ -83,7 +79,6 @@ RSpec.describe 'Custom actions', type: :request do
 
       expect(response).to have_http_status(:created)
       body = response.parsed_body
-
       expect(body['invoices'].length).to eq(2)
     end
   end

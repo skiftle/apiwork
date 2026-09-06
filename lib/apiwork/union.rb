@@ -45,6 +45,7 @@ module Apiwork
       element = build_element
       block.arity.positive? ? yield(element) : element.instance_eval(&block)
       element.validate!
+
       data = {
         deprecated:,
         description:,
@@ -60,6 +61,7 @@ module Apiwork
         type: element.type,
         value: element.value,
       }.compact
+
       append_or_merge_variant(data, tag)
     end
 
@@ -91,7 +93,6 @@ module Apiwork
 
     def validate_tag!(tag)
       raise ConfigurationError, 'tag can only be used when union has a discriminator' if tag.present? && @discriminator.nil?
-
       return unless @discriminator.present? && tag.blank?
 
       raise ConfigurationError, 'tag is required for all variants when union has a discriminator'

@@ -12,7 +12,6 @@ RSpec.describe 'Error codes', type: :integration do
 
     it 'returns correct status and key' do
       Apiwork::ErrorCode.register :rate_limited, status: 429
-
       error_code = Apiwork::ErrorCode.find!(:rate_limited)
 
       expect(error_code.key).to eq(:rate_limited)
@@ -21,7 +20,6 @@ RSpec.describe 'Error codes', type: :integration do
 
     it 'supports attach_path option' do
       Apiwork::ErrorCode.register :resource_locked, attach_path: true, status: 423
-
       error_code = Apiwork::ErrorCode.find!(:resource_locked)
 
       expect(error_code.attach_path?).to be(true)
@@ -113,6 +111,7 @@ RSpec.describe 'Error codes', type: :integration do
 
     it 'accepts custom registered error codes' do
       Apiwork::ErrorCode.register :insufficient_credits, status: 402
+
       contract = Class.new(Apiwork::Contract::Base) do
         def self.name
           'PurchaseContract'

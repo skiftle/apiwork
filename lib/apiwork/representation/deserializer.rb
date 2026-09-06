@@ -26,11 +26,13 @@ module Apiwork
 
         result = hash.dup
         transform_type_columns(result)
+
         @representation_class.attributes.each do |name, attribute|
           next unless result.key?(name)
 
           result[name] = attribute.decode(result[name])
         end
+
         @representation_class.associations.each do |name, association|
           next unless result.key?(name)
 
@@ -46,6 +48,7 @@ module Apiwork
                            value
                          end
         end
+
         result
       end
 

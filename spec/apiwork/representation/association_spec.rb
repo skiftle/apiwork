@@ -27,6 +27,7 @@ RSpec.describe Apiwork::Representation::Association do
       it 'forwards all options' do
         target_representation = Class.new(Apiwork::Representation::Base) { abstract! }
         representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+
         association = described_class.new(
           :items,
           :has_many,
@@ -125,6 +126,7 @@ RSpec.describe Apiwork::Representation::Association do
     it 'returns true when polymorphic' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
       polymorphic_representation = Class.new(Apiwork::Representation::Base) { abstract! }
+
       association = described_class.new(
         :billable,
         :belongs_to,
@@ -147,6 +149,7 @@ RSpec.describe Apiwork::Representation::Association do
     it 'returns the representation class' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
       target_representation = Class.new(Apiwork::Representation::Base) { abstract! }
+
       association = described_class.new(
         :items,
         :has_many,

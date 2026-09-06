@@ -98,6 +98,7 @@ module Apiwork
             validate_class_setter!(:resource_serializer, klass, Serializer::Resource::Base, 'Serializer')
             @resource_serializer = klass
           end
+
           @resource_serializer || (superclass.respond_to?(:resource_serializer) && superclass.resource_serializer)
         end
 
@@ -115,6 +116,7 @@ module Apiwork
             validate_class_setter!(:error_serializer, klass, Serializer::Error::Base, 'Serializer')
             @error_serializer = klass
           end
+
           @error_serializer || (superclass.respond_to?(:error_serializer) && superclass.error_serializer)
         end
 
@@ -132,6 +134,7 @@ module Apiwork
             validate_class_setter!(:member_wrapper, klass, Wrapper::Member::Base, 'Wrapper')
             @member_wrapper = klass
           end
+
           @member_wrapper || (superclass.respond_to?(:member_wrapper) && superclass.member_wrapper)
         end
 
@@ -149,6 +152,7 @@ module Apiwork
             validate_class_setter!(:collection_wrapper, klass, Wrapper::Collection::Base, 'Wrapper')
             @collection_wrapper = klass
           end
+
           @collection_wrapper || (superclass.respond_to?(:collection_wrapper) && superclass.collection_wrapper)
         end
 
@@ -166,6 +170,7 @@ module Apiwork
             validate_class_setter!(:error_wrapper, klass, Wrapper::Error::Base, 'Wrapper')
             @error_wrapper = klass
           end
+
           @error_wrapper || (superclass.respond_to?(:error_wrapper) && superclass.error_wrapper)
         end
 
@@ -177,6 +182,7 @@ module Apiwork
                   "#{name} must be a #{label} class, got #{klass.class}. " \
                   "Use: #{name} Example (not 'Example' or :example)"
           end
+
           return if klass < base_class
 
           raise ConfigurationError,
@@ -206,6 +212,7 @@ module Apiwork
         capabilities.each do |capability|
           capability.api_types(api_class)
         end
+
         error_serializer_class = self.class.error_serializer
         error_serializer_class.new.api_types(api_class)
       end
@@ -214,6 +221,7 @@ module Apiwork
         capabilities.each do |capability|
           capability.contract_types(contract_class, representation_class, resource_actions)
         end
+
         self.class.resource_serializer.new(representation_class).contract_types(contract_class)
         build_action_responses(contract_class, representation_class, resource_actions) if resource_actions.any?
       end
@@ -269,6 +277,7 @@ module Apiwork
       def build_member_action_response(contract_class, representation_class, action, contract_action)
         member_shape_class = self.class.member_wrapper.shape_class
         data_type = resolve_resource_data_type(representation_class)
+
         contract_action.response do |response|
           response.body do |body|
             member_shape_class.apply(body, representation_class.root_key, capabilities, representation_class, :member, data_type:)
@@ -279,6 +288,7 @@ module Apiwork
       def build_collection_action_response(contract_class, representation_class, action, contract_action)
         collection_shape_class = self.class.collection_wrapper.shape_class
         data_type = resolve_resource_data_type(representation_class)
+
         contract_action.response do |response|
           response.body do |body|
             collection_shape_class.apply(body, representation_class.root_key, capabilities, representation_class, :collection, data_type:)

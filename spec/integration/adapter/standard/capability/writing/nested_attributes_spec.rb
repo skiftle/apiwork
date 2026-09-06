@@ -22,7 +22,6 @@ RSpec.describe 'Nested attributes', type: :request do
 
       expect(response).to have_http_status(:created)
       created_invoice = Invoice.last
-
       expect(created_invoice.items.count).to eq(2)
       expect(created_invoice.items.pluck(:description)).to contain_exactly('Consulting hours', 'Software license')
     end
@@ -46,7 +45,6 @@ RSpec.describe 'Nested attributes', type: :request do
 
       expect(response).to have_http_status(:ok)
       item1.reload
-
       expect(item1.description).to eq('Updated consulting')
       expect(item1.quantity).to eq(20)
     end
@@ -64,7 +62,6 @@ RSpec.describe 'Nested attributes', type: :request do
 
       expect(response).to have_http_status(:ok)
       invoice1.reload
-
       expect(invoice1.items.count).to eq(1)
       expect(Item.find_by(id: item1.id)).to be_nil
     end
@@ -91,7 +88,6 @@ RSpec.describe 'Nested attributes', type: :request do
       expect(invoice1.items.count).to eq(2)
       expect(Item.find_by(id: item2.id)).to be_nil
       item1.reload
-
       expect(item1.description).to eq('Updated consulting')
     end
   end

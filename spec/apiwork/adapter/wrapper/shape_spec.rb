@@ -8,7 +8,6 @@ RSpec.describe Apiwork::Adapter::Wrapper::Shape do
       target = Object.new
       root_key = :invoice
       metadata_type_names = [:pagination]
-
       shape = described_class.new(target, root_key, metadata_type_names, data_type: :invoice_data)
 
       expect(shape.root_key).to eq(:invoice)

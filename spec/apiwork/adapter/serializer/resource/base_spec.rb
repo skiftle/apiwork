@@ -6,6 +6,7 @@ RSpec.describe Apiwork::Adapter::Serializer::Resource::Base do
   describe '.contract_builder' do
     it 'returns the contract builder' do
       builder_class = Class.new(Apiwork::Adapter::Builder::Contract::Base)
+
       serializer_class = Class.new(described_class) do
         contract_builder builder_class
       end
@@ -39,7 +40,6 @@ RSpec.describe Apiwork::Adapter::Serializer::Resource::Base do
   describe '#initialize' do
     it 'creates with required attributes' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
-
       serializer = described_class.new(representation_class)
 
       expect(serializer.representation_class).to eq(representation_class)

@@ -232,6 +232,7 @@ module Apiwork
         value.each do |item|
           validate_polymorphic_item!(item)
         end
+
         value
       end
 
@@ -318,11 +319,13 @@ module Apiwork
 
         detail = "Invalid include option ':#{@include}' for association '#{@name}'. " \
                  'Must be :always or :optional'
+
         error = ConfigurationError.new(
           detail:,
           code: :invalid_include_option,
           path: [@name],
         )
+
         raise error
       end
 
@@ -335,11 +338,13 @@ module Apiwork
         return if reflection
 
         detail = "Undefined association '#{@name}' in #{@owner_representation_class.name}: no association on model"
+
         error = ConfigurationError.new(
           detail:,
           code: :invalid_association,
           path: [@name],
         )
+
         raise error
       end
 
@@ -348,6 +353,7 @@ module Apiwork
         return unless writable?
 
         nested_attribute_method = "#{@name}_attributes="
+
         unless @model_class.instance_methods.include?(nested_attribute_method.to_sym)
           detail = "#{@model_class.name} doesn't accept nested attributes for #{@name}. " \
                    "Add: accepts_nested_attributes_for :#{@name}"
@@ -359,6 +365,7 @@ module Apiwork
 
           raise error
         end
+
         nested_options = @model_class.nested_attributes_options[@name]
         return unless nested_options
 

@@ -16,7 +16,6 @@ RSpec.describe 'Representation polymorphic associations', type: :integration do
 
       expect(result[:taggings].length).to eq(2)
       tag_ids = result[:taggings].map { |tagging| tagging[:tag_id] }
-
       expect(tag_ids).to contain_exactly(tag1.id, tag2.id)
     end
   end
@@ -32,7 +31,6 @@ RSpec.describe 'Representation polymorphic associations', type: :integration do
   context 'with nested include' do
     it 'serializes taggings with nested tag data' do
       result = Api::V1::InvoiceRepresentation.serialize(invoice1, include: { taggings: { tag: true } })
-
       tagging = result[:taggings].find { |item| item[:tag_id] == tag1.id }
 
       expect(tagging[:tag][:name]).to eq('Priority')

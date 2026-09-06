@@ -42,12 +42,15 @@ module Apiwork
 
       def build_object_schema(type_name, type, recursive: false)
         schema_name = pascal_case(type_name)
+
         properties = type.shape.sort_by { |name, _param| name.to_s }.map do |name, param|
           key = @export.transform_key(name)
           zod_type = map_field(param)
           "  #{key}: #{zod_type}"
         end.join(",\n")
+
         type_annotation = recursive ? ": z.ZodType<#{schema_name}>" : ''
+
         if recursive
           "export const #{schema_name}Schema#{type_annotation} = z.lazy(() => z.object({\n#{properties}\n}));"
         elsif type.extends?
@@ -59,12 +62,14 @@ module Apiwork
 
       def build_object_schema_code(schema_name, properties, extends, type_annotation: '')
         base_schemas = extends.map { |type| "#{pascal_case(type)}Schema" }
+
         base_chain = if base_schemas.size == 1
                        base_schemas.first
                      else
                        first, *rest = base_schemas
                        rest.reduce(first) { |acc, schema| "#{acc}.merge(#{schema})" }
                      end
+
         if properties.empty?
           "export const #{schema_name}Schema#{type_annotation} = #{base_chain};"
         else
@@ -74,6 +79,7 @@ module Apiwork
 
       def build_union_schema(type_name, type, recursive: false)
         schema_name = pascal_case(type_name)
+
         variant_schemas = type.variants.map do |variant|
           base_schema = map_param(variant)
 
@@ -83,13 +89,16 @@ module Apiwork
             base_schema
           end
         end
+
         union_body = variant_schemas.map { |schema| "  #{schema}" }.join(",\n")
         type_annotation = recursive ? ": z.ZodType<#{schema_name}>" : ''
+
         union_code = if type.discriminator
                        "z.discriminatedUnion('#{@export.transform_key(type.discriminator)}', [\n#{union_body}\n])"
                      else
                        "z.union([\n#{union_body}\n])"
                      end
+
         if recursive
           "export const #{schema_name}Schema#{type_annotation} = z.lazy(() => #{union_code});"
         else
@@ -103,6 +112,7 @@ module Apiwork
           zod_type = map_field(param)
           "  #{key}: #{zod_type}"
         end.join(",\n")
+
         "export const #{action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)}Schema = z.object({\n#{properties}\n});"
       end
 
@@ -112,17 +122,21 @@ module Apiwork
           zod_type = map_field(param)
           "  #{key}: #{zod_type}"
         end.join(",\n")
+
         "export const #{action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)}Schema = z.object({\n#{properties}\n});"
       end
 
       def build_action_request_schema(resource_name, action_name, request, parent_identifiers: [])
         nested_properties = []
+
         if request[:query].any?
           nested_properties << "  query: #{action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)}Schema"
         end
+
         if request[:body].any?
           nested_properties << "  body: #{action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)}Schema"
         end
+
         "export const #{action_type_name(
           resource_name,
           action_name,
@@ -137,13 +151,16 @@ module Apiwork
 
       def build_action_response_schema(resource_name, action_name, response, parent_identifiers: [], raises:)
         schema_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
+
         success_variant = if response.no_content?
                             'z.object({ status: z.literal(204) })'
                           else
                             body_ref = "#{action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)}Schema"
                             "z.object({ status: z.literal(200), body: #{body_ref} })"
                           end
+
         error_statuses = resolve_error_statuses(raises)
+
         if error_statuses.empty?
           "export const #{schema_name}Schema = #{success_variant};"
         else
@@ -165,6 +182,7 @@ module Apiwork
           type = "#{schema_name}Schema"
           return apply_modifiers(type, param, force_optional:)
         end
+
         type = map_param(param)
         type = resolve_enum_schema(param) || type
         apply_modifiers(type, param, force_optional:)
@@ -192,6 +210,7 @@ module Apiwork
         return 'z.record(z.string(), z.unknown())' if param.shape.empty?
 
         partial = param.partial?
+
         properties = param.shape.sort_by { |name, _field| name.to_s }.map do |name, field|
           key = @export.transform_key(name)
           zod_type = if partial
@@ -201,12 +220,14 @@ module Apiwork
                      end
           "#{key}: #{zod_type}"
         end.join(', ')
+
         base_object = "z.object({ #{properties} })"
         partial ? "#{base_object}.partial()" : base_object
       end
 
       def map_array_type(param)
         items_type = param.of
+
         if items_type.nil? && param.shape.any?
           items_schema = map_object_type(param)
           base = "z.array(#{items_schema})"
@@ -216,6 +237,7 @@ module Apiwork
         else
           base = 'z.array(z.unknown())'
         end
+
         base += ".min(#{param.min})" unless param.min.nil?
         base += ".max(#{param.max})" unless param.max.nil?
         base
@@ -237,6 +259,7 @@ module Apiwork
 
       def map_discriminated_union(param)
         discriminator_field = @export.transform_key(param.discriminator)
+
         variant_schemas = param.variants.map do |variant|
           if variant.tag && variant.object?
             discriminator_prop = "#{discriminator_field}: z.literal('#{variant.tag}')"
@@ -252,6 +275,7 @@ module Apiwork
             map_param(variant)
           end
         end
+
         "z.discriminatedUnion('#{discriminator_field}', [#{variant_schemas.join(', ')}])"
       end
 
@@ -268,15 +292,18 @@ module Apiwork
         return 'z.unknown()' if param.unknown?
 
         format = param.format&.to_sym if param.formattable?
+
         base_type = if format
                       map_format_to_zod(format)
                     else
                       TYPE_MAP[param.type.to_sym] || 'z.unknown()'
                     end
+
         if param.boundable?
           base_type += ".min(#{param.min})" unless param.min.nil?
           base_type += ".max(#{param.max})" unless param.max.nil?
         end
+
         base_type
       end
 
@@ -315,6 +342,7 @@ module Apiwork
       def build_type_schemas(types)
         types_hash = types.transform_values(&:to_h)
         lazy_types = TypeAnalysis.cycle_breaking_types(types_hash)
+
         TypeAnalysis.topological_sort_types(types_hash).map(&:first).map do |type_name|
           type = types[type_name]
           recursive = lazy_types.include?(type_name)
@@ -329,6 +357,7 @@ module Apiwork
 
       def build_action_schemas
         schemas = []
+
         traverse_resources do |resource|
           resource_name = resource.identifier.to_sym
           parent_identifiers = resource.parent_identifiers
@@ -364,11 +393,13 @@ module Apiwork
             schemas << build_action_response_body_schema(resource_name, action_name, response.body, parent_identifiers:) if response.body?
           end
         end
+
         schemas.join("\n\n")
       end
 
       def build_action_response_schemas
         schemas = []
+
         traverse_resources do |resource|
           resource_name = resource.identifier.to_sym
           parent_identifiers = resource.parent_identifiers
@@ -377,6 +408,7 @@ module Apiwork
             schemas << build_action_response_schema(resource_name, action_name, action.response, parent_identifiers:, raises: action.raises)
           end
         end
+
         schemas.join("\n\n")
       end
 
@@ -421,11 +453,13 @@ module Apiwork
         type += '.nullable()' if param.nullable?
         has_default = param.respond_to?(:default) && param.default?
         optional = force_optional.nil? ? param.optional? : force_optional
+
         if has_default
           type += ".default(#{serialize_default(param.default)})"
         elsif optional
           type += '.optional()'
         end
+
         type
       end
 

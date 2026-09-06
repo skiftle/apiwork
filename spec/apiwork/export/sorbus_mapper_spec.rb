@@ -7,7 +7,6 @@ RSpec.describe Apiwork::Export::SorbusMapper do
     it 'generates output with zod import' do
       export = stub_export
       surface = build_surface
-
       result = described_class.map(export, surface)
 
       expect(result).to include("import { z } from 'zod';")
@@ -16,6 +15,7 @@ RSpec.describe Apiwork::Export::SorbusMapper do
     context 'with enums' do
       it 'generates enum schemas' do
         export = stub_export
+
         surface = build_surface(
           enums: { invoice_status: build_enum(values: %w[draft paid sent]) },
           types: {},
@@ -31,6 +31,7 @@ RSpec.describe Apiwork::Export::SorbusMapper do
       it 'generates type schemas' do
         export = stub_export
         type = build_type(shape: { amount: { type: :decimal }, number: { type: :string } })
+
         surface = build_surface(
           enums: {},
           types: { invoice: type },
@@ -58,6 +59,7 @@ RSpec.describe Apiwork::Export::SorbusMapper do
           summary: nil,
           tags: [],
         }
+
         export = stub_export(
           resources: {
             invoices: build_resource(
@@ -66,8 +68,8 @@ RSpec.describe Apiwork::Export::SorbusMapper do
             ),
           },
         )
-        surface = build_surface
 
+        surface = build_surface
         result = described_class.map(export, surface)
 
         expect(result).to include('export const contract = {')
@@ -91,6 +93,7 @@ RSpec.describe Apiwork::Export::SorbusMapper do
           summary: nil,
           tags: [],
         }
+
         export = stub_export(
           resources: {
             invoices: build_resource(
@@ -99,8 +102,8 @@ RSpec.describe Apiwork::Export::SorbusMapper do
             ),
           },
         )
-        surface = build_surface
 
+        surface = build_surface
         result = described_class.map(export, surface)
 
         expect(result).to include('pathParams: z.object({ id: z.string() })')
@@ -127,6 +130,7 @@ RSpec.describe Apiwork::Export::SorbusMapper do
           summary: nil,
           tags: [],
         }
+
         export = stub_export(
           resources: {
             invoices: build_resource(
@@ -135,8 +139,8 @@ RSpec.describe Apiwork::Export::SorbusMapper do
             ),
           },
         )
-        surface = build_surface
 
+        surface = build_surface
         result = described_class.map(export, surface)
 
         expect(result).to include('query: z.object({ page: z.number().int().optional(), search: z.string().optional() })')
@@ -160,6 +164,7 @@ RSpec.describe Apiwork::Export::SorbusMapper do
           summary: nil,
           tags: [],
         }
+
         export = stub_export(
           resources: {
             invoices: build_resource(
@@ -168,8 +173,8 @@ RSpec.describe Apiwork::Export::SorbusMapper do
             ),
           },
         )
-        surface = build_surface
 
+        surface = build_surface
         result = described_class.map(export, surface)
 
         expect(result).to include('body: z.object({ id: z.number().int(), number: z.string() })')
@@ -179,6 +184,7 @@ RSpec.describe Apiwork::Export::SorbusMapper do
     context 'with errors' do
       it 'maps raises to status codes' do
         error_code = Struct.new(:status).new(422)
+
         action_dump = {
           deprecated: false,
           description: nil,
@@ -191,6 +197,7 @@ RSpec.describe Apiwork::Export::SorbusMapper do
           summary: nil,
           tags: [],
         }
+
         export = stub_export(
           error_codes: { unprocessable_entity: error_code },
           resources: {
@@ -200,8 +207,8 @@ RSpec.describe Apiwork::Export::SorbusMapper do
             ),
           },
         )
-        surface = build_surface
 
+        surface = build_surface
         result = described_class.map(export, surface)
 
         expect(result).to include('errors: [422]')
@@ -222,6 +229,7 @@ RSpec.describe Apiwork::Export::SorbusMapper do
           summary: nil,
           tags: [],
         }
+
         export = stub_export(
           resources: {
             customers: build_resource(
@@ -239,9 +247,9 @@ RSpec.describe Apiwork::Export::SorbusMapper do
             ),
           },
         )
+
         export.define_singleton_method(:transform_key) { |key| key.to_s.camelize(:lower) }
         surface = build_surface
-
         result = described_class.map(export, surface)
 
         expect(result).to include("path: '/customers/:customerId/payment_methods'")
@@ -262,6 +270,7 @@ RSpec.describe Apiwork::Export::SorbusMapper do
           summary: nil,
           tags: [],
         }
+
         parent_action_dump = {
           deprecated: false,
           description: nil,
@@ -274,6 +283,7 @@ RSpec.describe Apiwork::Export::SorbusMapper do
           summary: nil,
           tags: [],
         }
+
         export = stub_export(
           resources: {
             invoices: build_resource(
@@ -291,8 +301,8 @@ RSpec.describe Apiwork::Export::SorbusMapper do
             ),
           },
         )
-        surface = build_surface
 
+        surface = build_surface
         result = described_class.map(export, surface)
 
         expect(result).to include("path: '/:invoice_id/items'")

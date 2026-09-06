@@ -14,9 +14,9 @@ RSpec.describe Apiwork::Contract::Object::Transformer do
           end
         end
       end
+
       shape = contract_class.action_for(:create).request.body
       transformer = described_class.new(shape)
-
       result = transformer.transform({ title: 'First Post' })
 
       expect(result).to eq({ title: 'First Post' })
@@ -33,9 +33,9 @@ RSpec.describe Apiwork::Contract::Object::Transformer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         transformer = described_class.new(shape)
-
         result = transformer.transform('First Post')
 
         expect(result).to eq('First Post')
@@ -53,9 +53,9 @@ RSpec.describe Apiwork::Contract::Object::Transformer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         transformer = described_class.new(shape)
-
         result = transformer.transform({ title: 'First Post' })
 
         expect(result).to eq({ name: 'First Post' })
@@ -75,9 +75,9 @@ RSpec.describe Apiwork::Contract::Object::Transformer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         transformer = described_class.new(shape)
-
         result = transformer.transform({ address: { street: 'Main St' } })
 
         expect(result).to eq({ address: { street_name: 'Main St' } })
@@ -99,9 +99,9 @@ RSpec.describe Apiwork::Contract::Object::Transformer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         transformer = described_class.new(shape)
-
         result = transformer.transform({ items: [{ title: 'First Post' }, { title: 'Second Post' }] })
 
         expect(result).to eq({ items: [{ name: 'First Post' }, { name: 'Second Post' }] })
@@ -123,9 +123,9 @@ RSpec.describe Apiwork::Contract::Object::Transformer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         transformer = described_class.new(shape)
-
         result = transformer.transform({ settings: { layout: { title: 'Wide' }, theme: { title: 'Dark' } } })
 
         expect(result).to eq({ settings: { layout: { name: 'Wide' }, theme: { name: 'Dark' } } })
@@ -156,9 +156,9 @@ RSpec.describe Apiwork::Contract::Object::Transformer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         transformer = described_class.new(shape)
-
         result = transformer.transform({ items: [{ kind: 'invoice', number: 'INV-001' }, { amount: 150.00, kind: 'payment' }] })
 
         expect(result[:items]).to eq([{ kind: 'invoice', number: 'INV-001' }, { amount: 150.00, kind: 'payment' }])
@@ -185,9 +185,9 @@ RSpec.describe Apiwork::Contract::Object::Transformer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         transformer = described_class.new(shape)
-
         result = transformer.transform({ values: ['ruby', 42] })
 
         expect(result[:values]).to eq(['ruby', 42])
@@ -205,9 +205,9 @@ RSpec.describe Apiwork::Contract::Object::Transformer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         transformer = described_class.new(shape)
-
         result = transformer.transform({})
 
         expect(result).to eq({})

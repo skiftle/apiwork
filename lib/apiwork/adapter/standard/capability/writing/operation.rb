@@ -22,6 +22,7 @@ module Apiwork
                 method(:translate),
                 root_path: [representation_class.root_key.singular.to_sym],
               )
+
               raise DomainError, issues
             end
           end

@@ -17,6 +17,7 @@ module Apiwork
 
       def map(surface)
         @surface = surface
+
         [
           "import { z } from 'zod';",
           @zod_mapper.build_enum_schemas(surface.enums).presence,
@@ -31,6 +32,7 @@ module Apiwork
       def build_typescript_types
         types = @type_script_mapper.build_enum_types(@surface.enums) +
                 @type_script_mapper.build_type_definitions(@surface.types)
+
         types.sort_by { |entry| entry[:name] }.map { |entry| entry[:code] }.join("\n\n")
       end
 
@@ -102,6 +104,7 @@ module Apiwork
         properties = params.sort_by { |name, _| name.to_s }.map do |name, param|
           "#{@export.transform_key(name)}: #{@zod_mapper.map_field(param)}"
         end.join(', ')
+
         "z.object({ #{properties} })"
       end
 
@@ -118,10 +121,12 @@ module Apiwork
 
         padding = '  ' * (indent + 1)
         closing_padding = '  ' * indent
+
         entries = hash.map do |key, value|
           formatted_value = format_value(value, indent: indent + 1)
           "#{padding}#{key}: #{formatted_value},"
         end
+
         "{\n#{entries.join("\n")}\n#{closing_padding}}"
       end
 

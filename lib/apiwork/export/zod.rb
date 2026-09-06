@@ -13,15 +13,19 @@ module Apiwork
         parts = []
         parts << "import { z } from 'zod';\n"
         zod_schemas = ZodMapper.map(self, surface)
+
         if zod_schemas.present?
           parts << zod_schemas
           parts << ''
         end
+
         typescript_types = TypeScriptMapper.map(self, surface)
+
         if typescript_types.present?
           parts << typescript_types
           parts << ''
         end
+
         parts.join("\n")
       end
 

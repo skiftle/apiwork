@@ -17,9 +17,9 @@ RSpec.describe Apiwork::Contract::RequestParser do
           end
         end
       end
+
       parser = described_class.new(contract_class, :create)
       request = Apiwork::Request.new(body: { title: 'First Post' }, query: { page: 1 })
-
       result = parser.parse(request)
 
       expect(result.issues).to be_empty
@@ -32,7 +32,6 @@ RSpec.describe Apiwork::Contract::RequestParser do
         contract_class = create_test_contract
         parser = described_class.new(contract_class, :nonexistent)
         request = Apiwork::Request.new(body: {}, query: {})
-
         result = parser.parse(request)
 
         expect(result.issues).to be_empty
@@ -46,7 +45,6 @@ RSpec.describe Apiwork::Contract::RequestParser do
         contract_class = create_test_contract
         parser = described_class.new(contract_class, :nonexistent)
         request = Apiwork::Request.new(body: { title: 'First Post' }, query: { page: 1 })
-
         result = parser.parse(request)
 
         expect(result.issues).to be_empty
@@ -66,9 +64,9 @@ RSpec.describe Apiwork::Contract::RequestParser do
             end
           end
         end
+
         parser = described_class.new(contract_class, :create)
         request = Apiwork::Request.new(body: {}, query: {})
-
         result = parser.parse(request)
 
         expect(result.issues).not_to be_empty
@@ -86,9 +84,9 @@ RSpec.describe Apiwork::Contract::RequestParser do
             end
           end
         end
+
         parser = described_class.new(contract_class, :create)
         request = Apiwork::Request.new(body: {}, query: { page: '1' })
-
         result = parser.parse(request, coerce: true)
 
         expect(result.issues).to be_empty

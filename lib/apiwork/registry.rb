@@ -13,6 +13,7 @@ module Apiwork
 
       def find!(key)
         normalized_key = normalize_key(key)
+
         store.fetch(normalized_key) do
           raise KeyError.new(
             "#{registry_name} :#{normalized_key} not found. Available: #{keys.join(', ')}",

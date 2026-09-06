@@ -76,8 +76,8 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
         invoice: { shape: { item: { reference: :item, type: :reference } }, type: :object },
         item: { shape: {}, type: :object },
       }
-      result = described_class.topological_sort_types(all_types)
 
+      result = described_class.topological_sort_types(all_types)
       names = result.map(&:first)
 
       expect(names.index(:item)).to be < names.index(:invoice)
@@ -90,8 +90,8 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
           invoice: { shape: { item: { reference: :item, type: :reference } }, type: :object },
           item: { shape: { invoice: { reference: :invoice, type: :reference } }, type: :object },
         }
-        result = described_class.topological_sort_types(all_types)
 
+        result = described_class.topological_sort_types(all_types)
         names = result.map(&:first)
 
         expect(names).to contain_exactly(:customer, :invoice, :item)
@@ -120,7 +120,6 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
   describe '.type_references' do
     it 'returns the type references' do
       definition = { shape: { customer: { reference: :customer, type: :reference } }, type: :object }
-
       result = described_class.type_references(definition)
 
       expect(result).to eq([:customer])
@@ -129,7 +128,6 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
     context 'without references' do
       it 'returns an empty array' do
         definition = { shape: { title: { type: :string } }, type: :object }
-
         result = described_class.type_references(definition)
 
         expect(result).to be_empty
@@ -139,7 +137,6 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
     context 'with extends references' do
       it 'includes extended type names' do
         definition = { extends: [:base_record], shape: { title: { type: :string } }, type: :object }
-
         result = described_class.type_references(definition)
 
         expect(result).to include(:base_record)

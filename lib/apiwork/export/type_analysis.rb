@@ -39,6 +39,7 @@ module Apiwork
         def find_cycle_breaking_types(graph)
           lazy_types = Set.new
           reduced_graph = graph
+
           loop do
             previous_size = lazy_types.size
 
@@ -54,6 +55,7 @@ module Apiwork
               .reject { |node, _| lazy_types.include?(node) }
               .transform_values { |deps| deps - lazy_types.to_a }
           end
+
           lazy_types
         end
 
@@ -61,6 +63,7 @@ module Apiwork
           dependencies = build_non_lazy_dependencies(all_types, graph, lazy_types)
           sorted = lazy_types.to_a.sort_by(&:to_s)
           remaining = dependencies.keys.sort_by(&:to_s)
+
           until remaining.empty?
             ready = remaining.select { |type_name| dependencies[type_name].empty? }
             break if ready.empty?
@@ -71,6 +74,7 @@ module Apiwork
               dependencies.each_value { |type_dependencies| type_dependencies.delete(type_name) }
             end
           end
+
           sorted.concat(remaining.sort_by(&:to_s))
           sorted.map { |type_name| [type_name, all_types[type_name]] }
         end
@@ -85,9 +89,11 @@ module Apiwork
 
         def find_strongly_connected_components(graph)
           state = { components: [], index: 0, indices: {}, lowlinks: {}, on_stack: Set.new, stack: [] }
+
           graph.each_key do |node|
             tarjan_visit(node, graph, state) unless state[:indices][node]
           end
+
           state[:components]
         end
 
@@ -96,6 +102,7 @@ module Apiwork
           state[:index] += 1
           state[:stack].push(node)
           state[:on_stack].add(node)
+
           (graph[node] || []).each do |successor|
             if state[:indices][successor].nil?
               tarjan_visit(successor, graph, state)
@@ -104,15 +111,18 @@ module Apiwork
               state[:lowlinks][node] = [state[:lowlinks][node], state[:indices][successor]].min
             end
           end
+
           return unless state[:lowlinks][node] == state[:indices][node]
 
           component = []
+
           loop do
             successor = state[:stack].pop
             state[:on_stack].delete(successor)
             component << successor
             break if successor == node
           end
+
           state[:components] << component
         end
 

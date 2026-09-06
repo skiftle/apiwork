@@ -7,6 +7,7 @@ RSpec.describe Apiwork::Contract::Element do
     it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
+
       element.array do
         string
       end
@@ -99,6 +100,7 @@ RSpec.describe Apiwork::Contract::Element do
     it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
+
       element.record do
         integer
       end
@@ -111,6 +113,7 @@ RSpec.describe Apiwork::Contract::Element do
     it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
+
       element.object do
         string :title
       end
@@ -135,6 +138,7 @@ RSpec.describe Apiwork::Contract::Element do
       it 'defines the element type and shape' do
         contract_class = create_test_contract
         element = described_class.new(contract_class)
+
         element.of(:object) do
           string :title
         end
@@ -151,6 +155,7 @@ RSpec.describe Apiwork::Contract::Element do
             string :title
           end
         end
+
         element = described_class.new(contract_class)
         element.of(:item)
 
@@ -195,6 +200,7 @@ RSpec.describe Apiwork::Contract::Element do
     it 'defines the type' do
       contract_class = create_test_contract
       element = described_class.new(contract_class)
+
       element.union(discriminator: :type) do
         variant tag: 'card' do
           object do

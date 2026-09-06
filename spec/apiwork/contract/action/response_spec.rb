@@ -24,6 +24,7 @@ RSpec.describe Apiwork::Contract::Action::Response do
     it 'defines a body' do
       contract_class = create_test_contract
       response = described_class.new(contract_class, :show)
+
       response.body do
         string :title
       end

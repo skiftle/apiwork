@@ -51,6 +51,7 @@ module Apiwork
             issues.concat(param_issues)
             params[name] = param_value unless param_value.equal?(NOT_SET)
           end
+
           issues.concat(check_unknown_params(data, path))
           Result.new(issues:, params:)
         end
@@ -64,6 +65,7 @@ module Apiwork
             path:,
             meta: { max:, depth: current_depth },
           )]
+
           Result.new(issues:, params: {})
         end
 
@@ -75,7 +77,6 @@ module Apiwork
           value = param_options[:default] if value.nil? && param_options.key?(:default)
           nullable_error = validate_nullable(name, value, param_options, data, field_path)
           return [[nullable_error], NOT_SET] if nullable_error
-
           return [[], NOT_SET] if value.nil?
 
           enum_error = validate_enum_value(name, value, param_options[:enum], field_path)
@@ -98,6 +99,7 @@ module Apiwork
             end
             return [[], value]
           end
+
           return validate_union_param(name, value, param_options, field_path, max_depth, current_depth) if param_options[:type] == :union
 
           type_error = validate_type(name, value, param_options[:type], field_path)
@@ -107,10 +109,12 @@ module Apiwork
             length_error = validate_string_length(name, value, param_options, field_path)
             return [[length_error], NOT_SET] if length_error
           end
+
           if numeric_type?(param_options[:type])
             range_error = validate_numeric_range(name, value, param_options, field_path)
             return [[range_error], NOT_SET] if range_error
           end
+
           custom_type_result = validate_custom_type(value, param_options[:type], field_path, max_depth, current_depth)
           return custom_type_result if custom_type_result
 
@@ -120,7 +124,6 @@ module Apiwork
         def validate_required(name, value, param_options, data, field_path)
           return nil if param_options[:optional]
           return nil if param_options[:nullable] && data.key?(name) && value.nil?
-
           return nil unless value.nil?
 
           if param_options[:enum].present?
@@ -185,6 +188,7 @@ module Apiwork
             current_depth:,
             max_depth:,
           )
+
           union_error ? [[union_error], NOT_SET] : [[], union_value]
         end
 
@@ -202,12 +206,14 @@ module Apiwork
 
         def validate_shape_object(value, nested_shape, field_path, max_depth, current_depth)
           validator = Validator.new(normalize_shape(nested_shape))
+
           shape_result = validator.validate(
             value,
             max_depth:,
             current_depth: current_depth + 1,
             path: field_path,
           )
+
           shape_result.invalid? ? [shape_result.issues, NOT_SET] : [[], shape_result.params]
         end
 
@@ -221,6 +227,7 @@ module Apiwork
               param_options:,
             },
           )
+
           array_issues.empty? ? [[], array_values] : [array_issues, NOT_SET]
         end
 
@@ -230,6 +237,7 @@ module Apiwork
           of = param_options[:of]
           of_type = of&.type
           of_shape = of&.shape
+
           value.each do |key, item|
             item_path = field_path + [key]
 
@@ -253,11 +261,13 @@ module Apiwork
               validated[key] = item
             end
           end
+
           issues.empty? ? [[], validated] : [issues, NOT_SET]
         end
 
         def check_unknown_params(data, path)
           extra_keys = data.keys - @shape.params.keys
+
           extra_keys.map do |key|
             Issue.new(
               :field_unknown,
@@ -277,6 +287,7 @@ module Apiwork
           values = []
           max = param_options[:max]
           min = param_options[:min]
+
           if max && array.length > max
             issues << Issue.new(
               :array_too_large,
@@ -286,6 +297,7 @@ module Apiwork
             )
             return [issues, []]
           end
+
           if min && array.length < min
             issues << Issue.new(
               :array_too_small,
@@ -295,8 +307,10 @@ module Apiwork
             )
             return [issues, []]
           end
+
           of = param_options[:of]
           of_shape = of&.shape
+
           array.each_with_index do |item, index|
             item_path = field_path + [index]
 
@@ -323,6 +337,7 @@ module Apiwork
               values << item
             end
           end
+
           [issues, values]
         end
 
@@ -330,6 +345,7 @@ module Apiwork
           of = param_options[:of]
           type_name = of&.type
           type_definition = @shape.contract_class.resolve_custom_type(type_name)
+
           if type_definition
             return validate_array_item_with_type_definition(
               item, index, type_definition, item_path, type_name, current_depth, max_depth
@@ -390,6 +406,7 @@ module Apiwork
                   when :decimal, :number then value.is_a?(Numeric)
                   else true
                   end
+
           return nil if valid
 
           Issue.new(
@@ -407,6 +424,7 @@ module Apiwork
         def validate_union(name, value, union, path, current_depth:, max_depth:)
           discriminator = union.discriminator
           variants = union.variants
+
           if discriminator
             return [build_type_invalid_error(name, value, :object, path), nil] unless value.is_a?(Hash)
 
@@ -426,7 +444,9 @@ module Apiwork
               return [error, nil]
             end
           end
+
           most_specific_error = nil
+
           variants.each do |variant|
             error, validated_value = validate_variant(
               name,
@@ -448,9 +468,11 @@ module Apiwork
               most_specific_error = error
             end
           end
+
           return [most_specific_error, nil] if most_specific_error
 
           expected_types = variants.map { |variant| variant[:type] }
+
           error = Issue.new(
             :type_invalid,
             translate_detail(:type_invalid),
@@ -461,15 +483,18 @@ module Apiwork
               field: name,
             },
           )
+
           [error, nil]
         end
 
         def validate_discriminated_variant(name, value, variants, discriminator, path, current_depth:, max_depth:)
           discriminator_value = value[discriminator]
           normalized_discriminator = normalize_discriminator_value(discriminator_value)
+
           matching_variant = variants.find do |variant|
             normalize_discriminator_value(variant[:tag]) == normalized_discriminator
           end
+
           unless matching_variant
             valid_tags = variants.filter_map { |variant| variant[:tag] }
             error = Issue.new(
@@ -484,7 +509,9 @@ module Apiwork
             )
             return [error, nil]
           end
+
           value_without_discriminator = value.except(discriminator)
+
           error, validated_value = validate_variant(
             name,
             value_without_discriminator,
@@ -494,6 +521,7 @@ module Apiwork
             discriminator:,
             max_depth:,
           )
+
           validated_value = validated_value.merge(discriminator => discriminator_value) if validated_value.is_a?(Hash)
           [error, validated_value]
         end
@@ -511,6 +539,7 @@ module Apiwork
           variant_of = variant[:of]
           variant_shape = variant[:shape]
           type_definition = @shape.contract_class.resolve_custom_type(variant_type)
+
           if type_definition
             return [build_type_invalid_error(name, value, variant_type, path), nil] unless value.is_a?(Hash)
 
@@ -522,6 +551,7 @@ module Apiwork
 
             return [nil, result.params]
           end
+
           if variant_type == :array
             return [build_type_invalid_error(name, value, :array, path), nil] unless value.is_a?(Array)
 
@@ -543,6 +573,7 @@ module Apiwork
 
             return [nil, value]
           end
+
           if variant_type == :object && variant_shape
             return [build_type_invalid_error(name, value, :object, path), nil] unless value.is_a?(Hash)
 
@@ -558,6 +589,7 @@ module Apiwork
 
             return [nil, result.params]
           end
+
           type_error = validate_type(name, value, variant_type, path)
           return [type_error, nil] if type_error
 
@@ -574,11 +606,13 @@ module Apiwork
             )
             return [enum_error, nil]
           end
+
           [nil, value]
         end
 
         def discriminator_optional_in_all_variants?(discriminator, variants)
           contract_class = @shape.contract_class
+
           variants.all? do |variant|
             variant_type = variant[:type]
             shape = variant[:shape]
@@ -625,6 +659,7 @@ module Apiwork
 
           min_value = param_options[:min]
           max_value = param_options[:max]
+
           if min_value && value < min_value
             return Issue.new(
               :number_too_small,
@@ -637,6 +672,7 @@ module Apiwork
               path: field_path,
             )
           end
+
           if max_value && value > max_value
             return Issue.new(
               :number_too_large,
@@ -654,11 +690,11 @@ module Apiwork
 
         def validate_string_length(name, value, param_options, field_path)
           return nil unless value.is_a?(String)
-
           return nil if value.empty?
 
           min_length = param_options[:min]
           max_length = param_options[:max]
+
           if min_length && value.length < min_length
             return Issue.new(
               :string_too_short,
@@ -671,6 +707,7 @@ module Apiwork
               path: field_path,
             )
           end
+
           if max_length && value.length > max_length
             return Issue.new(
               :string_too_long,
@@ -696,19 +733,23 @@ module Apiwork
           return shape if shape.is_a?(Contract::Object)
 
           contract_shape = Object.new(@shape.contract_class, action_name: @shape.action_name)
+
           shape.params.each do |name, param_options|
             contract_shape.params[name] = param_options
           end
+
           contract_shape
         end
 
         def translate_detail(code)
           locale_key = @shape.contract_class.api_class&.locale_key
+
           if locale_key
             api_key = :"apiwork.apis.#{locale_key}.issues.#{code}.detail"
             result = I18n.translate(api_key, default: nil)
             return result if result
           end
+
           global_key = :"apiwork.issues.#{code}.detail"
           result = I18n.translate(global_key, default: nil)
           return result if result

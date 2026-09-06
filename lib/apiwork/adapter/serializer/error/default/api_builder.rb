@@ -8,6 +8,7 @@ module Apiwork
           class APIBuilder < Adapter::Builder::API::Base
             def build
               enum(:error_layer, values: %w[http contract domain])
+
               object(:error_issue) do |object|
                 object.string(:code)
                 object.string(:detail)
@@ -20,6 +21,7 @@ module Apiwork
                 object.string(:pointer)
                 object.object(:meta)
               end
+
               object(data_type) do |object|
                 object.reference(:layer, to: :error_layer)
                 object.array(:issues) do |element|

@@ -23,6 +23,7 @@ module Apiwork
                 def apply
                   number = @params.fetch(:number, 1).to_i
                   size = [@params.fetch(:size, @config.default_size).to_i, 1].max
+
                   {
                     data: @relation.limit(size).offset((number - 1) * size),
                     metadata: build_metadata(number, size),
@@ -34,6 +35,7 @@ module Apiwork
                 def build_metadata(number, size)
                   items = count_items
                   total = (items.to_f / size).ceil
+
                   {
                     pagination: {
                       items:,
@@ -51,6 +53,7 @@ module Apiwork
                                  else
                                    @relation.except(:limit, :offset, :group).count
                                  end
+
                   count_result.is_a?(Hash) ? count_result.size : count_result
                 end
               end

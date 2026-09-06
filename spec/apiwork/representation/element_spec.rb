@@ -7,6 +7,7 @@ RSpec.describe Apiwork::Representation::Element do
     context 'when type is :object' do
       it 'defines an object element' do
         element = described_class.new
+
         element.of(:object) do
           string :title
         end
@@ -19,6 +20,7 @@ RSpec.describe Apiwork::Representation::Element do
     context 'when type is :array' do
       it 'defines an array element' do
         element = described_class.new
+
         element.of(:array) do
           string
         end
@@ -30,6 +32,7 @@ RSpec.describe Apiwork::Representation::Element do
     context 'when type is :union' do
       it 'defines a union element' do
         element = described_class.new
+
         element.of(:union, discriminator: :type) do
           variant tag: 'card' do
             object do

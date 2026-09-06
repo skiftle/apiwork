@@ -6,6 +6,7 @@ RSpec.describe Apiwork::Adapter::Wrapper::Base do
   describe '.shape' do
     it 'returns the shape' do
       shape_class = Class.new(Apiwork::Adapter::Wrapper::Shape)
+
       wrapper_class = Class.new(described_class) do
         shape shape_class
       end
@@ -35,7 +36,6 @@ RSpec.describe Apiwork::Adapter::Wrapper::Base do
   describe '#initialize' do
     it 'creates with required attributes' do
       data = { id: 1, title: 'First Post' }
-
       wrapper = described_class.new(data)
 
       expect(wrapper.data).to eq(data)

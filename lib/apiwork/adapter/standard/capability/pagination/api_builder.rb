@@ -18,6 +18,7 @@ module Apiwork
                   object.integer(:items)
                 end
               end
+
               return unless configured(:strategy).include?(:cursor)
 
               object(:cursor_pagination) do |object|

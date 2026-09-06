@@ -110,7 +110,6 @@ RSpec.describe Apiwork::Export::ZodMapper do
 
     it 'builds schema for response body' do
       response_body = build_param(shape: { id: { type: :integer } }, type: :object)
-
       result = mapper.build_action_response_body_schema(:invoices, :show, response_body)
 
       expect(result).to include('InvoicesShowResponseBodySchema = z.object({ id: z.number().int() })')
@@ -123,7 +122,6 @@ RSpec.describe Apiwork::Export::ZodMapper do
 
     it 'builds success-only schema when no raises' do
       response = stub_response
-
       result = mapper.build_action_response_schema(:invoices, :show, response, raises: [])
 
       expect(result).to eq('export const InvoicesShowResponseSchema = z.object({ status: z.literal(200), body: InvoicesShowResponseBodySchema });')
@@ -131,7 +129,6 @@ RSpec.describe Apiwork::Export::ZodMapper do
 
     it 'builds no content schema' do
       response = stub_response(no_content: true)
-
       result = mapper.build_action_response_schema(:invoices, :destroy, response, raises: [])
 
       expect(result).to eq('export const InvoicesDestroyResponseSchema = z.object({ status: z.literal(204) });')
@@ -141,7 +138,6 @@ RSpec.describe Apiwork::Export::ZodMapper do
       export_with_errors = stub_export(error_codes: { unprocessable_entity: stub_error_code(status: 422) })
       mapper_with_errors = described_class.new(export_with_errors)
       response = stub_response
-
       result = mapper_with_errors.build_action_response_schema(:invoices, :create, response, raises: [:unprocessable_entity])
 
       expect(result).to include("z.discriminatedUnion('status'")
@@ -182,7 +178,6 @@ RSpec.describe Apiwork::Export::ZodMapper do
 
     it 'builds alias for extends-only without properties' do
       type = build_type(extends: [:base_record], shape: {})
-
       result = mapper.build_object_schema(:simple_record, type)
 
       expect(result).to eq('export const SimpleRecordSchema = BaseRecordSchema;')
@@ -190,7 +185,6 @@ RSpec.describe Apiwork::Export::ZodMapper do
 
     it 'builds merged schema for multiple extends' do
       type = build_type(extends: [:base_record, :timestamped], shape: {})
-
       result = mapper.build_object_schema(:full_record, type)
 
       expect(result).to eq('export const FullRecordSchema = BaseRecordSchema.merge(TimestampedSchema);')
@@ -211,7 +205,6 @@ RSpec.describe Apiwork::Export::ZodMapper do
 
     it 'builds merged and extended schema for multiple extends with properties' do
       type = build_type(extends: [:base_record, :timestamped], shape: { name: { type: :string } })
-
       result = mapper.build_object_schema(:full_record, type)
 
       expect(result).to include('BaseRecordSchema.merge(TimestampedSchema).extend({')
@@ -239,6 +232,7 @@ RSpec.describe Apiwork::Export::ZodMapper do
       invoice_type = build_type(shape: { number: { type: :string } })
       export_with_types = stub_export(types: { invoice: invoice_type })
       mapper_with_types = described_class.new(export_with_types)
+
       type = build_union_type(
         discriminator: :kind,
         variants: [
@@ -256,6 +250,7 @@ RSpec.describe Apiwork::Export::ZodMapper do
         invoice_type = build_type(shape: { number: { type: :string } })
         export_with_types = stub_export(types: { invoice: invoice_type })
         mapper_with_types = described_class.new(export_with_types)
+
         type = build_union_type(
           discriminator: :kind,
           variants: [
@@ -303,6 +298,7 @@ RSpec.describe Apiwork::Export::ZodMapper do
         invoice_type = build_type(shape: { kind: { type: :string }, number: { type: :string } })
         export_with_types = stub_export(types: { invoice: invoice_type })
         mapper_with_types = described_class.new(export_with_types)
+
         type = build_union_type(
           discriminator: :kind,
           variants: [
@@ -383,7 +379,6 @@ RSpec.describe Apiwork::Export::ZodMapper do
         invoice_status_enum = build_enum(values: %w[draft sent paid])
         export_with_enums = stub_export(enums: { invoice_status: invoice_status_enum })
         mapper_with_enums = described_class.new(export_with_enums)
-
         param = build_param(enum: :invoice_status, type: :string)
 
         expect(mapper_with_enums.map_field(param)).to eq('InvoiceStatusSchema')
@@ -395,7 +390,6 @@ RSpec.describe Apiwork::Export::ZodMapper do
         invoice_type = build_type(shape: { number: { type: :string } })
         export_with_types = stub_export(types: { invoice: invoice_type })
         mapper_with_types = described_class.new(export_with_types)
-
         param = build_param(nullable: true, reference: :invoice, type: :reference)
 
         expect(mapper_with_types.map_field(param)).to eq('InvoiceSchema.nullable()')
@@ -670,7 +664,6 @@ RSpec.describe Apiwork::Export::ZodMapper do
         invoice_type = build_type(shape: { number: { type: :string } })
         export_with_types = stub_export(types: { invoice: invoice_type })
         mapper_with_types = described_class.new(export_with_types)
-
         param = build_param(reference: :invoice, type: :reference)
 
         expect(mapper_with_types.map_param(param)).to eq('InvoiceSchema')

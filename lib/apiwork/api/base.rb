@@ -56,7 +56,6 @@ module Apiwork
         #   # Response: { "userName": "alice", "createdAt": "2024-01-01" }
         def key_format(format = nil)
           return @key_format if format.nil?
-
           raise ConfigurationError, "key_format must be one of #{VALID_FORMATS}" unless VALID_FORMATS.include?(format)
 
           @key_format = format
@@ -86,7 +85,6 @@ module Apiwork
         #   # Params: params[:user_profile]
         def path_format(format = nil)
           return @path_format if format.nil?
-
           raise ConfigurationError, "path_format must be one of #{VALID_FORMATS}" unless VALID_FORMATS.include?(format)
 
           @path_format = format
@@ -115,6 +113,7 @@ module Apiwork
                   "Unknown export: :#{name}. " \
                   "Available: #{available}"
           end
+
           unless @export_configs[name]
             export_class = Export.find!(name)
 
@@ -127,6 +126,7 @@ module Apiwork
 
             @export_configs[name] = Configuration.new(options)
           end
+
           return unless block
 
           block.arity.positive? ? yield(@export_configs[name]) : @export_configs[name].instance_eval(&block)
@@ -163,6 +163,7 @@ module Apiwork
             end
             @explorer_config = Configuration.new(options)
           end
+
           return @explorer_config unless block
 
           block.arity.positive? ? yield(@explorer_config) : @explorer_config.instance_eval(&block)
@@ -204,10 +205,12 @@ module Apiwork
         # @see Adapter.register How to register custom adapters
         def adapter(name = nil, &block)
           @adapter_name = name if name.is_a?(Symbol)
+
           if block
             block.arity.positive? ? yield(adapter_config) : adapter_config.instance_eval(&block)
             return
           end
+
           @adapter ||= adapter_class.new
         end
 
@@ -327,9 +330,11 @@ module Apiwork
           return @locales if locale_keys.empty?
 
           locale_keys = locale_keys.flatten.uniq
+
           locale_keys.each do |locale_key|
             raise ConfigurationError, "locales must be symbols, got #{locale_key.class}: #{locale_key}" unless locale_key.is_a?(Symbol)
           end
+
           @locales = locale_keys
         end
 
@@ -350,6 +355,7 @@ module Apiwork
           return @raises if error_code_keys.empty?
 
           error_code_keys = error_code_keys.flatten.uniq
+
           error_code_keys.each do |error_code_key|
             unless error_code_key.is_a?(Symbol)
               hint = error_code_key.is_a?(Integer) ? " Use :#{ErrorCode.key_for_status(error_code_key)} instead." : ''
@@ -362,6 +368,7 @@ module Apiwork
                   "Unknown error code :#{error_code_key}. Register it with: " \
                   "Apiwork::ErrorCode.register :#{error_code_key}, status: <status>"
           end
+
           @raises = error_code_keys
         end
 
@@ -825,6 +832,7 @@ module Apiwork
 
         def ensure_all_contracts_built!
           ensure_pre_pass_complete!
+
           @root_resource.each_resource do |resource|
             build_contracts_for_resource(resource)
           end
@@ -864,6 +872,7 @@ module Apiwork
 
         def mark_nested_writable_representations!
           visited = Set.new
+
           @root_resource.each_resource do |resource|
             representation_class = resource.resolve_contract_class&.representation_class
             next unless representation_class
@@ -877,6 +886,7 @@ module Apiwork
           return if visited.include?(representation_class)
 
           visited.add(representation_class)
+
           representation_class.associations.each_value do |association|
             next unless association.writable?
 

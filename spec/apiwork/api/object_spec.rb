@@ -20,6 +20,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.array(
           :tags,
           as: :labels,
@@ -73,6 +74,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.record(
           :scores,
           as: :results,
@@ -126,6 +128,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.binary(
           :content,
           as: :data,
@@ -181,6 +184,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.boolean(
           :published,
           as: :active,
@@ -236,6 +240,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.date(
           :due_date,
           as: :deadline,
@@ -291,6 +296,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.datetime(
           :created_at,
           as: :timestamp,
@@ -346,6 +352,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.decimal(
           :amount,
           as: :total,
@@ -414,6 +421,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.integer(
           :quantity,
           as: :count,
@@ -473,6 +481,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.literal(
           :version,
           as: :api_version,
@@ -521,6 +530,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.number(
           :latitude,
           as: :lat,
@@ -580,6 +590,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.object(
           :address,
           as: :location,
@@ -634,6 +645,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.param(
           :amount,
           as: :total,
@@ -689,6 +701,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.reference(
           :billing_address,
           as: :address,
@@ -743,6 +756,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.string(
           :title,
           as: :name,
@@ -806,6 +820,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.time(
           :opens_at,
           as: :opening_time,
@@ -848,6 +863,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with defaults' do
       it 'defines a union param' do
         object = described_class.new
+
         object.union(:payment_method, discriminator: :type) do
           variant tag: 'card' do
             object { string :last_four }
@@ -865,6 +881,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.union(
           :payment_method,
           as: :payment,
@@ -898,6 +915,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with defaults' do
       it 'defines an optional union param' do
         object = described_class.new
+
         object.union?(:notification, discriminator: :type) do
           variant tag: 'email' do
             object { string :address }
@@ -927,6 +945,7 @@ RSpec.describe Apiwork::API::Object do
     context 'with overrides' do
       it 'forwards all options' do
         object = described_class.new
+
         object.uuid(
           :id,
           as: :identifier,

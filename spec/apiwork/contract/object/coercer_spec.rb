@@ -14,9 +14,9 @@ RSpec.describe Apiwork::Contract::Object::Coercer do
           end
         end
       end
+
       shape = contract_class.action_for(:create).request.query
       coercer = described_class.new(shape)
-
       result = coercer.coerce({ amount: '42' })
 
       expect(result).to eq({ amount: 42 })
@@ -33,9 +33,9 @@ RSpec.describe Apiwork::Contract::Object::Coercer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.query
         coercer = described_class.new(shape)
-
         result = coercer.coerce({ active: 'true' })
 
         expect(result).to eq({ active: true })
@@ -53,9 +53,9 @@ RSpec.describe Apiwork::Contract::Object::Coercer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.query
         coercer = described_class.new(shape)
-
         result = coercer.coerce({ amount: 42 })
 
         expect(result).to eq({ amount: 42 })
@@ -75,9 +75,9 @@ RSpec.describe Apiwork::Contract::Object::Coercer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         coercer = described_class.new(shape)
-
         result = coercer.coerce({ address: { amount: '42' } })
 
         expect(result).to eq({ address: { amount: 42 } })
@@ -97,9 +97,9 @@ RSpec.describe Apiwork::Contract::Object::Coercer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         coercer = described_class.new(shape)
-
         result = coercer.coerce({ items: %w[1 2 3] })
 
         expect(result).to eq({ items: [1, 2, 3] })
@@ -119,9 +119,9 @@ RSpec.describe Apiwork::Contract::Object::Coercer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         coercer = described_class.new(shape)
-
         result = coercer.coerce({ scores: { math: '95', science: '87' } })
 
         expect(result).to eq({ scores: { math: 95, science: 87 } })
@@ -152,9 +152,9 @@ RSpec.describe Apiwork::Contract::Object::Coercer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         coercer = described_class.new(shape)
-
         result = coercer.coerce({ items: [{ kind: 'invoice', number: 'INV-001' }, { amount: 150.00, kind: 'payment' }] })
 
         expect(result[:items][0][:kind]).to eq('invoice')
@@ -184,9 +184,9 @@ RSpec.describe Apiwork::Contract::Object::Coercer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         coercer = described_class.new(shape)
-
         result = coercer.coerce({ values: ['ruby', 42] })
 
         expect(result[:values]).to eq(['ruby', 42])
@@ -204,9 +204,9 @@ RSpec.describe Apiwork::Contract::Object::Coercer do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.query
         coercer = described_class.new(shape)
-
         result = coercer.coerce({})
 
         expect(result).to eq({})

@@ -14,9 +14,9 @@ RSpec.describe Apiwork::Contract::ResponseParser do
           end
         end
       end
+
       parser = described_class.new(contract_class, :show)
       response = Apiwork::Response.new(body: { title: 'First Post' })
-
       result = parser.parse(response)
 
       expect(result.issues).to be_empty
@@ -28,7 +28,6 @@ RSpec.describe Apiwork::Contract::ResponseParser do
         contract_class = create_test_contract
         parser = described_class.new(contract_class, :nonexistent)
         response = Apiwork::Response.new(body: { title: 'First Post' })
-
         result = parser.parse(response)
 
         expect(result.response).to eq(response)
@@ -46,9 +45,9 @@ RSpec.describe Apiwork::Contract::ResponseParser do
             end
           end
         end
+
         parser = described_class.new(contract_class, :show)
         response = Apiwork::Response.new(body: {})
-
         result = parser.parse(response)
 
         expect(result.response).to eq(response)
@@ -64,9 +63,9 @@ RSpec.describe Apiwork::Contract::ResponseParser do
             end
           end
         end
+
         parser = described_class.new(contract_class, :show)
         response = Apiwork::Response.new(body: {})
-
         result = parser.parse(response)
 
         expect(result.response).to eq(response)

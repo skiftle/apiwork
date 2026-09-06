@@ -7,6 +7,7 @@ RSpec.describe Apiwork::API::Union do
     context 'with defaults' do
       it 'defines a variant' do
         union = described_class.new(discriminator: :type)
+
         union.variant(tag: 'card') do
           object do
             string :last_four
@@ -25,6 +26,7 @@ RSpec.describe Apiwork::API::Union do
     context 'with overrides' do
       it 'forwards all options' do
         union = described_class.new(discriminator: :type)
+
         union.variant(
           deprecated: true,
           description: 'Card payment',

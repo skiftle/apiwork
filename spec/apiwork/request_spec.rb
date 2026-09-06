@@ -15,7 +15,6 @@ RSpec.describe Apiwork::Request do
   describe '#transform' do
     it 'returns the transformed request' do
       request = described_class.new(body: { title: 'First Post' }, query: { page: 1 })
-
       result = request.transform { |data| data.transform_keys(&:to_s) }
 
       expect(result).to be_a(described_class)
@@ -27,7 +26,6 @@ RSpec.describe Apiwork::Request do
   describe '#transform_body' do
     it 'returns the request with transformed body' do
       request = described_class.new(body: { title: 'First Post' }, query: { page: 1 })
-
       result = request.transform_body { |data| data.transform_keys(&:to_s) }
 
       expect(result.body).to eq({ 'title' => 'First Post' })
@@ -38,7 +36,6 @@ RSpec.describe Apiwork::Request do
   describe '#transform_query' do
     it 'returns the request with transformed query' do
       request = described_class.new(body: { title: 'First Post' }, query: { page: 1 })
-
       result = request.transform_query { |data| data.transform_keys(&:to_s) }
 
       expect(result.body).to eq({ title: 'First Post' })

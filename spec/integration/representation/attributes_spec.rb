@@ -38,13 +38,11 @@ RSpec.describe 'Representation attribute serialization', type: :integration do
 
       expect(results.length).to eq(2)
       numbers = results.map { |result| result[:number] }
-
       expect(numbers).to contain_exactly('INV-001', 'INV-002')
     end
 
     it 'serializes read-only attributes in output' do
       invoice1 = Invoice.create!(customer: customer, number: 'INV-001', status: :draft)
-
       result = Api::V1::InvoiceRepresentation.serialize(invoice1)
 
       expect(result).to have_key(:id)

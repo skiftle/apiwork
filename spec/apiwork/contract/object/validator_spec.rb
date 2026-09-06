@@ -14,9 +14,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
           end
         end
       end
+
       shape = contract_class.action_for(:create).request.body
       validator = described_class.new(shape)
-
       result = validator.validate({ title: 'First Post' })
 
       expect(result).to be_valid
@@ -34,9 +34,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({})
 
         expect(result).to be_invalid
@@ -55,9 +55,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ amount: 'First Post' })
 
         expect(result).to be_invalid
@@ -76,9 +76,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ body: 'Rails tutorial', title: 'First Post' })
 
         expect(result.issues.map(&:code)).to include(:field_unknown)
@@ -98,9 +98,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ address: {} })
 
         expect(result).to be_valid
@@ -120,9 +120,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ tags: [] })
 
         expect(result).to be_valid
@@ -140,9 +140,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ title: nil })
 
         expect(result).to be_invalid
@@ -161,9 +161,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ title: nil })
 
         expect(result).to be_valid
@@ -181,9 +181,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({})
 
         expect(result).to be_valid
@@ -202,9 +202,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ sent: true })
 
         expect(result).to be_valid
@@ -223,9 +223,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ title: 'First Post' })
 
         expect(result).to be_invalid
@@ -244,9 +244,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ amount: 0 })
 
         expect(result).to be_invalid
@@ -267,9 +267,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ address: { street: 42 } })
 
         expect(result).to be_invalid
@@ -291,9 +291,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ tags: ['ruby', 42] })
 
         expect(result).to be_invalid
@@ -325,9 +325,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ items: [{ kind: 'invoice', number: 'INV-001' }, { amount: 150.00, kind: 'payment' }] })
 
         expect(result).to be_valid
@@ -357,9 +357,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ items: [{ kind: 'unknown', number: 'INV-001' }] })
 
         expect(result).to be_invalid
@@ -389,9 +389,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ items: [{ kind: 'invoice', number: 42 }] })
 
         expect(result).to be_invalid
@@ -419,9 +419,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ values: ['ruby', 42] })
 
         expect(result).to be_valid
@@ -447,9 +447,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ values: ['ruby', 19.99] })
 
         expect(result).to be_invalid
@@ -470,9 +470,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ scores: { math: 95, science: 87 } })
 
         expect(result).to be_valid
@@ -491,9 +491,9 @@ RSpec.describe Apiwork::Contract::Object::Validator do
             end
           end
         end
+
         shape = contract_class.action_for(:create).request.body
         validator = described_class.new(shape)
-
         result = validator.validate({ scores: { math: 95, science: 'high' } })
 
         expect(result).to be_invalid

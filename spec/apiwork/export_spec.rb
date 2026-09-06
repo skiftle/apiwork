@@ -42,6 +42,7 @@ RSpec.describe Apiwork::Export do
       export_class = Class.new(Apiwork::Export::Base) do
         export_name :unit_export_register
       end
+
       described_class.register(export_class)
 
       expect(described_class.find(:unit_export_register)).to eq(export_class)

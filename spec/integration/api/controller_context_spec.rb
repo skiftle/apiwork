@@ -36,6 +36,7 @@ RSpec.describe 'Controller context', type: :integration do
       base_controller = Class.new(ApplicationController) do
         include Apiwork::Controller
       end
+
       custom_controller = Class.new(base_controller) do
         def context
           { custom: true }

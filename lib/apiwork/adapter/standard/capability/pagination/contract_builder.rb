@@ -18,6 +18,7 @@ module Apiwork
                 end
                 object.integer?(:size, max: options.max_size, min: 1)
               end
+
               action(:index) do |action|
                 action.request do |request|
                   request.query do |query|

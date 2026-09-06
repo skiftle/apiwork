@@ -25,6 +25,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
         end
       end
     end
+
     klass.has_many_associations = has_many.map { |name| IssueMapperMockAssociation.new(name:) }
     klass.has_one_associations = has_one.map { |name| IssueMapperMockAssociation.new(name:) }
     klass.belongs_to_associations = belongs_to.map { |name| IssueMapperMockAssociation.new(name:) }
@@ -35,17 +36,20 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
     has_many_names = associations.select { |_, v| v[:type] == :has_many }.keys
     has_one_names = associations.select { |_, v| v[:type] == :has_one }.keys
     belongs_to_names = associations.select { |_, v| v[:type] == :belongs_to }.keys
+
     record_class ||= build_record_class(
       belongs_to: belongs_to_names,
       has_many: has_many_names,
       has_one: has_one_names,
     )
+
     klass = Class.new do
       attr_reader :associations_data, :errors
 
       def initialize(errors, associations_data, record_class)
         @record_class = record_class
         @associations_data = associations_data
+
         error_collection = Class.new do
           include Enumerable
 
@@ -61,6 +65,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
             @errors.any?
           end
         end
+
         @errors = error_collection.new(errors)
       end
 
@@ -82,6 +87,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
         associations_data.key?(method) || super
       end
     end
+
     klass.new(errors, associations, record_class)
   end
 

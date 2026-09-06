@@ -9,7 +9,6 @@ RSpec.describe Apiwork::Adapter::Wrapper::Collection::Base do
       metadata = { total: 5 }
       root_key = :invoices
       meta = { page: 1 }
-
       wrapper = described_class.new(data, metadata, root_key, meta)
 
       expect(wrapper.data).to eq(data)

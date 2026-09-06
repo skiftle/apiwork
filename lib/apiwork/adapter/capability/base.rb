@@ -226,12 +226,14 @@ module Apiwork
           return nil if object.params.empty?
 
           type_name = resolve_metadata_type_name(representation_class)
+
           register_metadata_fragment(
             representation_class.api_class,
             type_name,
             metadata_shape_class,
             merged_config(representation_class),
           )
+
           type_name
         end
 
@@ -278,6 +280,7 @@ module Apiwork
 
         def build_translation_context(representation_class)
           locale_key = representation_class.api_class.locale_key
+
           {
             locale_key:,
             adapter_name: adapter_name,

@@ -20,8 +20,10 @@ module Apiwork
 
                 build_enum_filter_union(type_name, scoped_enum_name(name))
               end
+
               build_polymorphic_type_filters
               build_sti_type_filters
+
               attributes = representation_class.attributes.filter_map do |name, attribute|
                 next unless attribute.filterable? && UNFILTERABLE_TYPES.exclude?(attribute.type)
 
@@ -30,6 +32,7 @@ module Apiwork
                 shorthand = !has_custom_filter && !%i[object array union].include?(attribute.type)
                 [name, attribute.type, filter_type, shorthand]
               end
+
               associations = representation_class.associations.filter_map do |name, association|
                 next unless association.filterable?
                 next if association.polymorphic?
@@ -48,6 +51,7 @@ module Apiwork
 
                 [name, filter_type]
               end
+
               object(TYPE_NAME) do |object|
                 object.array?(Constants::AND) do |element|
                   element.reference(TYPE_NAME)
@@ -76,6 +80,7 @@ module Apiwork
                   object.reference?(name, to: filter_type)
                 end
               end
+
               return unless type?(TYPE_NAME)
 
               action(:index) do |act|
@@ -172,6 +177,7 @@ module Apiwork
                      when :boolean then :boolean_filter
                      else :string_filter
                      end
+
               attribute.nullable? ? [:nullable, type].join('_').to_sym : type
             end
 

@@ -110,6 +110,7 @@ RSpec.describe Apiwork::Representation::Base do
     context 'with overrides' do
       it 'forwards all options' do
         target_representation = Class.new(described_class) { abstract! }
+
         representation_class = Class.new(described_class) do
           abstract!
           belongs_to :customer,
@@ -239,6 +240,7 @@ RSpec.describe Apiwork::Representation::Base do
     context 'with overrides' do
       it 'forwards all options' do
         target_representation = Class.new(described_class) { abstract! }
+
         representation_class = Class.new(described_class) do
           abstract!
           has_many :items,
@@ -291,6 +293,7 @@ RSpec.describe Apiwork::Representation::Base do
     context 'with overrides' do
       it 'forwards all options' do
         target_representation = Class.new(described_class) { abstract! }
+
         representation_class = Class.new(described_class) do
           abstract!
           has_one :address,
@@ -470,8 +473,8 @@ RSpec.describe Apiwork::Representation::Base do
           model Invoice
           attribute :number
         end
-        invoice = Invoice.new(number: 'INV-001')
 
+        invoice = Invoice.new(number: 'INV-001')
         result = representation_class.serialize(invoice)
 
         expect(result).to include(number: 'INV-001')
@@ -484,8 +487,8 @@ RSpec.describe Apiwork::Representation::Base do
           model Invoice
           attribute :number
         end
-        invoices = [Invoice.new(number: 'INV-001'), Invoice.new(number: 'INV-002')]
 
+        invoices = [Invoice.new(number: 'INV-001'), Invoice.new(number: 'INV-002')]
         result = representation_class.serialize(invoices)
 
         expect(result).to be_an(Array)
@@ -523,9 +526,11 @@ RSpec.describe Apiwork::Representation::Base do
       base = Class.new(described_class) do
         model Customer
       end
+
       sub = Class.new(base) do
         model PersonCustomer
       end
+
       inheritance = Apiwork::Representation::Inheritance.new(base)
       inheritance.register(sub)
       base.inheritance = inheritance
@@ -614,8 +619,8 @@ RSpec.describe Apiwork::Representation::Base do
       representation_class = Class.new(described_class) do
         model Invoice
       end
-      invoice = Invoice.new(number: 'INV-001')
 
+      invoice = Invoice.new(number: 'INV-001')
       representation = representation_class.new(invoice, context: { current_user: 'Alice' })
 
       expect(representation.record).to eq(invoice)

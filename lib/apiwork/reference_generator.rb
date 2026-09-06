@@ -68,6 +68,7 @@ module Apiwork
 
     def public_api?(yard_object)
       api_tag = yard_object.docstring.tags(:api).find { |tag| tag.text == 'public' }
+
       if yard_object.type == :method
         return false unless api_tag
 
@@ -77,18 +78,20 @@ module Apiwork
         parent_api_tag = parent.docstring.tags(:api).find { |tag| tag.text == 'public' }
         return api_tag.object_id != parent_api_tag&.object_id
       end
+
       has_own_docstring = !yard_object.docstring.to_s.strip.empty?
       return true if has_own_docstring && api_tag
-
       return false unless yard_object.file
 
       lines = File.readlines(yard_object.file)
       docstring_range = yard_object.docstring.line_range
+
       start_line = if docstring_range
                      docstring_range.first - 1
                    else
                      [yard_object.line - 5, 0].max
                    end
+
       end_line = yard_object.line
       preceding_lines = lines[start_line...end_line].join
       preceding_lines.include?('@api public')
@@ -116,12 +119,14 @@ module Apiwork
 
     def extract_methods(yard_object, scope)
       methods = yard_object.meths(scope:, visibility: :public)
+
       yard_object.mixins(:instance).each do |mixin|
         mixin_yard_object = YARD::Registry.at(mixin.path)
         next unless mixin_yard_object
 
         methods += mixin_yard_object.meths(scope:, visibility: :public)
       end
+
       methods
         .select { |method| public_api?(method) && documented?(method) }
         .uniq(&:name)
@@ -160,6 +165,7 @@ module Apiwork
 
     def build_signature(method)
       params = method.parameters.reject { |name, _default| name.to_s.start_with?('internal') }
+
       params = params.map do |name, default|
         if name.to_s.end_with?(':')
           default ? "#{name} #{default}" : name.to_s
@@ -167,6 +173,7 @@ module Apiwork
           default ? "#{name} = #{default}" : name.to_s
         end
       end
+
       name = escape_brackets(method.name.to_s)
       params.any? ? "#{name}(#{params.join(', ')})" : name
     end
@@ -191,6 +198,7 @@ module Apiwork
 
     def format_param_type(param)
       replace_type = param[:values_type] || 'Symbol'
+
       types = param[:types].map do |t|
         if param[:values]&.any? && t == replace_type
           values = param[:values].join(', ').gsub('|', '\|')
@@ -199,6 +207,7 @@ module Apiwork
           "`#{t}`"
         end
       end
+
       types.join(', ')
     end
 
@@ -206,6 +215,7 @@ module Apiwork
       return { default: nil, description: nil, values: nil, values_type: nil } if text.blank?
 
       match = text.match(/\A(?:\(([^)]+)\))?\s*(?:\[(?:(\w+):\s*)?([^\]]+)\])?\s*(.*)\z/m)
+
       {
         default: match[1],
         description: match[4].presence,
@@ -248,12 +258,14 @@ module Apiwork
       @modules = modules
       @modules_with_children = build_modules_with_children(modules)
       write_root_index
+
       modules.each.with_index(1) do |mod, order|
         filepath = module_filepath(mod[:path])
         FileUtils.mkdir_p(File.dirname(filepath))
         content = render_module(mod, order)
         File.write(filepath, content)
       end
+
       write_namespace_indexes
       write_constant_files(extract_constants)
     end
@@ -269,10 +281,12 @@ module Apiwork
       parts = []
       parts << "---\norder: #{order}\nprev: false\nnext: false\n---\n"
       parts << "# #{constant[:name]}\n"
+
       if constant[:file] && constant[:line]
         github_link = "#{GITHUB_URL}/#{constant[:file]}#L#{constant[:line]}"
         parts << "[GitHub](#{github_link})\n"
       end
+
       parts << "#{linkify_yard_refs(constant[:docstring])}\n" if constant[:docstring].present?
       parts.join("\n")
     end
@@ -283,10 +297,12 @@ module Apiwork
       parts << "---\norder: 2\n---\n"
       parts << "# Reference\n"
       parts << "Complete API reference for Apiwork's public classes.\n"
+
       if children.any?
         parts << "## Modules\n"
         render_child_links(parts, 'Apiwork', children)
       end
+
       FileUtils.mkdir_p(OUTPUT_DIR)
       File.write(File.join(OUTPUT_DIR, 'index.md'), parts.join("\n"))
     end
@@ -312,6 +328,7 @@ module Apiwork
 
     def collect_all_folder_paths
       paths = Set.new
+
       @modules.each do |mod|
         parts = mod[:path].sub('Apiwork::', '').split('::')
 
@@ -321,6 +338,7 @@ module Apiwork
 
         paths << parts if @modules_with_children.include?(mod[:path])
       end
+
       paths.to_a.sort_by(&:size)
     end
 
@@ -339,10 +357,12 @@ module Apiwork
       parts = []
       parts << "---\norder: #{order}\nprev: false\nnext: false\n---\n"
       parts << "# #{title}\n"
+
       if children.any?
         parts << "## Modules\n"
         render_child_links(parts, parent_path, children)
       end
+
       parts.join("\n")
     end
 
@@ -355,6 +375,7 @@ module Apiwork
         link = folder ? "./#{child_path}/" : "./#{child_path}"
         parts << "- [#{child}](#{link})"
       end
+
       parts << ''
     end
 
@@ -370,6 +391,7 @@ module Apiwork
 
     def build_modules_with_children(modules)
       paths = modules.map { |m| m[:path] }.to_set
+
       paths.select do |path|
         paths.any? { |other| other != path && other.start_with?("#{path}::") }
       end.to_set
@@ -386,6 +408,7 @@ module Apiwork
       return File.join(OUTPUT_DIR, 'index.md') if parts.empty?
 
       file_parts = parts.map { |part| dasherize(part) }
+
       if @modules_with_children.include?(path)
         File.join(OUTPUT_DIR, *file_parts, 'index.md')
       else
@@ -411,6 +434,7 @@ module Apiwork
         link_path = yard_ref_to_path(ref)
         "[#{ref}](#{link_path})"
       end
+
       escape_html(result)
     end
 
@@ -479,6 +503,7 @@ module Apiwork
 
     def build_type_path_lookup
       lookup = {}
+
       public_api_yard_objects.each do |yard_object|
         full_path = yard_object.path.delete_prefix('Apiwork::')
         parts = full_path.split('::')
@@ -490,6 +515,7 @@ module Apiwork
           lookup[partial_path] ||= full_path
         end
       end
+
       lookup
     end
 
@@ -522,6 +548,7 @@ module Apiwork
 
       file_parts = parts.map { |part| dasherize(part) }
       full_path = "Apiwork::#{without_apiwork}"
+
       if modules_with_children_for_links.include?(full_path)
         "/reference/#{File.join(*file_parts)}/"
       else
@@ -552,29 +579,35 @@ module Apiwork
       FRONTMATTER
 
       parts << "# #{display_title(mod[:path])}\n"
+
       if mod[:file] && mod[:line]
         github_link = "#{GITHUB_URL}/#{mod[:file]}#L#{mod[:line]}"
         parts << "[GitHub](#{github_link})\n"
       end
+
       parts << "#{linkify_yard_refs(mod[:docstring])}\n" if mod[:docstring].present?
       render_examples(parts, mod[:examples]) if mod[:examples].any?
       children = find_direct_children(mod[:path])
+
       if children.any?
         parts << "## Modules\n"
         render_child_links(parts, mod[:path], children)
       end
+
       if mod[:class_methods].any?
         parts << "## Class Methods\n"
         mod[:class_methods].each do |method|
           parts << render_method(method, '.')
         end
       end
+
       if mod[:instance_methods].any?
         parts << "## Instance Methods\n"
         mod[:instance_methods].each do |method|
           parts << render_method(method, '#')
         end
       end
+
       parts.join("\n")
     end
 
@@ -582,11 +615,14 @@ module Apiwork
       parts = []
       parts << "### #{prefix}#{escape_brackets(method[:name])}\n"
       parts << "`#{prefix}#{method[:signature]}`\n"
+
       if method[:file] && method[:line]
         github_link = "#{GITHUB_URL}/#{method[:file]}#L#{method[:line]}"
         parts << "[GitHub](#{github_link})\n"
       end
+
       parts << "#{linkify_yard_refs(method[:docstring])}\n" if method[:docstring].present?
+
       if method[:params].any?
         parts << "**Parameters**\n"
 
@@ -609,17 +645,20 @@ module Apiwork
         parts << '</div>'
         parts << ''
       end
+
       if method[:returns]
         types = method[:returns][:types].map { |type| linkify_type(type) }.join(', ')
         description = linkify_yard_refs(method[:returns][:description])
         parts << "**Returns**\n"
         parts << (description.blank? ? "#{types}\n" : "#{types} — #{description}\n")
       end
+
       if method[:yieldparams].any?
         types = method[:yieldparams].flat_map { |p| p[:types] }.uniq
         linked = types.map { |t| linkify_type(t) }.join(', ')
         parts << "**Yields** #{linked}\n"
       end
+
       if method[:see].any?
         linkable_sees = method[:see].select { |ref| see_ref_linkable?(ref) }
         if linkable_sees.any?
@@ -631,6 +670,7 @@ module Apiwork
           parts << ''
         end
       end
+
       render_examples(parts, method[:examples]) if method[:examples].any?
       parts << "---\n"
       parts.join("\n")

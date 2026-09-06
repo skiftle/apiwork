@@ -69,7 +69,6 @@ module Apiwork
         # @return [Symbol, nil]
         def output(type = nil)
           return @output_type unless type
-
           raise ArgumentError, "output must be :hash or :string, got #{type.inspect}" unless %i[hash string].include?(type)
 
           @output_type = type
@@ -85,7 +84,6 @@ module Apiwork
         # @return [String, nil]
         def file_extension(value = nil)
           return @file_extension unless value
-
           raise ConfigurationError, 'file_extension not allowed for output :hash exports' if output_type == :hash
 
           @file_extension = value
@@ -118,6 +116,7 @@ module Apiwork
 
         def file_extension_for(format: nil)
           resolved = format || :json
+
           if hash_output?
             resolved == :yaml ? '.yaml' : '.json'
           else
@@ -127,6 +126,7 @@ module Apiwork
 
         def content_type_for(format: nil)
           resolved = format || :json
+
           if hash_output?
             resolved == :yaml ? 'application/yaml' : 'application/json'
           else
@@ -136,6 +136,7 @@ module Apiwork
 
         def extract_options(source)
           result = {}
+
           options.each do |name, option|
             value = source[name] || source[name.to_s]
             next if value.nil?
@@ -146,6 +147,7 @@ module Apiwork
                              option.cast(value)
                            end
           end
+
           result
         end
 
@@ -153,17 +155,20 @@ module Apiwork
           return nil unless value.is_a?(Hash)
 
           nested = {}
+
           option.children.each do |child_name, child_option|
             child_value = value[child_name] || value[child_name.to_s]
             next if child_value.nil?
 
             nested[child_name] = child_option.cast(child_value)
           end
+
           nested
         end
 
         def extract_options_from_env
           result = {}
+
           options.each do |name, option|
             if option.nested?
               nested = extract_nested_option_from_env(name, option)
@@ -174,12 +179,14 @@ module Apiwork
               result[name] = option.cast(value) unless value.nil?
             end
           end
+
           result
         end
 
         def extract_nested_option_from_env(parent_name, option)
           nested = {}
           prefix = parent_name.to_s.upcase
+
           option.children.each do |child_name, child_option|
             env_key = "#{prefix}_#{child_name.to_s.upcase}"
             value = ENV[env_key]
@@ -187,6 +194,7 @@ module Apiwork
 
             nested[child_name] = child_option.cast(value)
           end
+
           nested
         end
       end
@@ -194,6 +202,7 @@ module Apiwork
       def initialize(api_base_path, key_format: nil, locale: nil, **options)
         @api_base_path = api_base_path
         @api_class = API.find!(api_base_path)
+
         unless @api_class.export_configs.key?(self.class.export_name)
           raise ConfigurationError,
                 "Export :#{self.class.export_name} is not declared for #{api_base_path}. " \

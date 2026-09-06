@@ -20,7 +20,6 @@ RSpec.describe 'Includes', type: :request do
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
-
         expect(body['invoices'].first.keys).not_to include('items')
       end
     end
@@ -32,7 +31,6 @@ RSpec.describe 'Includes', type: :request do
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
         first_invoice = body['invoices'].find { |invoice| invoice['number'] == 'INV-001' }
-
         expect(first_invoice['items'].length).to eq(2)
       end
 
@@ -42,7 +40,6 @@ RSpec.describe 'Includes', type: :request do
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
         first_invoice = body['invoices'].find { |invoice| invoice['number'] == 'INV-001' }
-
         expect(first_invoice['items'].length).to eq(2)
         expect(first_invoice['attachments'].length).to eq(2)
       end
@@ -55,7 +52,6 @@ RSpec.describe 'Includes', type: :request do
         first_invoice = body['invoices'].find { |invoice| invoice['number'] == 'INV-001' }
         expect(first_invoice['items'].length).to eq(2)
         first_item = first_invoice['items'].find { |item| item['description'] == 'Consulting hours' }
-
         expect(first_item['adjustments'].length).to eq(1)
       end
     end
@@ -67,7 +63,6 @@ RSpec.describe 'Includes', type: :request do
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
         issue = body['issues'].find { |issue| issue['code'] == 'field_unknown' }
-
         expect(issue['code']).to eq('field_unknown')
       end
     end
@@ -79,7 +74,6 @@ RSpec.describe 'Includes', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body['invoice']['items'].length).to eq(2)
     end
 
@@ -88,7 +82,6 @@ RSpec.describe 'Includes', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body['invoice'].keys).not_to include('items')
     end
   end
@@ -106,7 +99,6 @@ RSpec.describe 'Includes', type: :request do
 
       expect(response).to have_http_status(:created)
       body = response.parsed_body
-
       expect(body['invoice']).to have_key('items')
       expect(body['invoice']['items']).to eq([])
     end
@@ -120,7 +112,6 @@ RSpec.describe 'Includes', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body['invoice']['number']).to eq('INV-UPDATED')
       expect(body['invoice']['items'].length).to eq(2)
     end
@@ -132,7 +123,6 @@ RSpec.describe 'Includes', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body['invoice']['number']).to eq('INV-CHANGED')
       expect(body['invoice'].keys).not_to include('items')
     end
@@ -148,7 +138,6 @@ RSpec.describe 'Includes', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body['invoices'].length).to eq(1)
       expect(body['invoices'][0]['items'].length).to eq(2)
     end
@@ -162,7 +151,6 @@ RSpec.describe 'Includes', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
-
       expect(body['invoices'][0]['number']).to eq('INV-002')
       expect(body['invoices'][0]['items'].length).to eq(1)
     end

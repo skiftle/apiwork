@@ -31,6 +31,7 @@ RSpec.describe Apiwork::ErrorCode::Definition do
     context 'when locale_key is provided' do
       it 'returns the API-specific translation' do
         definition = described_class.new(attach_path: false, key: :unit_test_api_specific, status: 404)
+
         I18n.backend.store_translations(
           :en,
           apiwork: { apis: { 'api/v1': { error_codes: { unit_test_api_specific: { description: 'Resource not found' } } } } },

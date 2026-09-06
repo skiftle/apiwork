@@ -64,6 +64,7 @@ module Apiwork
         filterable_attributes = @store
           .flat_map { |representation| representation.attributes.values }
           .select(&:filterable?)
+
         if nullable
           filterable_attributes.select(&:nullable?).map(&:type).to_set.to_a
         else

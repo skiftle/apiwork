@@ -128,6 +128,7 @@ module Apiwork
                   "model must be an ActiveRecord model class, got #{value.class}. " \
                                                                  "Use: model Post (not 'Post' or :post)"
           end
+
           unless value < ActiveRecord::Base
             raise ConfigurationError,
                   "model must be an ActiveRecord model class, got #{value}"

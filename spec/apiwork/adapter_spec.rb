@@ -34,6 +34,7 @@ RSpec.describe Apiwork::Adapter do
       adapter_class = Class.new(Apiwork::Adapter::Base) do
         adapter_name :unit_adapter_register
       end
+
       described_class.register(adapter_class)
 
       expect(described_class.find(:unit_adapter_register)).to eq(adapter_class)

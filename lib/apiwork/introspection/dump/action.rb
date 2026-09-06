@@ -77,7 +77,6 @@ module Apiwork
 
           action_name = @contract_action.name.to_sym
           return [:unprocessable_entity] if [:create, :update].include?(action_name)
-
           return [] if [:index, :show, :destroy].include?(action_name)
 
           http_method = find_http_method
@@ -93,6 +92,7 @@ module Apiwork
           resource = api_class.root_resource.find_resource do |candidate|
             candidate.contract_class == @contract_action.contract_class
           end
+
           return nil unless resource
 
           resource.actions[@contract_action.name.to_sym]&.method

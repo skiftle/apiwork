@@ -14,9 +14,9 @@ RSpec.describe Apiwork::Contract::Object::Deserializer do
           end
         end
       end
+
       shape = contract_class.action_for(:show).response.body
       deserializer = described_class.new(shape)
-
       result = deserializer.deserialize({ title: 'First Post' })
 
       expect(result).to eq({ title: 'First Post' })
@@ -35,9 +35,9 @@ RSpec.describe Apiwork::Contract::Object::Deserializer do
             end
           end
         end
+
         shape = contract_class.action_for(:show).response.body
         deserializer = described_class.new(shape)
-
         result = deserializer.deserialize({ address: { street: 'Main St' } })
 
         expect(result).to eq({ address: { street: 'Main St' } })
@@ -57,9 +57,9 @@ RSpec.describe Apiwork::Contract::Object::Deserializer do
             end
           end
         end
+
         shape = contract_class.action_for(:show).response.body
         deserializer = described_class.new(shape)
-
         result = deserializer.deserialize({ tags: %w[ruby rails] })
 
         expect(result).to eq({ tags: %w[ruby rails] })
@@ -90,9 +90,9 @@ RSpec.describe Apiwork::Contract::Object::Deserializer do
             end
           end
         end
+
         shape = contract_class.action_for(:show).response.body
         deserializer = described_class.new(shape)
-
         result = deserializer.deserialize({ items: [{ kind: 'invoice', number: 'INV-001' }, { amount: 150.00, kind: 'payment' }] })
 
         expect(result[:items].length).to eq(2)
@@ -123,9 +123,9 @@ RSpec.describe Apiwork::Contract::Object::Deserializer do
             end
           end
         end
+
         shape = contract_class.action_for(:show).response.body
         deserializer = described_class.new(shape)
-
         result = deserializer.deserialize({ values: ['ruby', 42] })
 
         expect(result[:values]).to eq(['ruby', 42])
@@ -143,9 +143,9 @@ RSpec.describe Apiwork::Contract::Object::Deserializer do
             end
           end
         end
+
         shape = contract_class.action_for(:show).response.body
         deserializer = described_class.new(shape)
-
         result = deserializer.deserialize({})
 
         expect(result).to eq({})

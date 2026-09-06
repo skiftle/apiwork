@@ -116,6 +116,7 @@ RSpec.describe Apiwork::Adapter::Capability::Contract::Scope do
         model Invoice
         attribute :number
       end
+
       scope = described_class.new(representation_class, actions)
 
       expect(scope.filterable_attributes).to eq([])
@@ -134,6 +135,7 @@ RSpec.describe Apiwork::Adapter::Capability::Contract::Scope do
         model Invoice
         attribute :number
       end
+
       scope = described_class.new(representation_class, actions)
 
       expect(scope.sortable_attributes).to eq([])
@@ -152,6 +154,7 @@ RSpec.describe Apiwork::Adapter::Capability::Contract::Scope do
         model Invoice
         attribute :number
       end
+
       scope = described_class.new(representation_class, actions)
 
       expect(scope.writable_attributes).to eq([])

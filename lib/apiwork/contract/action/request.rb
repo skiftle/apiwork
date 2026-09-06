@@ -62,9 +62,11 @@ module Apiwork
         #   end
         def query(&block)
           @query ||= Object.new(@contract_class, action_name: @action_name)
+
           if block
             block.arity.positive? ? yield(@query) : @query.instance_eval(&block)
           end
+
           @query
         end
 
@@ -90,9 +92,11 @@ module Apiwork
         #   end
         def body(&block)
           @body ||= Object.new(@contract_class, action_name: @action_name)
+
           if block
             block.arity.positive? ? yield(@body) : @body.instance_eval(&block)
           end
+
           @body
         end
       end

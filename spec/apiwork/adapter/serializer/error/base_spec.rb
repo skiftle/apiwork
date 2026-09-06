@@ -6,6 +6,7 @@ RSpec.describe Apiwork::Adapter::Serializer::Error::Base do
   describe '.api_builder' do
     it 'returns the API builder' do
       builder_class = Class.new(Apiwork::Adapter::Builder::API::Base)
+
       serializer_class = Class.new(described_class) do
         api_builder builder_class
       end

@@ -45,7 +45,6 @@ RSpec.describe 'Representation association serialization', type: :integration do
     context 'with nil association' do
       it 'serializes nil when association is missing' do
         customer2 = CompanyCustomer.create!(email: 'BILLING@ACME.COM', industry: 'Technology', name: 'Acme Corp')
-
         result = Api::V1::CustomerRepresentation.serialize(customer2, include: { address: true })
 
         expect(result[:address]).to be_nil
@@ -64,7 +63,6 @@ RSpec.describe 'Representation association serialization', type: :integration do
     context 'when association is destroyed' do
       it 'serializes nil after association is destroyed' do
         address.destroy!
-
         result = Api::V1::CustomerRepresentation.serialize(customer.reload, include: { address: true })
 
         expect(result[:address]).to be_nil

@@ -6,6 +6,7 @@ RSpec.describe Apiwork::API::Info do
   describe '#contact' do
     it 'defines a contact' do
       info = described_class.new
+
       info.contact do
         name 'Alice'
         email 'alice@example.com'
@@ -58,6 +59,7 @@ RSpec.describe Apiwork::API::Info do
   describe '#license' do
     it 'defines a license' do
       info = described_class.new
+
       info.license do
         name 'MIT'
         url 'https://opensource.org/licenses/MIT'
@@ -71,6 +73,7 @@ RSpec.describe Apiwork::API::Info do
   describe '#server' do
     it 'defines a server' do
       info = described_class.new
+
       info.server do
         url 'https://example.com'
         description 'Production'

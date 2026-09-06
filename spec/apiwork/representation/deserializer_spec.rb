@@ -9,8 +9,8 @@ RSpec.describe Apiwork::Representation::Deserializer do
         model Invoice
         attribute :number
       end
-      deserializer = described_class.new(representation_class)
 
+      deserializer = described_class.new(representation_class)
       result = deserializer.deserialize({ number: 'INV-001' })
 
       expect(result).to eq({ number: 'INV-001' })
@@ -22,8 +22,8 @@ RSpec.describe Apiwork::Representation::Deserializer do
           model Invoice
           attribute :number
         end
-        deserializer = described_class.new(representation_class)
 
+        deserializer = described_class.new(representation_class)
         result = deserializer.deserialize([{ number: 'INV-001' }, { number: 'INV-002' }])
 
         expect(result).to eq([{ number: 'INV-001' }, { number: 'INV-002' }])
@@ -36,13 +36,14 @@ RSpec.describe Apiwork::Representation::Deserializer do
           model Item
           attribute :description
         end
+
         representation_class = Class.new(Apiwork::Representation::Base) do
           model Invoice
           attribute :number
           has_many :items, representation: item_representation
         end
-        deserializer = described_class.new(representation_class)
 
+        deserializer = described_class.new(representation_class)
         result = deserializer.deserialize({ items: [{ description: 'Consulting hours' }], number: 'INV-001' })
 
         expect(result).to eq({ items: [{ description: 'Consulting hours' }], number: 'INV-001' })
@@ -55,13 +56,14 @@ RSpec.describe Apiwork::Representation::Deserializer do
           model Invoice
           attribute :number
         end
+
         representation_class = Class.new(Apiwork::Representation::Base) do
           model Item
           attribute :description
           belongs_to :invoice, representation: invoice_representation
         end
-        deserializer = described_class.new(representation_class)
 
+        deserializer = described_class.new(representation_class)
         result = deserializer.deserialize({ description: 'Consulting hours', invoice: { number: 'INV-001' } })
 
         expect(result).to eq({ description: 'Consulting hours', invoice: { number: 'INV-001' } })
@@ -74,8 +76,8 @@ RSpec.describe Apiwork::Representation::Deserializer do
           model Invoice
           attribute :number
         end
-        deserializer = described_class.new(representation_class)
 
+        deserializer = described_class.new(representation_class)
         result = deserializer.deserialize({})
 
         expect(result).to eq({})

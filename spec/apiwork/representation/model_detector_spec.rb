@@ -6,7 +6,6 @@ RSpec.describe Apiwork::Representation::ModelDetector do
   describe '#detect' do
     it 'returns the model class' do
       detector = described_class.new(Api::V1::InvoiceRepresentation)
-
       result = detector.detect
 
       expect(result).to eq(Invoice)
@@ -16,7 +15,6 @@ RSpec.describe Apiwork::Representation::ModelDetector do
       it 'returns nil' do
         representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
         detector = described_class.new(representation_class)
-
         result = detector.detect
 
         expect(result).to be_nil

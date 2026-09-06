@@ -85,6 +85,7 @@ RSpec.describe Apiwork::Contract::Base do
   describe '.import' do
     it 'registers the import' do
       imported_class = create_test_contract
+
       contract_class = create_test_contract do
         import imported_class, as: :billing
       end
@@ -124,6 +125,7 @@ RSpec.describe Apiwork::Contract::Base do
   describe '.representation' do
     it 'sets the representation class' do
       representation_class = Class.new(Apiwork::Representation::Base) { abstract! }
+
       contract_class = create_test_contract do
         representation representation_class
       end

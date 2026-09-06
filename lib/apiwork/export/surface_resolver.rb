@@ -37,9 +37,11 @@ module Apiwork
 
       def collect_type_names_from_actions
         type_names = Set.new
+
         @api.resources.each_value do |resource|
           collect_types_from_resource(resource, type_names)
         end
+
         type_names
       end
 
@@ -47,6 +49,7 @@ module Apiwork
         resource.actions.each_value do |action|
           collect_types_from_action(action, type_names)
         end
+
         resource.resources.each_value do |nested|
           collect_types_from_resource(nested, type_names)
         end
@@ -62,10 +65,12 @@ module Apiwork
       def collect_types_from_param(param, type_names)
         type_names << param.reference if param.reference?
         param.shape.each_value { |nested| collect_types_from_param(nested, type_names) } if param.object?
+
         if param.array?
           collect_types_from_param(param.of, type_names) if param.of
           param.shape.each_value { |nested| collect_types_from_param(nested, type_names) }
         end
+
         return unless param.union?
 
         param.variants.each { |variant| collect_types_from_param(variant, type_names) }
@@ -73,6 +78,7 @@ module Apiwork
 
       def expand_transitive_dependencies(type_names)
         added = true
+
         while added
           added = false
           type_names.dup.each do |type_name|
@@ -92,30 +98,36 @@ module Apiwork
 
       def collect_reference_names_from_type(type)
         reference_names = []
+
         if type.object?
           reference_names.concat(type.extends) if type.extends?
           type.shape.each_value { |param| collect_reference_names_from_param(param, reference_names) }
         elsif type.union?
           type.variants.each { |param| collect_reference_names_from_param(param, reference_names) }
         end
+
         reference_names.uniq
       end
 
       def collect_reference_names_from_param(param, reference_names)
         reference_names << param.reference if param.reference?
         param.shape.each_value { |nested| collect_reference_names_from_param(nested, reference_names) } if param.object?
+
         if param.array?
           collect_reference_names_from_param(param.of, reference_names) if param.of
           param.shape.each_value { |nested| collect_reference_names_from_param(nested, reference_names) }
         end
+
         param.variants.each { |variant| collect_reference_names_from_param(variant, reference_names) } if param.union?
       end
 
       def collect_enum_names_from_actions
         enum_names = Set.new
+
         @api.resources.each_value do |resource|
           collect_enums_from_resource(resource, enum_names)
         end
+
         enum_names
       end
 
@@ -123,6 +135,7 @@ module Apiwork
         resource.actions.each_value do |action|
           collect_enums_from_action(action, enum_names)
         end
+
         resource.resources.each_value do |nested|
           collect_enums_from_resource(nested, enum_names)
         end
@@ -137,10 +150,12 @@ module Apiwork
       def collect_enums_from_param(param, enum_names)
         enum_names << param.enum if param.enum_reference?
         param.shape.each_value { |nested| collect_enums_from_param(nested, enum_names) } if param.object?
+
         if param.array?
           collect_enums_from_param(param.of, enum_names) if param.of
           param.shape.each_value { |nested| collect_enums_from_param(nested, enum_names) }
         end
+
         return unless param.union?
 
         param.variants.each { |variant| collect_enums_from_param(variant, enum_names) }
@@ -164,10 +179,12 @@ module Apiwork
         enum_names << param.enum if param.enum_reference?
         enum_names << param.reference if param.reference? && @api.enums.key?(param.reference)
         param.shape.each_value { |nested| collect_enums_from_type_param(nested, enum_names) } if param.object?
+
         if param.array?
           collect_enums_from_type_param(param.of, enum_names) if param.of
           param.shape.each_value { |nested| collect_enums_from_type_param(nested, enum_names) }
         end
+
         param.variants.each { |variant| collect_enums_from_type_param(variant, enum_names) } if param.union?
       end
     end

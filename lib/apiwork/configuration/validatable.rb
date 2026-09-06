@@ -13,6 +13,7 @@ module Apiwork
                 when :integer then value.is_a?(Integer)
                 when :hash then value.is_a?(Hash)
                 end
+
         raise ConfigurationError, "#{name} must be #{type}, got #{value.class}" unless valid
       end
 

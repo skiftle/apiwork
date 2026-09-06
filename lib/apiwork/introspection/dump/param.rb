@@ -13,9 +13,11 @@ module Apiwork
           return nil unless @contract_param
 
           result = {}
+
           @contract_param.params.sort_by { |name, _options| name.to_s }.each do |name, param_options|
             result[name] = build_param(name, param_options)
           end
+
           if @contract_param.wrapped?
             { shape: result, type: :object }
           else
@@ -30,6 +32,7 @@ module Apiwork
           return build_custom_type_param(options) if options[:custom_type]
 
           reference = resolve_type_reference(options[:type])
+
           result = {
             reference:,
             as: options[:as],
@@ -51,12 +54,14 @@ module Apiwork
             value: options[:type] == :literal ? options[:value] : nil,
             variants: [],
           }
+
           result[:default] = options[:default] if options.key?(:default)
           result
         end
 
         def build_union_param(options)
           union_dump = build_union(options[:union])
+
           result = {
             as: options[:as],
             deprecated: options[:deprecated] == true,
@@ -78,6 +83,7 @@ module Apiwork
             value: nil,
             variants: union_dump[:variants],
           }
+
           result[:default] = options[:default] if options.key?(:default)
           result
         end
@@ -85,6 +91,7 @@ module Apiwork
         def build_custom_type_param(options)
           custom_type_name = options[:custom_type]
           custom_type_name = qualified_name(custom_type_name, @contract_param) if @contract_param.contract_class.resolve_custom_type(custom_type_name)
+
           result = {
             as: options[:as],
             deprecated: options[:deprecated] == true,
@@ -106,6 +113,7 @@ module Apiwork
             value: nil,
             variants: [],
           }
+
           result[:default] = options[:default] if options.key?(:default)
           result
         end
@@ -157,6 +165,7 @@ module Apiwork
           type_value = element.type
           reference = registered_type?(type_value) ? qualified_name(type_value, @contract_param) : nil
           resolved_shape = element.shape ? build_nested_shape(element.shape) : {}
+
           result = {
             reference:,
             as: nil,
@@ -178,6 +187,7 @@ module Apiwork
             value: nil,
             variants: [],
           }
+
           result[:of] = build_of_from_element(element.inner) if [:array, :record].include?(element.type) && element.inner
           result
         end
@@ -194,6 +204,7 @@ module Apiwork
           is_registered = registered_type?(variant_type)
           reference = is_registered ? qualified_name(variant_type, @contract_param) : nil
           resolved_type = is_registered ? :reference : (variant[:type] || :unknown)
+
           {
             reference:,
             as: nil,
@@ -256,9 +267,11 @@ module Apiwork
 
         def dump_api_object(api_object)
           result = {}
+
           api_object.params.sort_by { |name, _| name.to_s }.each do |name, options|
             result[name] = build_api_param(options)
           end
+
           result
         end
 
@@ -300,6 +313,7 @@ module Apiwork
 
           union = of.type == :union
           union_shape = union && of.shape.is_a?(Apiwork::API::Union) ? of.shape : nil
+
           result = {
             as: nil,
             deprecated: false,
@@ -321,6 +335,7 @@ module Apiwork
             value: nil,
             variants: union_shape ? union_shape.variants.map { |variant| build_api_variant(variant) } : [],
           }
+
           result[:of] = build_api_of({ of: of.inner }) if of.type == :array && of.inner
           result
         end
@@ -373,10 +388,12 @@ module Apiwork
             description = i18n_attribute_description(attribute)
             return description if description
           end
+
           if (association = representation_class.associations[param_name])
             description = i18n_association_description(association)
             return description if description
           end
+
           nil
         end
 

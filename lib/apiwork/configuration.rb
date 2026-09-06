@@ -35,7 +35,9 @@ module Apiwork
 
         return stored.nil? ? option.default : stored
       end
+
       value = args.first
+
       if block && option.nested?
         @storage[name] ||= {}
         nested = Configuration.new(option, @storage[name])

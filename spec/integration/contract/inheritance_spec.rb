@@ -22,7 +22,6 @@ RSpec.describe 'Contract inheritance', type: :integration do
 
     it 'inherits object types from parent contract' do
       child = create_child_contract(parent_contract)
-
       resolved = child.resolve_custom_type(:address)
 
       expect(resolved).not_to be_nil
@@ -61,7 +60,6 @@ RSpec.describe 'Contract inheritance', type: :integration do
 
     it 'inherits enums from parent contract' do
       child = create_child_contract(parent_contract)
-
       values = child.enum_values(:status)
 
       expect(values).to eq(%w[active inactive])
@@ -92,7 +90,6 @@ RSpec.describe 'Contract inheritance', type: :integration do
 
     it 'inherits unions from parent contract' do
       child = create_child_contract(parent_contract)
-
       resolved = child.resolve_custom_type(:payment_method)
 
       expect(resolved).not_to be_nil

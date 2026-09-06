@@ -19,6 +19,7 @@ module Apiwork
         &block
       )
         key = scoped_name(scope, name)
+
         if @store.key?(key)
           validate_kind_consistency!(key, kind)
           merge(key, block:, deprecated:, description:, example:)
@@ -86,6 +87,7 @@ module Apiwork
 
       def merge(key, block:, deprecated:, description:, example:)
         definition = @store[key]
+
         @store[key] = definition.merge(
           block:,
           deprecated:,

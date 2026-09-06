@@ -6,6 +6,7 @@ RSpec.describe Apiwork::Adapter::Capability::Base do
   describe '.api_builder' do
     it 'registers the API builder' do
       builder_class = Class.new(Apiwork::Adapter::Builder::API::Base)
+
       capability_class = Class.new(described_class) do
         api_builder builder_class
       end
@@ -45,6 +46,7 @@ RSpec.describe Apiwork::Adapter::Capability::Base do
   describe '.contract_builder' do
     it 'registers the contract builder' do
       builder_class = Class.new(Apiwork::Adapter::Builder::Contract::Base)
+
       capability_class = Class.new(described_class) do
         contract_builder builder_class
       end
@@ -68,6 +70,7 @@ RSpec.describe Apiwork::Adapter::Capability::Base do
   describe '.operation' do
     it 'registers the operation' do
       operation_class = Class.new(Apiwork::Adapter::Capability::Operation::Base)
+
       capability_class = Class.new(described_class) do
         operation operation_class
       end
@@ -91,6 +94,7 @@ RSpec.describe Apiwork::Adapter::Capability::Base do
   describe '.request_transformer' do
     it 'registers the request transformer' do
       transformer_class = Class.new(Apiwork::Adapter::Capability::Transformer::Request::Base)
+
       capability_class = Class.new(described_class) do
         request_transformer transformer_class
       end
@@ -102,6 +106,7 @@ RSpec.describe Apiwork::Adapter::Capability::Base do
   describe '.response_transformer' do
     it 'registers the response transformer' do
       transformer_class = Class.new(Apiwork::Adapter::Capability::Transformer::Response::Base)
+
       capability_class = Class.new(described_class) do
         response_transformer transformer_class
       end

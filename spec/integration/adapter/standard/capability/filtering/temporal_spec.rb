@@ -17,7 +17,6 @@ RSpec.describe 'Temporal filtering', type: :request do
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
-
         expect(body['invoices'].length).to eq(1)
         expect(body['invoices'][0]['number']).to eq('INV-001')
       end
@@ -29,7 +28,6 @@ RSpec.describe 'Temporal filtering', type: :request do
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
-
         expect(body['invoices'].length).to eq(1)
         expect(body['invoices'][0]['number']).to eq('INV-003')
       end
@@ -43,7 +41,6 @@ RSpec.describe 'Temporal filtering', type: :request do
         body = response.parsed_body
         expect(body['invoices'].length).to eq(2)
         numbers = body['invoices'].map { |inv| inv['number'] }
-
         expect(numbers).to contain_exactly('INV-002', 'INV-003')
       end
     end
@@ -54,7 +51,6 @@ RSpec.describe 'Temporal filtering', type: :request do
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
-
         expect(body['invoices'].length).to eq(1)
         expect(body['invoices'][0]['number']).to eq('INV-001')
       end
@@ -68,7 +64,6 @@ RSpec.describe 'Temporal filtering', type: :request do
         body = response.parsed_body
         expect(body['invoices'].length).to eq(2)
         numbers = body['invoices'].map { |inv| inv['number'] }
-
         expect(numbers).to contain_exactly('INV-001', 'INV-002')
       end
     end
@@ -81,7 +76,6 @@ RSpec.describe 'Temporal filtering', type: :request do
         body = response.parsed_body
         expect(body['invoices'].length).to eq(2)
         numbers = body['invoices'].map { |inv| inv['number'] }
-
         expect(numbers).to contain_exactly('INV-001', 'INV-002')
       end
     end
@@ -94,7 +88,6 @@ RSpec.describe 'Temporal filtering', type: :request do
         body = response.parsed_body
         expect(body['invoices'].length).to eq(2)
         numbers = body['invoices'].map { |inv| inv['number'] }
-
         expect(numbers).to contain_exactly('INV-001', 'INV-003')
       end
     end
@@ -106,7 +99,6 @@ RSpec.describe 'Temporal filtering', type: :request do
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
-
         expect(body['invoices'].length).to eq(1)
         expect(body['invoices'][0]['number']).to eq('INV-004')
       end

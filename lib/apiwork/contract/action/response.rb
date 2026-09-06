@@ -98,6 +98,7 @@ module Apiwork
             )
             block.arity.positive? ? yield(@body) : @body.instance_eval(&block)
           end
+
           @body
         end
       end

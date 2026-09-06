@@ -143,6 +143,7 @@ module Apiwork
                   "representation must be a Representation class, got #{klass.class}. " \
                   "Use: representation InvoiceRepresentation (not 'InvoiceRepresentation' or :invoice)"
           end
+
           unless klass < Representation::Base
             raise ConfigurationError,
                   'representation must be a Representation class (subclass of Apiwork::Representation::Base), ' \
@@ -392,11 +393,13 @@ module Apiwork
                   "import must be a Class constant, got #{klass.class}. " \
                                                    "Use: import UserContract, as: :user (not 'UserContract' or :user_contract)"
           end
+
           unless klass < Contract::Base
             raise ConfigurationError,
                   'import must be a Contract class (subclass of Apiwork::Contract::Base), ' \
                                                    "got #{klass}"
           end
+
           unless as.is_a?(Symbol)
             raise ConfigurationError,
                   "import alias must be a Symbol, got #{as.class}. " \
@@ -407,6 +410,7 @@ module Apiwork
           return unless klass.representation? && klass.api_class
 
           klass.building = true
+
           begin
             klass.api_class.ensure_contract_built!(klass)
           ensure
@@ -466,14 +470,17 @@ module Apiwork
         #   end
         def action(name, replace: false, &block)
           name = name.to_sym
+
           action = if replace
                      Action.new(self, name, replace: true)
                    else
                      actions[name] ||= Action.new(self, name)
                    end
+
           if block_given?
             block.arity.positive? ? yield(action) : action.instance_eval(&block)
           end
+
           actions[name] = action
         end
 
@@ -559,6 +566,7 @@ module Apiwork
             result = api_class.type_definition(type_name, scope: self)
             return result if result
           end
+
           result = resolve_imported_type(type_name, visited: visited.dup.add(self))
           return result if result
 
@@ -600,6 +608,7 @@ module Apiwork
             result = api_class.enum_values(enum_name, scope: self)
             return result if result
           end
+
           result = resolve_imported_enum_values(enum_name, visited: visited.dup.add(self))
           return result if result
 
@@ -618,6 +627,7 @@ module Apiwork
 
         def resolve_imported_type(type_name, visited:)
           type_string = type_name.to_s
+
           imports.each do |import_alias, imported_contract|
             prefix = "#{import_alias}_"
             next unless type_string.start_with?(prefix)
@@ -626,6 +636,7 @@ module Apiwork
             result = imported_contract.resolve_custom_type(unprefixed_name, visited:)
             return result if result
           end
+
           nil
         end
 
@@ -638,6 +649,7 @@ module Apiwork
 
         def resolve_imported_enum_values(enum_name, visited:)
           enum_string = enum_name.to_s
+
           imports.each do |import_alias, imported_contract|
             prefix = "#{import_alias}_"
             next unless enum_string.start_with?(prefix)
@@ -646,6 +658,7 @@ module Apiwork
             result = imported_contract.enum_values(unprefixed_name, visited:)
             return result if result
           end
+
           nil
         end
 

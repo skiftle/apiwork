@@ -52,6 +52,7 @@ class ExampleGenerator
       FileUtils.rm_rf(dest)
       FileUtils.mv(temp_public.join(dir), dest) if File.exist?(temp_public.join(dir))
     end
+
     FileUtils.rm_rf(EXAMPLES_DIR)
     FileUtils.mv(temp_examples, EXAMPLES_DIR)
   end
@@ -87,6 +88,7 @@ class ExampleGenerator
 
   def metadata_for(namespace)
     yml_path = CONFIG_DIR.join("#{namespace}.yml")
+
     if File.exist?(yml_path)
       YAML.load_file(yml_path).deep_symbolize_keys
     else
@@ -126,10 +128,12 @@ class ExampleGenerator
     FileUtils.mkdir_p(outdir)
     apiwork_json = dir.join('apiwork.json')
     docs_dir = Rails.root.join('..').to_s
+
     unless system('pnpm', 'exec', 'apiwork', generator.to_s, apiwork_json.to_s, '--outdir', outdir.to_s, chdir: docs_dir)
       FileUtils.rm_rf(outdir)
       raise "codegen #{generator} failed for #{api_class.base_path}"
     end
+
     system('pnpm', 'exec', 'biome', 'check', '--write', outdir.to_s, chdir: docs_dir)
   end
 
@@ -144,6 +148,7 @@ class ExampleGenerator
     FileUtils.mkdir_p(requests_dir)
     runner = RequestRunner.new(namespace, scenarios)
     results = runner.run_all
+
     results.each do |action, data|
       File.write(requests_dir.join("#{action}.json"), JSON.pretty_generate(data))
     end
@@ -176,12 +181,14 @@ class ExampleGenerator
     return nil if files.blank?
 
     content = ["## #{title}"]
+
     files.each do |file|
       next unless file_exists?(file)
 
       content << file_block(file)
       content << database_table_details(file) if file.include?('/models/')
     end
+
     content.compact.join("\n\n")
   end
 
@@ -224,6 +231,7 @@ class ExampleGenerator
     return if files.empty?
 
     content = ['## Models']
+
     files.each do |file|
       model_name = File.basename(file, '.rb')
       table_name = "#{namespace}_#{model_name.pluralize}"
@@ -231,6 +239,7 @@ class ExampleGenerator
       content << file_block(file)
       content << schema_details_for_table(table_name)
     end
+
     content.compact.join("\n\n")
   end
 
@@ -243,12 +252,14 @@ class ExampleGenerator
     lines << ''
     lines << '| Column | Type | Nullable | Default |'
     lines << '|--------|------|----------|---------|'
+
     cols.each do |col|
       type = column_type(col)
       nullable = col.null ? '✓' : ''
       default = col.default.present? ? col.default.to_s : ''
       lines << "| #{col.name} | #{type} | #{nullable} | #{default} |"
     end
+
     lines << ''
     lines << ':::'
     lines.join("\n")
@@ -269,9 +280,11 @@ class ExampleGenerator
     return if files.empty?
 
     content = ['## Representations']
+
     files.each do |file|
       content << file_block(file)
     end
+
     content.join("\n\n")
   end
 
@@ -280,9 +293,11 @@ class ExampleGenerator
     return if files.empty?
 
     content = ['## Contracts']
+
     files.each do |file|
       content << file_block(file)
     end
+
     content.join("\n\n")
   end
 
@@ -291,9 +306,11 @@ class ExampleGenerator
     return if files.empty?
 
     content = ['## Controllers']
+
     files.each do |file|
       content << file_block(file)
     end
+
     content.join("\n\n")
   end
 
@@ -305,6 +322,7 @@ class ExampleGenerator
 
     content = ['## Request Examples']
     sorted = scenarios.sort_by { |s| s[:order] || 999 }
+
     sorted.each do |scenario|
       slug = scenario[:title].parameterize
       file_path = requests_dir.join("#{slug}.json")
@@ -313,6 +331,7 @@ class ExampleGenerator
       data = JSON.parse(File.read(file_path), symbolize_names: true)
       content << request_example_block(scenario[:title], data)
     end
+
     content.join("\n\n")
   end
 
@@ -327,11 +346,13 @@ class ExampleGenerator
     parts << ''
     parts << '**Request**'
     parts << ''
+
     parts << if request[:body]
                "```http\n#{method} #{path}\nContent-Type: application/json\n\n#{JSON.pretty_generate(request[:body])}\n```"
              else
                "```http\n#{method} #{path}\n```"
              end
+
     parts << ''
     parts << "**Response** `#{status}`"
     parts << ''
@@ -347,6 +368,7 @@ class ExampleGenerator
 
     # Exports
     parts << '## Exports'
+
     if File.exist?(public_dir.join('openapi.yml'))
       parts << <<~MD.strip
         ::: details OpenAPI
@@ -356,6 +378,7 @@ class ExampleGenerator
         :::
       MD
     end
+
     if File.exist?(public_dir.join('apiwork.json'))
       parts << <<~MD.strip
         ::: details Apiwork
@@ -382,6 +405,7 @@ class ExampleGenerator
       relative = Pathname.new(path).relative_path_from(dir).to_s
       relative
     end
+
     return nil if files.empty?
 
     lines = []
@@ -389,9 +413,11 @@ class ExampleGenerator
     lines << ''
     lines << '::: code-group'
     lines << ''
+
     files.each do |file|
       lines << "<<< @/playground/public/#{locale_key}/#{subdir}/#{file} [#{file}]"
     end
+
     lines << ''
     lines << ':::'
     lines << ''
@@ -422,10 +448,12 @@ class ExampleGenerator
 
   def generate_index(examples, temp_examples)
     sorted = examples.sort_by { |e| e[:order] }
+
     rows = sorted.map do |example|
       slug = example[:title].parameterize
       "| [#{example[:title]}](./#{slug}.md) | #{example[:description]} |"
     end
+
     content = <<~MD
       ---
       order: 99

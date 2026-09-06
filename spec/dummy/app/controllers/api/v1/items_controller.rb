@@ -25,6 +25,7 @@ module Api
                               else
                                 contract.body[:item]
                               end
+
         item = Item.create(params_with_invoice)
 
         expose item

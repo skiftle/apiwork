@@ -14,7 +14,6 @@ RSpec.describe 'Filtering errors', type: :request do
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
         issue = body['issues'].find { |issue| issue['code'] == 'field_unknown' }
-
         expect(issue['code']).to eq('field_unknown')
       end
     end
@@ -26,7 +25,6 @@ RSpec.describe 'Filtering errors', type: :request do
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
         issue = body['issues'].find { |issue| issue['code'] == 'field_unknown' }
-
         expect(issue['path']).to eq(%w[filter number invalid_op])
       end
     end
@@ -38,7 +36,6 @@ RSpec.describe 'Filtering errors', type: :request do
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
         issue = body['issues'].find { |issue| issue['code'] == 'field_unknown' }
-
         expect(issue['path']).to eq(%w[filter number null])
       end
     end
@@ -50,7 +47,6 @@ RSpec.describe 'Filtering errors', type: :request do
         expect(response).to have_http_status(:bad_request)
         body = response.parsed_body
         issue = body['issues'].first
-
         expect(issue['code']).to eq('type_invalid')
       end
     end

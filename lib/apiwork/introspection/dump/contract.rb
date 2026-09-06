@@ -15,16 +15,19 @@ module Apiwork
           result = { actions: {} }
           action_names = available_actions
           action_names = @contract_class.actions.keys if action_names.empty?
+
           action_names.each do |action_name|
             contract_action = @contract_class.action_for(action_name)
             result[:actions][action_name] = Action.new(contract_action).to_h if contract_action
           end
+
           if @expand
             types, enums = build_referenced_types_and_enums(result[:actions])
           else
             types = build_local_types
             enums = build_local_enums
           end
+
           result[:types] = types
           result[:enums] = enums
           result
@@ -59,6 +62,7 @@ module Apiwork
           dumped_types = {}
           visited_types = Set.new
           collect_references(actions_dump, referenced_types, referenced_enums)
+
           until (pending_types = referenced_types - visited_types).empty?
             pending_types.each do |type_name|
               visited_types << type_name
@@ -72,10 +76,12 @@ module Apiwork
               collect_references(dumped, referenced_types, referenced_enums)
             end
           end
+
           dumped_enums = referenced_enums.each_with_object({}) do |enum_name, result|
             enum_definition = enum_registry[enum_name]
             result[enum_name] = @type_dump.build_enum(enum_name, enum_definition) if enum_definition
           end
+
           types = dumped_types.sort_by { |name, _| name.to_s }.to_h
           enums = dumped_enums.sort_by { |name, _| name.to_s }.to_h
           [types, enums]

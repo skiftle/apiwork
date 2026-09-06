@@ -72,6 +72,7 @@ module Apiwork
               elsif block
                 @metadata_shape_class = wrap_metadata_shape_block(block)
               end
+
               @metadata_shape_class
             end
 
@@ -152,11 +153,13 @@ module Apiwork
             capability_name = @translation_context[:capability_name]
             locale_key = @translation_context[:locale_key]
             key_suffix = segments.join('.')
+
             if locale_key
               api_key = :"apiwork.apis.#{locale_key}.adapters.#{adapter_name}.capabilities.#{capability_name}.#{key_suffix}"
               result = I18n.translate(api_key, default: nil)
               return result if result
             end
+
             adapter_key = :"apiwork.adapters.#{adapter_name}.capabilities.#{capability_name}.#{key_suffix}"
             result = I18n.translate(adapter_key, default: nil)
             return result if result

@@ -19,6 +19,7 @@ module Apiwork
           start_time = Time.zone.now
           count = 0
           Rails.logger.debug 'Generating artifacts...'
+
           api_classes.each do |api_class|
             available_exports = export_name ? [export_name.to_sym] : api_class.export_configs.keys
 
@@ -34,6 +35,7 @@ module Apiwork
               )
             end
           end
+
           Rails.logger.debug "\nGenerated #{count} file#{count == 1 ? '' : 's'} in #{(Time.zone.now - start_time).round(2)}s"
           count
         end
@@ -58,6 +60,7 @@ module Apiwork
           content = generate(export_name, api_base_path, format:, key_format:, locale:, version:)
           export_class = Registry.find!(export_name)
           extension = export_class.file_extension_for(format:)
+
           file_path = Writer.write(
             api_base_path:,
             content:,
@@ -65,6 +68,7 @@ module Apiwork
             extension:,
             output:,
           )
+
           Rails.logger.debug "    to #{file_path}"
           1
         end

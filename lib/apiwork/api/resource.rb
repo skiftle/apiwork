@@ -112,11 +112,13 @@ module Apiwork
           found = resource.find_resource(resource_name)
           return found if found
         end
+
         nil
       end
 
       def find_resource_for_path(resource_path)
         current = nil
+
         resource_path.split('/').each do |part|
           next if part.empty?
 
@@ -127,6 +129,7 @@ module Apiwork
 
           current = found
         end
+
         current
       end
 
@@ -211,12 +214,15 @@ module Apiwork
           param:,
           path:,
         }.compact
+
         build_resource(resource_name, options:, singular: false)
         @resource_stack.push(resource_name)
         self.concerns(*concerns) if concerns
+
         if block
           block.arity.positive? ? yield(self) : instance_eval(&block)
         end
+
         @resource_stack.pop
       end
 
@@ -281,12 +287,15 @@ module Apiwork
           param:,
           path:,
         }.compact
+
         build_resource(resource_name, options:, singular: true)
         @resource_stack.push(resource_name)
         self.concerns(*concerns) if concerns
+
         if block
           block.arity.positive? ? yield(self) : instance_eval(&block)
         end
+
         @resource_stack.pop
       end
 
@@ -479,6 +488,7 @@ module Apiwork
             resource.instance_exec(options, &block)
           end
         end
+
         @concerns[concern_name] = callable
       end
 
@@ -508,10 +518,12 @@ module Apiwork
 
       def collect_all_representation_classes
         representation_classes = []
+
         each_resource do |resource|
           representation_class = resource.representation_class
           representation_classes << representation_class if representation_class
         end
+
         representation_classes
       end
 
@@ -522,6 +534,7 @@ module Apiwork
           found = resource.find_resource(&block)
           return found if found
         end
+
         nil
       end
 
@@ -534,6 +547,7 @@ module Apiwork
         parent_name = @resource_stack.last
         parent_resource = parent_name ? find_resource(parent_name) : nil
         contract = merged.delete(:contract)
+
         resource = Resource.new(
           @api_class,
           name: resource_name,
@@ -541,6 +555,7 @@ module Apiwork
           contract_class_name: contract ? contract_path_to_class_name(contract) : infer_contract_class_name(resource_name),
           **merged,
         )
+
         if parent_resource
           parent_resource.add_resource(resource)
         else
@@ -570,6 +585,7 @@ module Apiwork
                       elsif @in_collection_block || on == :collection
                         :collection
                       end
+
         if action_type
           resource.add_action(action_name, method:, type: action_type)
         else
@@ -591,11 +607,13 @@ module Apiwork
 
       def contract_path_to_class_name(contract_path)
         namespaces = @api_class.namespaces
+
         parts = if contract_path.start_with?('/')
                   contract_path[1..].split('/')
                 else
                   namespaces + contract_path.split('/')
                 end
+
         parts = parts.map { |part| part.to_s.camelize }
         parts[-1] = parts[-1].singularize
         "#{parts.join('::')}Contract"

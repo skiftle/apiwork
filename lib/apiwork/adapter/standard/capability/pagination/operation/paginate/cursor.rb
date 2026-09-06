@@ -33,6 +33,7 @@ module Apiwork
                 def fetch_records(size)
                   table = @relation.klass.arel_table
                   column = table[primary_key]
+
                   if @params[:after]
                     cursor_value = decode_cursor(@params[:after], field: :after)[primary_key]
                     @relation.where(column.gt(cursor_value)).order(column.asc).limit(size + 1).to_a
