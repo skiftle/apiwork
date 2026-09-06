@@ -629,12 +629,14 @@ module Apiwork
       def resolve_enum(enum)
         return nil if enum.nil?
         return enum if enum.is_a?(Array)
+
         raise ConfigurationError, "enum must be a Symbol (reference) or Array (inline values), got #{enum.class}" unless enum.is_a?(Symbol)
 
         unless @contract_class.enum?(enum)
           raise ConfigurationError,
                 "Enum :#{enum} not found. Define it using `enum :#{enum}, %w[...]` in definition scope."
         end
+
         enum
       end
     end

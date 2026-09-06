@@ -30,6 +30,7 @@ module Apiwork
             end
 
             object?(:meta)
+
             metadata_type_names.each { |type_name| merge(type_name) }
           end
 

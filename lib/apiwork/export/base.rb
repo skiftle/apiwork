@@ -69,6 +69,7 @@ module Apiwork
         # @return [Symbol, nil]
         def output(type = nil)
           return @output_type unless type
+
           raise ArgumentError, "output must be :hash or :string, got #{type.inspect}" unless %i[hash string].include?(type)
 
           @output_type = type
@@ -84,6 +85,7 @@ module Apiwork
         # @return [String, nil]
         def file_extension(value = nil)
           return @file_extension unless value
+
           raise ConfigurationError, 'file_extension not allowed for output :hash exports' if output_type == :hash
 
           @file_extension = value
@@ -208,6 +210,7 @@ module Apiwork
                 "Export :#{self.class.export_name} is not declared for #{api_base_path}. " \
                 "Add `export :#{self.class.export_name}` to your API definition."
         end
+
         config = @api_class.export_configs[self.class.export_name]
         api_config = extract_options_from_config(config)
         all_options = options.merge(key_format:, locale:).compact

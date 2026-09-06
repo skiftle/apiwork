@@ -39,7 +39,6 @@ module CuriousCat
     end
 
     attribute :stats, type: :stats
-
     attribute :created_at
     attribute :updated_at
   end

@@ -8,7 +8,9 @@ module Apiwork
           capability_name :sorting
 
           api_builder APIBuilder
+
           contract_builder ContractBuilder
+
           operation Operation
         end
       end

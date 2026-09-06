@@ -14,6 +14,7 @@ module Api
       action :show do
         summary 'Get an invoice'
         description 'Returns a single invoice by ID'
+
         raises :not_found, :forbidden
 
         response do

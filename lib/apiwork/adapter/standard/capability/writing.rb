@@ -8,7 +8,9 @@ module Apiwork
           capability_name :writing
 
           request_transformer RequestTransformer
+
           contract_builder ContractBuilder
+
           operation Operation
         end
       end

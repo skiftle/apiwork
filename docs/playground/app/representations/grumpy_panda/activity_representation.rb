@@ -5,6 +5,7 @@ module GrumpyPanda
     adapter do
       pagination do
         strategy :cursor
+
         default_size 3
       end
     end

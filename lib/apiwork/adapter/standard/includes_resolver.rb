@@ -78,6 +78,7 @@ module Apiwork
               result.deep_merge!(extract_from_hash(item, visited))
             end
           end
+
           hash.each_with_object({}) do |(key, value), result|
             key = key.to_sym
 

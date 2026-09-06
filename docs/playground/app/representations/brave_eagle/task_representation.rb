@@ -5,7 +5,6 @@ module BraveEagle
     description 'A task representing work to be completed'
 
     attribute :id, description: 'Unique task identifier'
-
     attribute :title, description: 'Short title describing the task', example: 'Implement user authentication', writable: true
 
     attribute :description,
@@ -28,11 +27,8 @@ module BraveEagle
               writable: true
 
     attribute :due_date, description: 'Target date for task completion', example: '2024-02-01T00:00:00Z', sortable: true, writable: true
-
     attribute :archived, deprecated: true, description: 'Whether the task has been archived'
-
     attribute :created_at, description: 'Timestamp when the task was created', sortable: true
-
     attribute :updated_at, description: 'Timestamp of last modification', sortable: true
 
     belongs_to :assignee, description: 'User responsible for completing this task'

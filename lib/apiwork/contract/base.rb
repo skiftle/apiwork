@@ -149,6 +149,7 @@ module Apiwork
                   'representation must be a Representation class (subclass of Apiwork::Representation::Base), ' \
                   "got #{klass}"
           end
+
           @representation_class = klass
         end
 
@@ -405,6 +406,7 @@ module Apiwork
                   "import alias must be a Symbol, got #{as.class}. " \
                                                    'Use: import UserContract, as: :user'
           end
+
           imports[as] = klass
           return if klass.building?
           return unless klass.representation? && klass.api_class

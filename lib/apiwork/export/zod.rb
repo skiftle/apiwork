@@ -4,7 +4,9 @@ module Apiwork
   module Export
     class Zod < Base
       export_name :zod
+
       output :string
+
       file_extension '.ts'
 
       option :version, default: '4', enum: %w[4], type: :string

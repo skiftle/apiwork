@@ -4,9 +4,11 @@ module Api
   module V1
     class ReceiptRepresentation < ApplicationRepresentation
       model Invoice
+
       root :receipt
 
       description 'A billing receipt'
+
       example({ id: 1, number: 'INV-001' })
 
       attribute :id, filterable: true, sortable: true

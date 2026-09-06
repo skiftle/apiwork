@@ -351,6 +351,7 @@ module Apiwork
               item, index, type_definition, item_path, type_name, current_depth, max_depth
             )
           end
+
           type_error = validate_type(index, item, type_name, item_path)
           type_error ? { issues: [type_error], value: nil } : { issues: [], value: item }
         end
@@ -367,6 +368,7 @@ module Apiwork
               value: nil,
             }
           end
+
           if type_definition.union?
             error, validated_value = validate_union(
               index, item, type_definition.shape, item_path, current_depth:, max_depth:
@@ -685,6 +687,7 @@ module Apiwork
               path: field_path,
             )
           end
+
           nil
         end
 
@@ -720,6 +723,7 @@ module Apiwork
               path: field_path,
             )
           end
+
           nil
         end
 

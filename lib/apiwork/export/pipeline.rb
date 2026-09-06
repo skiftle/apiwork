@@ -15,6 +15,7 @@ module Apiwork
             raise ArgumentError,
                   'api_base_path and export_name required when output is a file'
           end
+
           api_classes = api_base_path ? [find_api_class(api_base_path)] : API.values
           start_time = Time.zone.now
           count = 0

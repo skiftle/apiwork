@@ -22,7 +22,9 @@ module Apiwork
         class Default < Base
           shape do
             reference(root_key.singular.to_sym, to: data_type)
+
             object?(:meta)
+
             metadata_type_names.each { |type_name| merge(type_name) }
           end
 

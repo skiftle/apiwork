@@ -67,7 +67,6 @@ module Apiwork
       #
       #   @return [Representation::Inheritance, nil]
       class_attribute :inheritance, default: nil, instance_accessor: false
-
       class_attribute :_adapter_config, default: {}, instance_accessor: false
       class_attribute :type_definitions, default: {}, instance_accessor: false
 
@@ -133,6 +132,7 @@ module Apiwork
             raise ConfigurationError,
                   "model must be an ActiveRecord model class, got #{value}"
           end
+
           @model_class = value
         end
 

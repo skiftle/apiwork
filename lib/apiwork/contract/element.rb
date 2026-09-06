@@ -135,6 +135,7 @@ module Apiwork
       def resolve_enum(enum)
         return nil if enum.nil?
         return enum if enum.is_a?(Array)
+
         raise ConfigurationError, "Enum :#{enum} not found." unless @contract_class.enum?(enum)
 
         enum

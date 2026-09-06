@@ -4,7 +4,9 @@ module Apiwork
   module Export
     class Sorbus < Base
       export_name :sorbus
+
       output :string
+
       file_extension '.ts'
 
       def generate

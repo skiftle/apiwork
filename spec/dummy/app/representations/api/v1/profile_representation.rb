@@ -5,6 +5,7 @@ module Api
     class ProfileRepresentation < ApplicationRepresentation
       deprecated!
       description 'Billing profile with personal settings'
+
       example({ email: 'admin@billing.test', name: 'Admin', timezone: 'Europe/Stockholm' })
 
       with_options filterable: true, sortable: true do

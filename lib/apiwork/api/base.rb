@@ -56,6 +56,7 @@ module Apiwork
         #   # Response: { "userName": "alice", "createdAt": "2024-01-01" }
         def key_format(format = nil)
           return @key_format if format.nil?
+
           raise ConfigurationError, "key_format must be one of #{VALID_FORMATS}" unless VALID_FORMATS.include?(format)
 
           @key_format = format
@@ -85,6 +86,7 @@ module Apiwork
         #   # Params: params[:user_profile]
         def path_format(format = nil)
           return @path_format if format.nil?
+
           raise ConfigurationError, "path_format must be one of #{VALID_FORMATS}" unless VALID_FORMATS.include?(format)
 
           @path_format = format
@@ -156,6 +158,7 @@ module Apiwork
                   'explorer requires the apiwork-explorer gem. ' \
                   "Add it to your Gemfile: gem 'apiwork-explorer'"
           end
+
           unless @explorer_config
             options = Configurable.define do
               option :mode, default: :auto, enum: %i[auto always never], type: :symbol

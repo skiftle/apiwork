@@ -9,6 +9,7 @@ module Apiwork
     GEM_ROOT = File.expand_path('../..', __dir__)
     OUTPUT_DIR = File.join(GEM_ROOT, 'docs/reference')
     GITHUB_URL = 'https://github.com/skiftle/apiwork/blob/main'
+
     RUBY_PRIMITIVES = %w[
       String Integer Float Boolean Symbol Hash Array Object
       TrueClass FalseClass NilClass Numeric Proc
@@ -570,6 +571,7 @@ module Apiwork
 
     def render_module(mod, order)
       parts = []
+
       parts << <<~FRONTMATTER
         ---
         order: #{order}

@@ -6,6 +6,7 @@ module Apiwork
       KEY_ORDER = %i[openapi info servers paths components].freeze
 
       export_name :openapi
+
       output :hash
 
       option :version, default: '3.1.0', enum: %w[3.1.0], type: :string
@@ -304,6 +305,7 @@ module Apiwork
             param.nullable?,
           )
         end
+
         if param.scalar? && param.enum?
           if param.enum_reference? && enum_exists?(param.enum)
             enum_obj = surface.enums[param.enum]

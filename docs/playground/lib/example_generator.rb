@@ -17,17 +17,13 @@ class ExampleGenerator
 
   def generate_all
     Rails.logger.debug 'Generating documentation examples...'
-
     eager_load_representations
-
     temp_dir = Rails.root.join('tmp/docs_generation')
     temp_public = temp_dir.join('public')
     temp_examples = temp_dir.join('examples')
-
     FileUtils.rm_rf(temp_dir)
     FileUtils.mkdir_p(temp_public)
     FileUtils.mkdir_p(temp_examples)
-
     examples = []
 
     each_api do |api_class, namespace, metadata|
@@ -38,9 +34,7 @@ class ExampleGenerator
     end
 
     generate_index(examples, temp_examples)
-
     swap_output(temp_public, temp_examples)
-
     Rails.logger.debug 'Done!'
   ensure
     FileUtils.rm_rf(temp_dir) if temp_dir

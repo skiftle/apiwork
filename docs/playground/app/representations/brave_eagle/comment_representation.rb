@@ -5,11 +5,8 @@ module BraveEagle
     description 'A comment on a task'
 
     attribute :id, description: 'Unique comment identifier'
-
     attribute :body, description: 'Comment content', example: 'This looks good, ready for review.', writable: true
-
     attribute :author_name, description: 'Name of the person who wrote the comment', example: 'John Doe', writable: true
-
     attribute :created_at, description: 'When the comment was created'
     attribute :updated_at, description: 'When the comment was last updated'
   end

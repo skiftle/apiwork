@@ -580,6 +580,7 @@ module Apiwork
           raise ConfigurationError,
                 ":on option must be either :member or :collection, got #{on.inspect}"
         end
+
         action_type = if @in_member_block || on == :member
                         :member
                       elsif @in_collection_block || on == :collection

@@ -80,6 +80,7 @@ module Apiwork
                   param_type: :boolean,
                 }
               end
+
               nested_representation_class = association.representation_class
               return nil unless nested_representation_class
 
@@ -91,6 +92,7 @@ module Apiwork
                   param_type: :boolean,
                 }
               end
+
               include_type = resolve_association_include_type(
                 nested_representation_class,
                 depth:,

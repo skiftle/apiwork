@@ -8,6 +8,7 @@ module Apiwork
           capability_name :including
 
           contract_builder ContractBuilder
+
           operation Operation
         end
       end

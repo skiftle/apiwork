@@ -4,6 +4,7 @@ module Apiwork
   module Export
     class Apiwork < Base
       export_name :apiwork
+
       output :hash
 
       def generate

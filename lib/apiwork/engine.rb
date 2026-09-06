@@ -3,6 +3,7 @@
 module Apiwork
   class Engine < ::Rails::Engine
     isolate_namespace Apiwork
+
     engine_name 'apiwork'
 
     rake_tasks do

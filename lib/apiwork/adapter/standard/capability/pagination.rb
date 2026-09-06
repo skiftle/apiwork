@@ -12,7 +12,9 @@ module Apiwork
           option :max_size, default: 100, type: :integer
 
           api_builder APIBuilder
+
           contract_builder ContractBuilder
+
           operation Operation
         end
       end

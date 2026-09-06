@@ -8,8 +8,11 @@ module Apiwork
           capability_name :filtering
 
           request_transformer RequestTransformer
+
           api_builder APIBuilder
+
           contract_builder ContractBuilder
+
           operation Operation
         end
       end
