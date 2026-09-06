@@ -18,17 +18,18 @@ RSpec.describe 'Nested resources', type: :request do
       body = response.parsed_body
       expect(body['items'].length).to eq(2)
       descriptions = body['items'].map { |item| item['description'] }
+
       expect(descriptions).to contain_exactly('Consulting hours', 'Software license')
     end
 
     context 'when invoice has no items' do
       it 'returns empty array' do
         empty_invoice = Invoice.create!(customer: customer, number: 'INV-003')
-
         get "/api/v1/invoices/#{empty_invoice.id}/items"
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
+
         expect(body['items']).to eq([])
       end
     end
@@ -40,6 +41,7 @@ RSpec.describe 'Nested resources', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['item']['id']).to eq(item1.id)
       expect(body['item']['description']).to eq('Consulting hours')
     end
@@ -74,6 +76,7 @@ RSpec.describe 'Nested resources', type: :request do
 
       expect(response).to have_http_status(:created)
       body = response.parsed_body
+
       expect(body['item']['description']).to eq('Consulting hours')
       expect(Item.last.invoice_id).to eq(invoice1.id)
     end
@@ -87,6 +90,7 @@ RSpec.describe 'Nested resources', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['item']['description']).to eq('Updated hours')
     end
 
@@ -104,7 +108,6 @@ RSpec.describe 'Nested resources', type: :request do
       expect do
         delete "/api/v1/invoices/#{invoice1.id}/items/#{item1.id}"
       end.to change(Item, :count).by(-1)
-
       expect(response).to have_http_status(:no_content)
     end
 
@@ -122,6 +125,7 @@ RSpec.describe 'Nested resources', type: :request do
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
       descriptions = body['items'].map { |item| item['description'] }
+
       expect(descriptions).to include('Consulting hours', 'Software license', 'Support contract')
     end
   end

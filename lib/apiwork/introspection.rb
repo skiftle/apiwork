@@ -24,7 +24,6 @@ module Apiwork
                 "locale :#{locale} was requested but no locales are defined. " \
                 "Add `locales #{locale.inspect}` to your API definition."
         end
-
         return if api_class.locales.include?(locale)
 
         raise ConfigurationError,

@@ -9,7 +9,6 @@ module Apiwork
             def apply
               params = request.query.fetch(:include, {})
               includes = IncludesResolver.resolve(representation_class, params, include_always: true)
-
               result(includes:, serialize_options: { include: params })
             end
           end

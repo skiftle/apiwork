@@ -47,7 +47,6 @@ module Apiwork
               representation_class.associations.each do |name, association|
                 association_type_map[name] = build_association_type(association)
               end
-
               object(
                 type_name,
                 description: representation_class.description,
@@ -122,12 +121,10 @@ module Apiwork
               return nil unless representation_inheritance.subclasses.any?
 
               discriminator_name = representation_inheritance.column
-
               variant_types = representation_inheritance.subclasses.filter_map do |subclass|
                 variant_type = yield(subclass)
                 { tag: subclass.sti_name, type: variant_type } if variant_type
               end
-
               union(union_type_name, discriminator: discriminator_name) do |union|
                 variant_types.each do |variant_type|
                   union.variant(tag: variant_type[:tag]) do |variant|
@@ -135,13 +132,11 @@ module Apiwork
                   end
                 end
               end
-
               union_type_name
             end
 
             def build_sti_response_union_type(visited: Set.new)
               union_type_name = representation_class.root_key.singular.to_sym
-
               build_sti_union(union_type_name:, visited:) do |variant_representation_class|
                 variant_contract = contract_for(variant_representation_class)
                 next nil unless variant_contract
@@ -160,7 +155,6 @@ module Apiwork
               return nil unless association_info
 
               representation_class = association_info[:representation_class]
-
               return import_association_contract(representation_class, visited) if association_info[:sti]
               return nil if visited.include?(representation_class)
 
@@ -177,7 +171,6 @@ module Apiwork
               return nil unless polymorphic.any?
 
               union_type_name = association.name
-
               existing_type = type?(union_type_name)
               return union_type_name if existing_type
 
@@ -192,7 +185,6 @@ module Apiwork
                   end
                 end
               end
-
               union_type_name
             end
 

@@ -34,11 +34,11 @@ RSpec.describe 'Representation attribute serialization', type: :integration do
     it 'serializes a collection of records' do
       invoice1 = Invoice.create!(customer: customer, due_on: 3.days.from_now, number: 'INV-001', status: :draft)
       invoice2 = Invoice.create!(customer: customer, due_on: 2.days.from_now, number: 'INV-002', status: :sent)
-
       results = Api::V1::InvoiceRepresentation.serialize([invoice1, invoice2])
 
       expect(results.length).to eq(2)
       numbers = results.map { |result| result[:number] }
+
       expect(numbers).to contain_exactly('INV-001', 'INV-002')
     end
 

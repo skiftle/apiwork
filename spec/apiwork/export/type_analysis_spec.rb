@@ -76,10 +76,10 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
         invoice: { shape: { item: { reference: :item, type: :reference } }, type: :object },
         item: { shape: {}, type: :object },
       }
-
       result = described_class.topological_sort_types(all_types)
 
       names = result.map(&:first)
+
       expect(names.index(:item)).to be < names.index(:invoice)
     end
 
@@ -90,10 +90,10 @@ RSpec.describe Apiwork::Export::TypeAnalysis do
           invoice: { shape: { item: { reference: :item, type: :reference } }, type: :object },
           item: { shape: { invoice: { reference: :invoice, type: :reference } }, type: :object },
         }
-
         result = described_class.topological_sort_types(all_types)
 
         names = result.map(&:first)
+
         expect(names).to contain_exactly(:customer, :invoice, :item)
       end
     end

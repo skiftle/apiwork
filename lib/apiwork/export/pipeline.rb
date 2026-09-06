@@ -15,14 +15,10 @@ module Apiwork
             raise ArgumentError,
                   'api_base_path and export_name required when output is a file'
           end
-
           api_classes = api_base_path ? [find_api_class(api_base_path)] : API.values
-
           start_time = Time.zone.now
           count = 0
-
           Rails.logger.debug 'Generating artifacts...'
-
           api_classes.each do |api_class|
             available_exports = export_name ? [export_name.to_sym] : api_class.export_configs.keys
 
@@ -38,9 +34,7 @@ module Apiwork
               )
             end
           end
-
           Rails.logger.debug "\nGenerated #{count} file#{count == 1 ? '' : 's'} in #{(Time.zone.now - start_time).round(2)}s"
-
           count
         end
 
@@ -58,15 +52,12 @@ module Apiwork
 
         def generate_file(api_class:, export_name:, format:, key_format:, locale:, output:, version:)
           api_base_path = api_class.base_path
-
           options = { format:, key_format:, locale:, version: }.compact
           options_label = options.any? ? " (#{options.map { |key, value| "#{key}: #{value}" }.join(', ')})" : ''
           Rails.logger.debug "  ✓ #{api_base_path} to #{export_name}#{options_label}"
-
           content = generate(export_name, api_base_path, format:, key_format:, locale:, version:)
           export_class = Registry.find!(export_name)
           extension = export_class.file_extension_for(format:)
-
           file_path = Writer.write(
             api_base_path:,
             content:,
@@ -74,7 +65,6 @@ module Apiwork
             extension:,
             output:,
           )
-
           Rails.logger.debug "    to #{file_path}"
           1
         end

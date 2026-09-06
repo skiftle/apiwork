@@ -15,6 +15,7 @@ RSpec.describe Apiwork::Contract::Union do
         end
 
         variant = union.variants.first
+
         expect(variant[:tag]).to eq('card')
         expect(variant[:type]).to eq(:object)
         expect(variant[:deprecated]).to be(false)
@@ -38,6 +39,7 @@ RSpec.describe Apiwork::Contract::Union do
         end
 
         variant = union.variants.first
+
         expect(variant[:deprecated]).to be(true)
         expect(variant[:description]).to eq('Card payment')
         expect(variant[:partial]).to be(true)

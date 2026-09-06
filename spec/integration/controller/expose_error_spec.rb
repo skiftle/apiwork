@@ -14,6 +14,7 @@ RSpec.describe 'Expose error', type: :request do
       body = response.parsed_body
       expect(body['layer']).to eq('http')
       issue = body['issues'].first
+
       expect(issue['code']).to eq('forbidden')
       expect(issue['detail']).to eq('Forbidden')
       expect(issue['path']).to eq([])
@@ -30,6 +31,7 @@ RSpec.describe 'Expose error', type: :request do
       body = response.parsed_body
       expect(body['layer']).to eq('http')
       issue = body['issues'].first
+
       expect(issue['code']).to eq('forbidden')
       expect(issue['detail']).to eq('Service is archived')
       expect(issue['path']).to eq(%w[service])
@@ -46,6 +48,7 @@ RSpec.describe 'Expose error', type: :request do
       body = response.parsed_body
       expect(body['layer']).to eq('http')
       issue = body['issues'].first
+
       expect(issue['code']).to eq('not_found')
       expect(issue['detail']).to eq('Not Found')
       expect(issue['path']).to eq(['services', service.id.to_s, 'expire'])

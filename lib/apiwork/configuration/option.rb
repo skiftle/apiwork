@@ -38,7 +38,6 @@ module Apiwork
         @default = default
         @enum = enum
         @children = children || {}
-
         return unless block && type == :hash
 
         block.arity.positive? ? yield(self) : instance_eval(&block)

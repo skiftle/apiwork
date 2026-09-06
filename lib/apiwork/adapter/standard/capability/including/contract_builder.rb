@@ -34,13 +34,11 @@ module Apiwork
               return type_name if depth >= MAX_RECURSION_DEPTH
 
               visited = visited.dup.add(representation_class)
-
               association_params = compute_association_params(
                 representation_class,
                 depth:,
                 visited:,
               )
-
               object(type_name) do |object|
                 association_params.each do |param_options|
                   name = param_options[:name]
@@ -61,7 +59,6 @@ module Apiwork
                   end
                 end
               end
-
               type_name
             end
 
@@ -80,7 +77,6 @@ module Apiwork
                   param_type: :boolean,
                 }
               end
-
               nested_representation_class = association.representation_class
               return nil unless nested_representation_class
 
@@ -92,13 +88,11 @@ module Apiwork
                   param_type: :boolean,
                 }
               end
-
               include_type = resolve_association_include_type(
                 nested_representation_class,
                 depth:,
                 visited:,
               )
-
               if include_type.nil?
                 {
                   include_type:,
@@ -137,7 +131,6 @@ module Apiwork
               return false if depth >= MAX_RECURSION_DEPTH
 
               new_visited = visited.dup.add(representation_class)
-
               representation_class.associations.values.any? do |association|
                 if association.polymorphic?
                   association.include != :always

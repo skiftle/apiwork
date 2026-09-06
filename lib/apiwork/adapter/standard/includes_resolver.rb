@@ -47,7 +47,6 @@ module Apiwork
               { key => format(value) }
             end
           end
-
           result.size == 1 ? result.first : result
         end
 
@@ -57,7 +56,6 @@ module Apiwork
           return {} if visited.include?(representation_class.name)
 
           visited = visited.dup.add(representation_class.name)
-
           associations.transform_values do |association|
             if association.representation_class
               self.class.new(association.representation_class).always_included(visited)
@@ -72,13 +70,11 @@ module Apiwork
           return {} if visited.include?(representation_class.name)
 
           visited_with_current = visited.dup.add(representation_class.name)
-
           if hash.is_a?(Array)
             return hash.each_with_object({}) do |item, result|
               result.deep_merge!(extract_from_hash(item, visited))
             end
           end
-
           hash.each_with_object({}) do |(key, value), result|
             key = key.to_sym
 

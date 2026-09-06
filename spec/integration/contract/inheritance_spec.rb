@@ -24,6 +24,7 @@ RSpec.describe 'Contract inheritance', type: :integration do
       child = create_child_contract(parent_contract)
 
       resolved = child.resolve_custom_type(:address)
+
       expect(resolved).not_to be_nil
     end
 
@@ -46,6 +47,7 @@ RSpec.describe 'Contract inheritance', type: :integration do
       end
 
       resolved = child.resolve_custom_type(:address)
+
       expect(resolved).not_to be_nil
     end
   end
@@ -61,6 +63,7 @@ RSpec.describe 'Contract inheritance', type: :integration do
       child = create_child_contract(parent_contract)
 
       values = child.enum_values(:status)
+
       expect(values).to eq(%w[active inactive])
     end
 
@@ -91,6 +94,7 @@ RSpec.describe 'Contract inheritance', type: :integration do
       child = create_child_contract(parent_contract)
 
       resolved = child.resolve_custom_type(:payment_method)
+
       expect(resolved).not_to be_nil
       expect(resolved.union?).to be(true)
     end

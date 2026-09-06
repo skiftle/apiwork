@@ -106,7 +106,6 @@ module Apiwork
                    else
                      Union.new(discriminator: @discriminator)
                    end
-
           return unless @block
 
           @block.arity.positive? ? @block.call(@shape) : @shape.instance_eval(&@block)

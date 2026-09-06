@@ -15,7 +15,6 @@ module Apiwork
           #
           # @return [Hash{Symbol => Resource::Action}]
           attr_reader :actions
-
           attr_reader :representation_class
 
           def initialize(representation_class, actions)

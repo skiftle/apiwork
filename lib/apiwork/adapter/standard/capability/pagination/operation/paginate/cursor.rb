@@ -25,7 +25,6 @@ module Apiwork
                   records = fetch_records(size)
                   has_more = records.length > size
                   records = records.first(size)
-
                   { data: records, metadata: build_metadata(records, has_more) }
                 end
 
@@ -34,7 +33,6 @@ module Apiwork
                 def fetch_records(size)
                   table = @relation.klass.arel_table
                   column = table[primary_key]
-
                   if @params[:after]
                     cursor_value = decode_cursor(@params[:after], field: :after)[primary_key]
                     @relation.where(column.gt(cursor_value)).order(column.asc).limit(size + 1).to_a

@@ -6,7 +6,6 @@ RSpec.describe Apiwork::Export::ApiworkMapper do
   def stub_apiwork_export(enums: {}, error_codes: {}, resources: {}, types: {})
     api_stub = Struct.new(:base_path, :enums, :error_codes, :fingerprint, :info, :locales, :resources, :types)
       .new('/api/v1', enums, error_codes, 'abc123', nil, [:en], resources, types)
-
     export = Struct.new(:api, :options).new(api_stub, { key_format: :camel })
     export.define_singleton_method(:transform_key, &:to_s)
     export
@@ -42,24 +41,21 @@ RSpec.describe Apiwork::Export::ApiworkMapper do
     context 'with types' do
       it 'serializes types in topological order' do
         export = stub_apiwork_export
-
         address_type = build_type(shape: { city: { type: :string } })
         client_type = build_type(shape: { address: { reference: :address, type: :reference } })
-
         surface = build_surface(
           enums: {},
           types: { address: address_type, client: client_type },
         )
-
         result = described_class.map(export, surface)
 
         names = result[:types].map { |type| type[:name] }
+
         expect(names.index('address')).to be < names.index('client')
       end
 
       it 'marks recursive types' do
         export = stub_apiwork_export
-
         filter_type = build_type(
           shape: {
             AND: { of: { reference: :invoice_filter, type: :reference }, optional: true, type: :array },
@@ -67,15 +63,14 @@ RSpec.describe Apiwork::Export::ApiworkMapper do
             name: { optional: true, type: :string },
           },
         )
-
         surface = build_surface(
           enums: {},
           types: { invoice_filter: filter_type },
         )
-
         result = described_class.map(export, surface)
 
         filter = result[:types].find { |type| type[:name] == 'invoice_filter' }
+
         expect(filter[:recursive]).to be true
       end
 
@@ -83,10 +78,10 @@ RSpec.describe Apiwork::Export::ApiworkMapper do
         export = stub_apiwork_export
         type = build_type(shape: { amount: { type: :decimal } })
         surface = build_surface(enums: {}, types: { invoice: type })
-
         result = described_class.map(export, surface)
 
         invoice = result[:types].find { |type| type[:name] == 'invoice' }
+
         expect(invoice[:recursive]).to be false
       end
     end
@@ -114,10 +109,10 @@ RSpec.describe Apiwork::Export::ApiworkMapper do
           },
         )
         surface = build_surface
-
         result = described_class.map(export, surface)
 
         invoices = result[:resources].first
+
         expect(invoices[:name]).to eq('invoices')
         expect(invoices[:actions].first[:method]).to eq('get')
         expect(invoices[:actions].first[:path]).to eq('/invoices')
@@ -154,11 +149,11 @@ RSpec.describe Apiwork::Export::ApiworkMapper do
           },
         )
         surface = build_surface
-
         result = described_class.map(export, surface)
 
         invoices = result[:resources].first
         items = invoices[:resources].first
+
         expect(items[:name]).to eq('items')
         expect(items[:actions].first[:path]).to eq('/:invoice_id/items')
       end

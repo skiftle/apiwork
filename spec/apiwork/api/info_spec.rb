@@ -77,6 +77,7 @@ RSpec.describe Apiwork::API::Info do
       end
 
       servers = info.server
+
       expect(servers.length).to eq(1)
       expect(servers.first.url).to eq('https://example.com')
     end

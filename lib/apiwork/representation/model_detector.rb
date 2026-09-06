@@ -31,7 +31,6 @@ module Apiwork
         rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
           return false
         end
-
         model_class == model_class.base_class
       end
 
@@ -57,7 +56,6 @@ module Apiwork
                       else
                         model_name.safe_constantize
                       end
-
         if model_class.is_a?(Class) && model_class < ActiveRecord::Base
           model_class
         else

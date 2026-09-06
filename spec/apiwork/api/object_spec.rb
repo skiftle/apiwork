@@ -32,6 +32,7 @@ RSpec.describe Apiwork::API::Object do
         ) { string }
 
         param = object.params[:tags]
+
         expect(param[:as]).to eq(:labels)
         expect(param[:default]).to eq([])
         expect(param[:deprecated]).to be(true)
@@ -84,6 +85,7 @@ RSpec.describe Apiwork::API::Object do
         ) { integer }
 
         param = object.params[:scores]
+
         expect(param[:as]).to eq(:results)
         expect(param[:default]).to eq({})
         expect(param[:deprecated]).to be(true)
@@ -137,6 +139,7 @@ RSpec.describe Apiwork::API::Object do
         )
 
         param = object.params[:content]
+
         expect(param[:as]).to eq(:data)
         expect(param[:default]).to eq('')
         expect(param[:deprecated]).to be(true)
@@ -191,6 +194,7 @@ RSpec.describe Apiwork::API::Object do
         )
 
         param = object.params[:published]
+
         expect(param[:as]).to eq(:active)
         expect(param[:default]).to be(false)
         expect(param[:deprecated]).to be(true)
@@ -245,6 +249,7 @@ RSpec.describe Apiwork::API::Object do
         )
 
         param = object.params[:due_date]
+
         expect(param[:as]).to eq(:deadline)
         expect(param[:default]).to eq('2025-01-01')
         expect(param[:deprecated]).to be(true)
@@ -299,6 +304,7 @@ RSpec.describe Apiwork::API::Object do
         )
 
         param = object.params[:created_at]
+
         expect(param[:as]).to eq(:timestamp)
         expect(param[:default]).to eq('2025-01-01T00:00:00Z')
         expect(param[:deprecated]).to be(true)
@@ -355,6 +361,7 @@ RSpec.describe Apiwork::API::Object do
         )
 
         param = object.params[:amount]
+
         expect(param[:as]).to eq(:total)
         expect(param[:default]).to eq(0.0)
         expect(param[:deprecated]).to be(true)
@@ -423,6 +430,7 @@ RSpec.describe Apiwork::API::Object do
         )
 
         param = object.params[:quantity]
+
         expect(param[:as]).to eq(:count)
         expect(param[:default]).to eq(1)
         expect(param[:deprecated]).to be(true)
@@ -476,6 +484,7 @@ RSpec.describe Apiwork::API::Object do
         )
 
         param = object.params[:version]
+
         expect(param[:as]).to eq(:api_version)
         expect(param[:default]).to eq('1.0')
         expect(param[:deprecated]).to be(true)
@@ -527,6 +536,7 @@ RSpec.describe Apiwork::API::Object do
         )
 
         param = object.params[:latitude]
+
         expect(param[:as]).to eq(:lat)
         expect(param[:default]).to eq(0.0)
         expect(param[:deprecated]).to be(true)
@@ -582,6 +592,7 @@ RSpec.describe Apiwork::API::Object do
         ) { string :street }
 
         param = object.params[:address]
+
         expect(param[:as]).to eq(:location)
         expect(param[:default]).to eq({})
         expect(param[:deprecated]).to be(true)
@@ -642,6 +653,7 @@ RSpec.describe Apiwork::API::Object do
         )
 
         param = object.params[:amount]
+
         expect(param[:as]).to eq(:total)
         expect(param[:default]).to eq(0)
         expect(param[:deprecated]).to be(true)
@@ -690,6 +702,7 @@ RSpec.describe Apiwork::API::Object do
         )
 
         param = object.params[:billing_address]
+
         expect(param[:as]).to eq(:address)
         expect(param[:deprecated]).to be(true)
         expect(param[:description]).to eq('The billing address')
@@ -747,6 +760,7 @@ RSpec.describe Apiwork::API::Object do
         )
 
         param = object.params[:title]
+
         expect(param[:as]).to eq(:name)
         expect(param[:default]).to eq('Untitled')
         expect(param[:deprecated]).to be(true)
@@ -805,6 +819,7 @@ RSpec.describe Apiwork::API::Object do
         )
 
         param = object.params[:opens_at]
+
         expect(param[:as]).to eq(:opening_time)
         expect(param[:default]).to eq('09:00')
         expect(param[:deprecated]).to be(true)
@@ -867,6 +882,7 @@ RSpec.describe Apiwork::API::Object do
         end
 
         param = object.params[:payment_method]
+
         expect(param[:as]).to eq(:payment)
         expect(param[:deprecated]).to be(true)
         expect(param[:description]).to eq('The payment method')
@@ -924,6 +940,7 @@ RSpec.describe Apiwork::API::Object do
         )
 
         param = object.params[:id]
+
         expect(param[:as]).to eq(:identifier)
         expect(param[:deprecated]).to be(true)
         expect(param[:description]).to eq('The ID')

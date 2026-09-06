@@ -30,6 +30,7 @@ class Invoice < ApplicationRecord
     return if number.start_with?('INV-')
 
     errors.add(:base, :billing_format, message: 'number must start with INV-')
+
     errors.add(:number, :billing_format)
   end
 end

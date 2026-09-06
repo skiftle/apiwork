@@ -51,7 +51,6 @@ module Apiwork
           result = I18n.translate(api_key, default: nil)
           return result if result
         end
-
         global_key = :"apiwork.error_codes.#{key}.description"
         result = I18n.translate(global_key, default: nil)
         return result if result

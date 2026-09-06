@@ -40,7 +40,6 @@ module Apiwork
 
         def build_type(qualified_name, type_definition)
           scope = resolve_scope(type_definition.scope)
-
           if type_definition.union?
             {
               scope:,
@@ -76,9 +75,7 @@ module Apiwork
           return {} unless type_definition.params
 
           result = {}
-
           expand_merged_types(type_definition, result)
-
           type_definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
             result[name] = build_param(name, param_options, type_definition.scope)
           end
@@ -113,7 +110,6 @@ module Apiwork
                       elsif options[:type] && !PRIMITIVE_TYPES.include?(options[:type])
                         resolve_type_reference(options[:type], scope)
                       end
-
           result = {
             reference:,
             as: options[:as],
@@ -142,7 +138,6 @@ module Apiwork
         def build_variant(variant, scope)
           reference = resolve_type_reference(variant[:custom_type] || variant[:type], scope)
           resolved_type = reference ? :reference : (variant[:type] || :unknown)
-
           {
             reference:,
             as: nil,
@@ -218,7 +213,6 @@ module Apiwork
           union_shape = union && of.shape.is_a?(Apiwork::API::Union) ? of.shape : nil
           type_value = of.type
           scoped_name = resolve_scoped_type_name(type_value, scope)
-
           result = {
             as: nil,
             deprecated: false,
@@ -289,26 +283,22 @@ module Apiwork
             description = i18n_attribute_description(attribute)
             return description if description
           end
-
           if (association = representation_class.associations[name])
             description = i18n_association_description(association)
             return description if description
           end
-
           nil
         end
 
         def i18n_attribute_description(attribute)
           representation_name = attribute.representation_class_name
           attribute_name = attribute.name
-
           @api_class.translate(:representations, representation_name, :attributes, attribute_name, :description)
         end
 
         def i18n_association_description(association)
           representation_name = association.representation_class_name
           association_name = association.name
-
           @api_class.translate(:representations, representation_name, :associations, association_name, :description)
         end
 

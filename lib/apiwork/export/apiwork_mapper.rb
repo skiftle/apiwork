@@ -80,7 +80,6 @@ module Apiwork
         type_hashes = types.transform_values(&:to_h)
         sorted = TypeAnalysis.topological_sort_types(type_hashes)
         recursive = TypeAnalysis.cycle_breaking_types(type_hashes)
-
         sorted.map { |name, _| serialize_type(name, types[name], recursive: recursive.include?(name)) }
       end
 
@@ -94,7 +93,6 @@ module Apiwork
           scope: type.scope,
           type: type.type.to_s,
         }
-
         if type.object?
           result[:extends] = type.extends.map(&:to_s)
           result[:shape] = serialize_shape(type.shape)
@@ -106,7 +104,6 @@ module Apiwork
             serialized
           end
         end
-
         result
       end
 
@@ -172,7 +169,6 @@ module Apiwork
           optional: param.optional?,
           type: param.type.to_s,
         }
-
         case param.type
         when :string, :integer
           result[:default] = param.default if param.default?
@@ -216,7 +212,6 @@ module Apiwork
         when :reference
           result[:reference] = param.reference.to_s
         end
-
         result
       end
 

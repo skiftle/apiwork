@@ -13,11 +13,9 @@ module Apiwork
           return nil unless @contract_param
 
           result = {}
-
           @contract_param.params.sort_by { |name, _options| name.to_s }.each do |name, param_options|
             result[name] = build_param(name, param_options)
           end
-
           if @contract_param.wrapped?
             { shape: result, type: :object }
           else
@@ -32,7 +30,6 @@ module Apiwork
           return build_custom_type_param(options) if options[:custom_type]
 
           reference = resolve_type_reference(options[:type])
-
           result = {
             reference:,
             as: options[:as],
@@ -60,7 +57,6 @@ module Apiwork
 
         def build_union_param(options)
           union_dump = build_union(options[:union])
-
           result = {
             as: options[:as],
             deprecated: options[:deprecated] == true,
@@ -89,7 +85,6 @@ module Apiwork
         def build_custom_type_param(options)
           custom_type_name = options[:custom_type]
           custom_type_name = qualified_name(custom_type_name, @contract_param) if @contract_param.contract_class.resolve_custom_type(custom_type_name)
-
           result = {
             as: options[:as],
             deprecated: options[:deprecated] == true,
@@ -162,7 +157,6 @@ module Apiwork
           type_value = element.type
           reference = registered_type?(type_value) ? qualified_name(type_value, @contract_param) : nil
           resolved_shape = element.shape ? build_nested_shape(element.shape) : {}
-
           result = {
             reference:,
             as: nil,
@@ -184,9 +178,7 @@ module Apiwork
             value: nil,
             variants: [],
           }
-
           result[:of] = build_of_from_element(element.inner) if [:array, :record].include?(element.type) && element.inner
-
           result
         end
 
@@ -200,10 +192,8 @@ module Apiwork
         def build_variant(variant)
           variant_type = variant[:custom_type] || variant[:type]
           is_registered = registered_type?(variant_type)
-
           reference = is_registered ? qualified_name(variant_type, @contract_param) : nil
           resolved_type = is_registered ? :reference : (variant[:type] || :unknown)
-
           {
             reference:,
             as: nil,
@@ -310,7 +300,6 @@ module Apiwork
 
           union = of.type == :union
           union_shape = union && of.shape.is_a?(Apiwork::API::Union) ? of.shape : nil
-
           result = {
             as: nil,
             deprecated: false,
@@ -366,7 +355,6 @@ module Apiwork
 
         def build_shape(options)
           dumped = options[:shape] ? build_nested_shape(options[:shape]) : nil
-
           return dumped || {} if [:object, :array].include?(options[:type])
 
           dumped
@@ -385,12 +373,10 @@ module Apiwork
             description = i18n_attribute_description(attribute)
             return description if description
           end
-
           if (association = representation_class.associations[param_name])
             description = i18n_association_description(association)
             return description if description
           end
-
           nil
         end
 
@@ -400,7 +386,6 @@ module Apiwork
 
           representation_name = attribute.representation_class_name
           attribute_name = attribute.name
-
           api_class.translate(:representations, representation_name, :attributes, attribute_name, :description)
         end
 
@@ -410,7 +395,6 @@ module Apiwork
 
           representation_name = association.representation_class_name
           association_name = association.name
-
           api_class.translate(:representations, representation_name, :associations, association_name, :description)
         end
 
@@ -446,7 +430,6 @@ module Apiwork
 
         def imported_type?(type_name, contract_param)
           import_prefixes = import_prefix_cache(contract_param.contract_class)
-
           return true if import_prefixes[:direct].include?(type_name)
 
           type_name = type_name.to_s

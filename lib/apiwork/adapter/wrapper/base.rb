@@ -23,7 +23,6 @@ module Apiwork
           # @return [Class<Shape>, nil]
           def shape(klass_or_callable = nil, &block)
             callable = block || klass_or_callable
-
             if callable
               self.shape_class = if callable.respond_to?(:call)
                                    wrap_callable(callable)
@@ -31,7 +30,6 @@ module Apiwork
                                    callable
                                  end
             end
-
             shape_class
           end
 

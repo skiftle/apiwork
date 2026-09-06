@@ -20,6 +20,7 @@ RSpec.describe 'Body params', type: :request do
 
       expect(response).to have_http_status(:created)
       body = response.parsed_body
+
       expect(body['invoice']['number']).to eq('INV-001')
       expect(body['invoice']['notes']).to eq('Net 30 payment terms')
       expect(body['invoice']['sent']).to be(false)
@@ -39,6 +40,7 @@ RSpec.describe 'Body params', type: :request do
       expect(response).to have_http_status(:bad_request)
       body = response.parsed_body
       issue = body['issues'].find { |issue| issue['code'] == 'field_unknown' }
+
       expect(issue['code']).to eq('field_unknown')
     end
   end
@@ -55,6 +57,7 @@ RSpec.describe 'Body params', type: :request do
 
       expect(response).to have_http_status(:ok)
       invoice1.reload
+
       expect(invoice1.notes).to eq('Rush delivery')
       expect(invoice1.number).to eq('INV-001')
     end
@@ -67,6 +70,7 @@ RSpec.describe 'Body params', type: :request do
       expect(response).to have_http_status(:bad_request)
       body = response.parsed_body
       issue = body['issues'].find { |issue| issue['code'] == 'field_unknown' }
+
       expect(issue['code']).to eq('field_unknown')
     end
   end
@@ -85,6 +89,7 @@ RSpec.describe 'Body params', type: :request do
 
       expect(response).to have_http_status(:created)
       created_customer = PersonCustomer.last
+
       expect(created_customer.email).to eq('ANNA@EXAMPLE.COM')
     end
   end

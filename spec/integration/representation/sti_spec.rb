@@ -52,6 +52,7 @@ RSpec.describe 'Representation STI type resolution', type: :integration do
       results = Api::V1::CustomerRepresentation.serialize([customer1, customer2])
 
       types = results.map { |result| result[:type] }
+
       expect(types).to contain_exactly('person', 'company')
     end
   end

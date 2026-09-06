@@ -16,7 +16,6 @@ module Apiwork
 
         def deserialize(hash)
           deserialized = hash.dup
-
           @shape.params.each do |name, param_options|
             next unless deserialized.key?(name)
 
@@ -24,7 +23,6 @@ module Apiwork
 
             deserialized[name] = deserialize_value(value, param_options)
           end
-
           deserialized
         end
 
@@ -78,7 +76,6 @@ module Apiwork
           return hash unless type_definition
 
           representation_class = (type_definition.scope || @shape.contract_class).representation_class
-
           return representation_class.deserialize(hash) if representation_class
 
           hash
@@ -86,7 +83,6 @@ module Apiwork
 
         def deserialize_array(array, param_options)
           of = param_options[:of]
-
           array.map do |item|
             next item unless item.is_a?(Hash)
 

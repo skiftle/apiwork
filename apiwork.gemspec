@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 13.0'
   s.add_development_dependency 'rspec', '~> 3.0'
   s.add_development_dependency 'rspec-rails', '~> 8.0'
-  s.add_development_dependency 'rubocop-skiftle', '~> 0.1'
+  s.add_development_dependency 'rubocop-skiftle', '~> 0.2'
   s.add_development_dependency 'sqlite3', '~> 2.0'
   s.add_development_dependency 'yard', '~> 0.9'
 

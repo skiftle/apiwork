@@ -18,6 +18,7 @@ RSpec.describe 'STI', type: :request do
 
       expect(response).to have_http_status(:created)
       body = response.parsed_body
+
       expect(body['customer']['type']).to eq('person')
       expect(PersonCustomer.last.name).to eq('Anna Svensson')
     end
@@ -37,6 +38,7 @@ RSpec.describe 'STI', type: :request do
 
       expect(response).to have_http_status(:created)
       body = response.parsed_body
+
       expect(body['customer']['type']).to eq('company')
       expect(CompanyCustomer.last.name).to eq('Acme Corp')
     end
@@ -56,6 +58,7 @@ RSpec.describe 'STI', type: :request do
       body = response.parsed_body
       expect(body['customer']['type']).to eq('person')
       customer1.reload
+
       expect(customer1.type).to eq('PersonCustomer')
       expect(customer1.name).to eq('Updated Person')
     end
@@ -67,13 +70,13 @@ RSpec.describe 'STI', type: :request do
         name: 'Acme Corp',
         registration_number: 'SE556000-0000',
       )
-
       patch "/api/v1/customers/#{company.id}",
             as: :json,
             params: { customer: { industry: 'Healthcare' } }
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['customer']['industry']).to eq('Healthcare')
       expect(body['customer']['type']).to eq('company')
     end
@@ -98,6 +101,7 @@ RSpec.describe 'STI', type: :request do
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
       types = body['customers'].map { |customer| customer['type'] }
+
       expect(types).to contain_exactly('person', 'company')
     end
   end
@@ -111,7 +115,6 @@ RSpec.describe 'STI', type: :request do
       expect do
         delete "/api/v1/customers/#{customer1.id}"
       end.to change(PersonCustomer, :count).by(-1)
-
       expect(response).to have_http_status(:no_content)
     end
 
@@ -126,7 +129,6 @@ RSpec.describe 'STI', type: :request do
       expect do
         delete "/api/v1/customers/#{company.id}"
       end.to change(CompanyCustomer, :count).by(-1)
-
       expect(response).to have_http_status(:no_content)
     end
   end

@@ -25,11 +25,9 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
         end
       end
     end
-
     klass.has_many_associations = has_many.map { |name| IssueMapperMockAssociation.new(name:) }
     klass.has_one_associations = has_one.map { |name| IssueMapperMockAssociation.new(name:) }
     klass.belongs_to_associations = belongs_to.map { |name| IssueMapperMockAssociation.new(name:) }
-
     klass
   end
 
@@ -37,20 +35,17 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
     has_many_names = associations.select { |_, v| v[:type] == :has_many }.keys
     has_one_names = associations.select { |_, v| v[:type] == :has_one }.keys
     belongs_to_names = associations.select { |_, v| v[:type] == :belongs_to }.keys
-
     record_class ||= build_record_class(
       belongs_to: belongs_to_names,
       has_many: has_many_names,
       has_one: has_one_names,
     )
-
     klass = Class.new do
       attr_reader :associations_data, :errors
 
       def initialize(errors, associations_data, record_class)
         @record_class = record_class
         @associations_data = associations_data
-
         error_collection = Class.new do
           include Enumerable
 
@@ -66,7 +61,6 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
             @errors.any?
           end
         end
-
         @errors = error_collection.new(errors)
       end
 
@@ -88,7 +82,6 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
         associations_data.key?(method) || super
       end
     end
-
     klass.new(errors, associations, record_class)
   end
 
@@ -436,11 +429,13 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
 
       it 'includes association name in path' do
         association_issue = issues.find { |issue| issue.path.include?(:items) }
+
         expect(association_issue.path).to include(:items)
       end
 
       it 'includes index in path' do
         association_issue = issues.find { |issue| issue.path.include?(:items) }
+
         expect(association_issue.path).to eq([:items, 0, :description])
       end
     end
@@ -465,11 +460,13 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
 
       it 'includes correct index for first item' do
         association_issues = issues.select { |issue| issue.path.include?(:items) }
+
         expect(association_issues.first.path).to eq([:items, 0, :description])
       end
 
       it 'includes correct index for second item' do
         association_issues = issues.select { |issue| issue.path.include?(:items) }
+
         expect(association_issues.last.path).to eq([:items, 1, :quantity])
       end
     end
@@ -487,6 +484,7 @@ RSpec.describe Apiwork::Adapter::Standard::Capability::Writing::Operation::Issue
 
       it 'includes association name in path without index' do
         association_issue = issues.find { |issue| issue.path.include?(:payment) }
+
         expect(association_issue.path).to eq([:payment, :amount])
       end
     end

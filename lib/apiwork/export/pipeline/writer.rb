@@ -46,7 +46,6 @@ module Apiwork
 
           def write_file(content, file_path)
             FileUtils.mkdir_p(File.dirname(file_path))
-
             temp_file = Tempfile.new(['artifact', File.extname(file_path)])
             begin
               temp_file.write(content)
@@ -56,7 +55,6 @@ module Apiwork
               temp_file.close
               temp_file.unlink if File.exist?(temp_file.path)
             end
-
             file_path
           end
         end

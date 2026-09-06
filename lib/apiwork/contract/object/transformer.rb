@@ -18,7 +18,6 @@ module Apiwork
           return params unless params.is_a?(Hash)
 
           transformed = params.dup
-
           @shape.params.each do |name, param_options|
             next unless transformed.key?(name)
 
@@ -56,7 +55,6 @@ module Apiwork
               end
             end
           end
-
           transformed
         end
 
@@ -79,7 +77,6 @@ module Apiwork
           return nil unless type_definition
 
           scope_contract_class = type_definition.scope || contract_class
-
           if type_definition.object?
             build_type_shape(type_definition, scope_contract_class)
           elsif type_definition.union?
@@ -97,7 +94,6 @@ module Apiwork
 
         def build_type_shape(type_definition, contract_class)
           scope = type_definition.scope || contract_class
-
           type_shape = Object.new(scope, action_name: @shape.action_name)
           type_shape.copy_type_definition_params(type_definition, type_shape)
           type_shape

@@ -14,6 +14,7 @@ RSpec.describe Apiwork::API::Resource do
       end
 
       resource = api_class.root_resource.resources[:invoices]
+
       expect(resource.collection_actions).to have_key(:search)
     end
   end
@@ -30,6 +31,7 @@ RSpec.describe Apiwork::API::Resource do
       end
 
       resource = api_class.root_resource.resources[:invoices]
+
       expect(resource.member_actions).to have_key(:archive)
     end
   end
@@ -53,6 +55,7 @@ RSpec.describe Apiwork::API::Resource do
       end
 
       resource = api_class.root_resource.resources[:invoices]
+
       expect(resource.member_actions).to have_key(:archive)
       expect(resource.collection_actions).to have_key(:search)
     end
@@ -69,6 +72,7 @@ RSpec.describe Apiwork::API::Resource do
       end
 
       resource = api_class.root_resource.resources[:invoices]
+
       expect(resource.member_actions[:archive].method).to eq(:delete)
     end
   end
@@ -84,6 +88,7 @@ RSpec.describe Apiwork::API::Resource do
       end
 
       resource = api_class.root_resource.resources[:invoices]
+
       expect(resource.member_actions).to have_key(:preview)
     end
 
@@ -96,6 +101,7 @@ RSpec.describe Apiwork::API::Resource do
         end
 
         resource = api_class.root_resource.resources[:invoices]
+
         expect(resource.collection_actions).to have_key(:search)
       end
     end
@@ -112,6 +118,7 @@ RSpec.describe Apiwork::API::Resource do
       end
 
       resource = api_class.root_resource.resources[:invoices]
+
       expect(resource.member_actions).to have_key(:send_invoice)
     end
   end
@@ -127,6 +134,7 @@ RSpec.describe Apiwork::API::Resource do
       end
 
       resource = api_class.root_resource.resources[:invoices]
+
       expect(resource.member_actions[:mark_paid].method).to eq(:patch)
     end
   end
@@ -142,6 +150,7 @@ RSpec.describe Apiwork::API::Resource do
       end
 
       resource = api_class.root_resource.resources[:invoices]
+
       expect(resource.member_actions[:archive].method).to eq(:post)
     end
   end
@@ -157,6 +166,7 @@ RSpec.describe Apiwork::API::Resource do
       end
 
       resource = api_class.root_resource.resources[:invoices]
+
       expect(resource.member_actions[:replace].method).to eq(:put)
     end
   end
@@ -189,6 +199,7 @@ RSpec.describe Apiwork::API::Resource do
       end
 
       invoice_resource = api_class.root_resource.resources[:invoices]
+
       expect(invoice_resource.resources).to have_key(:items)
     end
 
@@ -204,6 +215,7 @@ RSpec.describe Apiwork::API::Resource do
         end
 
         resource = api_class.root_resource.resources[:invoices]
+
         expect(resource.controller).to eq('billing/invoices')
         expect(resource.except).to eq([:destroy])
         expect(resource.only).to eq([:index, :show])
@@ -222,6 +234,7 @@ RSpec.describe Apiwork::API::Resource do
       end
 
       resource = api_class.root_resource.resources[:invoices]
+
       expect(resource.only).to eq([:index, :show])
     end
   end

@@ -22,6 +22,7 @@ RSpec.describe 'Offset pagination', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['invoices'].length).to eq(20)
       expect(body['pagination']['current']).to eq(1)
     end
@@ -31,6 +32,7 @@ RSpec.describe 'Offset pagination', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['invoices'].length).to eq(10)
       expect(body['pagination']['current']).to eq(2)
     end
@@ -40,6 +42,7 @@ RSpec.describe 'Offset pagination', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['pagination']['current']).to eq(1)
       expect(body['pagination']['next']).to eq(2)
       expect(body['pagination']['prev']).to be_nil
@@ -52,6 +55,7 @@ RSpec.describe 'Offset pagination', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['pagination']['prev']).to be_nil
     end
 
@@ -60,6 +64,7 @@ RSpec.describe 'Offset pagination', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['pagination']['next']).to be_nil
       expect(body['invoices'].length).to eq(5)
     end
@@ -69,6 +74,7 @@ RSpec.describe 'Offset pagination', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['invoices']).to eq([])
       expect(body['pagination']['total']).to eq(3)
       expect(body['pagination']['items']).to eq(25)
@@ -80,6 +86,7 @@ RSpec.describe 'Offset pagination', type: :request do
       expect(response).to have_http_status(:bad_request)
       body = response.parsed_body
       issue = body['issues'].find { |issue| issue['code'] == 'number_too_large' }
+
       expect(issue['code']).to eq('number_too_large')
     end
 
@@ -89,6 +96,7 @@ RSpec.describe 'Offset pagination', type: :request do
       expect(response).to have_http_status(:bad_request)
       body = response.parsed_body
       issue = body['issues'].find { |issue| issue['code'] == 'number_too_small' }
+
       expect(issue['code']).to eq('number_too_small')
     end
 
@@ -106,6 +114,7 @@ RSpec.describe 'Offset pagination', type: :request do
         body['invoices'].each do |invoice|
           expect(invoice['status']).to eq('draft')
         end
+
         expect(body['pagination']['items']).to eq(13)
       end
     end

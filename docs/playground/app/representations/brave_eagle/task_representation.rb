@@ -36,7 +36,6 @@ module BraveEagle
     attribute :updated_at, description: 'Timestamp of last modification', sortable: true
 
     belongs_to :assignee, description: 'User responsible for completing this task'
-
     has_many :comments, description: 'Discussion comments on this task'
   end
 end

@@ -59,7 +59,6 @@ module Apiwork
 
           def contract_types(contract_class)
             register_representation_types(contract_class)
-
             builder_class = self.class.contract_builder
             return unless builder_class
 

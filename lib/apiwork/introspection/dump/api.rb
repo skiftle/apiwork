@@ -12,7 +12,6 @@ module Apiwork
         def to_h
           resources = build_resources
           type_dump_hash = @type_dump.to_h
-
           {
             resources:,
             base_path: @api_class.transform_path(@api_class.base_path),
@@ -29,9 +28,7 @@ module Apiwork
 
         def collect_all_error_code_keys(resources)
           error_code_keys = Set.new(@api_class.raises)
-
           collect_action_error_codes(resources, error_code_keys)
-
           error_code_keys.to_a.sort_by(&:to_s)
         end
 
@@ -63,11 +60,9 @@ module Apiwork
 
         def build_info
           info = @api_class.info
-
           title = resolve_info_text(info, :title)
           summary = resolve_info_text(info, :summary)
           description = resolve_info_text(info, :description)
-
           return nil unless info || title || summary || description
 
           {

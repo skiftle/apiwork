@@ -276,7 +276,6 @@ RSpec.describe Apiwork::Export::TypeScriptMapper do
         invoice_type = build_type(shape: { number: { type: :string } })
         export_with_types = stub_export(types: { invoice: invoice_type })
         mapper_with_types = described_class.new(export_with_types)
-
         type = build_union_type(
           discriminator: :kind,
           variants: [
@@ -295,7 +294,6 @@ RSpec.describe Apiwork::Export::TypeScriptMapper do
         invoice_type = build_type(shape: { kind: { type: :string } })
         export_with_types = stub_export(types: { invoice: invoice_type })
         mapper_with_types = described_class.new(export_with_types)
-
         type = build_union_type(
           discriminator: :kind,
           variants: [
@@ -325,7 +323,6 @@ RSpec.describe Apiwork::Export::TypeScriptMapper do
       payment_type = build_type(shape: { amount: { type: :decimal } })
       export_with_types = stub_export(types: { invoice: invoice_type, payment: payment_type })
       mapper_with_types = described_class.new(export_with_types)
-
       type = build_union_type(
         discriminator: :kind,
         variants: [

@@ -12,9 +12,7 @@ module Apiwork
       def draw
         api_classes = Registry.values
         router = self
-
         set = ActionDispatch::Routing::RouteSet.new
-
         set.draw do
           api_classes.each do |api_class|
             next if api_class.base_path.blank? || api_class.root_resource.blank?
@@ -61,7 +59,6 @@ module Apiwork
             end
           end
         end
-
         set
       end
 

@@ -52,7 +52,6 @@ class ExampleGenerator
       FileUtils.rm_rf(dest)
       FileUtils.mv(temp_public.join(dir), dest) if File.exist?(temp_public.join(dir))
     end
-
     FileUtils.rm_rf(EXAMPLES_DIR)
     FileUtils.mv(temp_examples, EXAMPLES_DIR)
   end
@@ -88,7 +87,6 @@ class ExampleGenerator
 
   def metadata_for(namespace)
     yml_path = CONFIG_DIR.join("#{namespace}.yml")
-
     if File.exist?(yml_path)
       YAML.load_file(yml_path).deep_symbolize_keys
     else
@@ -103,11 +101,8 @@ class ExampleGenerator
   def generate_for_api(api_class, namespace, metadata, temp_public, temp_examples)
     locale_key = namespace.dasherize
     output_dir = temp_public.join(locale_key)
-
     FileUtils.mkdir_p(output_dir)
-
     Rails.logger.debug "  Generating: #{locale_key}/"
-
     write_exports(api_class, output_dir)
     write_requests(namespace, output_dir, metadata[:scenarios]) if metadata[:scenarios]
     write_markdown(namespace, locale_key, metadata, temp_examples, temp_public)
@@ -129,15 +124,12 @@ class ExampleGenerator
   def write_codegen(api_class, dir, generator)
     outdir = dir.join(generator.to_s)
     FileUtils.mkdir_p(outdir)
-
     apiwork_json = dir.join('apiwork.json')
     docs_dir = Rails.root.join('..').to_s
-
     unless system('pnpm', 'exec', 'apiwork', generator.to_s, apiwork_json.to_s, '--outdir', outdir.to_s, chdir: docs_dir)
       FileUtils.rm_rf(outdir)
       raise "codegen #{generator} failed for #{api_class.base_path}"
     end
-
     system('pnpm', 'exec', 'biome', 'check', '--write', outdir.to_s, chdir: docs_dir)
   end
 
@@ -148,13 +140,10 @@ class ExampleGenerator
 
   def write_requests(namespace, dir, scenarios)
     Rails.logger.debug '    Running request scenarios...'
-
     requests_dir = dir.join('requests')
     FileUtils.mkdir_p(requests_dir)
-
     runner = RequestRunner.new(namespace, scenarios)
     results = runner.run_all
-
     results.each do |action, data|
       File.write(requests_dir.join("#{action}.json"), JSON.pretty_generate(data))
     end
@@ -168,14 +157,12 @@ class ExampleGenerator
 
   def build_markdown(namespace, locale_key, metadata, temp_public)
     parts = []
-
     parts << frontmatter(metadata)
     parts << "# #{metadata[:title]}"
     parts << metadata[:description]
     parts << sections_content(namespace, metadata)
     parts << requests_section(locale_key, metadata[:scenarios], temp_public)
     parts << generated_output_section(locale_key, temp_public)
-
     parts.compact.join("\n\n")
   end
 
@@ -202,7 +189,6 @@ class ExampleGenerator
     model_name = File.basename(file, '.rb')
     namespace = file.split('/')[-2]
     table_name = "#{namespace}_#{model_name.pluralize}"
-
     schema_details_for_table(table_name)
   end
 
@@ -252,23 +238,19 @@ class ExampleGenerator
     return unless table_exists?(table_name)
 
     cols = ActiveRecord::Base.connection.columns(table_name)
-
     lines = []
     lines << '::: details Database Table'
     lines << ''
     lines << '| Column | Type | Nullable | Default |'
     lines << '|--------|------|----------|---------|'
-
     cols.each do |col|
       type = column_type(col)
       nullable = col.null ? '✓' : ''
       default = col.default.present? ? col.default.to_s : ''
       lines << "| #{col.name} | #{type} | #{nullable} | #{default} |"
     end
-
     lines << ''
     lines << ':::'
-
     lines.join("\n")
   end
 
@@ -322,7 +304,6 @@ class ExampleGenerator
     return unless File.directory?(requests_dir)
 
     content = ['## Request Examples']
-
     sorted = scenarios.sort_by { |s| s[:order] || 999 }
     sorted.each do |scenario|
       slug = scenario[:title].parameterize
@@ -332,22 +313,18 @@ class ExampleGenerator
       data = JSON.parse(File.read(file_path), symbolize_names: true)
       content << request_example_block(scenario[:title], data)
     end
-
     content.join("\n\n")
   end
 
   def request_example_block(action, data)
     request = data[:request]
     response = data[:response]
-
     method = request[:method]
     path = request[:path]
     status = response[:status]
-
     parts = []
     parts << "::: details #{action}"
     parts << ''
-
     parts << '**Request**'
     parts << ''
     parts << if request[:body]
@@ -355,15 +332,12 @@ class ExampleGenerator
              else
                "```http\n#{method} #{path}\n```"
              end
-
     parts << ''
     parts << "**Response** `#{status}`"
     parts << ''
     parts << "```json\n#{JSON.pretty_generate(response[:body])}\n```" if response[:body]
-
     parts << ''
     parts << ':::'
-
     parts.join("\n")
   end
 
@@ -373,7 +347,6 @@ class ExampleGenerator
 
     # Exports
     parts << '## Exports'
-
     if File.exist?(public_dir.join('openapi.yml'))
       parts << <<~MD.strip
         ::: details OpenAPI
@@ -383,7 +356,6 @@ class ExampleGenerator
         :::
       MD
     end
-
     if File.exist?(public_dir.join('apiwork.json'))
       parts << <<~MD.strip
         ::: details Apiwork
@@ -396,11 +368,9 @@ class ExampleGenerator
 
     # Codegen
     parts << '## Codegen'
-
     parts << code_group_section('TypeScript', locale_key, 'typescript', public_dir) if File.directory?(public_dir.join('typescript'))
     parts << code_group_section('Zod', locale_key, 'zod', public_dir) if File.directory?(public_dir.join('zod'))
     parts << code_group_section('Sorbus', locale_key, 'sorbus', public_dir) if File.directory?(public_dir.join('sorbus'))
-
     parts.compact.join("\n\n")
   end
 
@@ -412,7 +382,6 @@ class ExampleGenerator
       relative = Pathname.new(path).relative_path_from(dir).to_s
       relative
     end
-
     return nil if files.empty?
 
     lines = []
@@ -420,16 +389,13 @@ class ExampleGenerator
     lines << ''
     lines << '::: code-group'
     lines << ''
-
     files.each do |file|
       lines << "<<< @/playground/public/#{locale_key}/#{subdir}/#{file} [#{file}]"
     end
-
     lines << ''
     lines << ':::'
     lines << ''
     lines << '::::'
-
     lines.join("\n")
   end
 
@@ -456,12 +422,10 @@ class ExampleGenerator
 
   def generate_index(examples, temp_examples)
     sorted = examples.sort_by { |e| e[:order] }
-
     rows = sorted.map do |example|
       slug = example[:title].parameterize
       "| [#{example[:title]}](./#{slug}.md) | #{example[:description]} |"
     end
-
     content = <<~MD
       ---
       order: 99

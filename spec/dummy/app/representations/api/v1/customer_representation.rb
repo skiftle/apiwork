@@ -10,6 +10,7 @@ module Api
                   filterable: true,
                   nullable: true,
                   sortable: true
+
         attribute :name
         attribute :phone
       end

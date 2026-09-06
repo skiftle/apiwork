@@ -17,9 +17,7 @@ module Apiwork
 
       def serialize
         fields = {}
-
         add_discriminator_field(fields) if @representation_class.subclass?
-
         @representation_class.attributes.each do |name, attribute|
           next if attribute.write_only?
 
@@ -28,13 +26,11 @@ module Apiwork
           value = attribute.encode(value)
           fields[name] = value
         end
-
         @representation_class.associations.each do |name, association|
           next unless include_association?(name, association)
 
           fields[name] = serialize_association(name, association)
         end
-
         fields
       end
 
@@ -55,13 +51,11 @@ module Apiwork
           found_class = association.find_representation_for_type(value)
           return found_class.polymorphic_name if found_class
         end
-
         inheritance = @representation_class.inheritance_for_column(attribute_name)
         if inheritance
           klass = inheritance.subclasses.find { |subclass| subclass.model_class.sti_name == value }
           return klass.sti_name if klass
         end
-
         value
       end
 
@@ -73,7 +67,6 @@ module Apiwork
         return nil unless target_representation_class
 
         nested_includes = @includes[name] || @includes[name.to_s] || @includes[name.to_sym] if @includes.is_a?(Hash)
-
         if association.collection?
           target.map { |record| serialize_variant_aware(record, target_representation_class, nested_includes) }
         else
@@ -86,7 +79,6 @@ module Apiwork
           subclass_representation_class = target_representation_class.inheritance.resolve(record)
         end
         representation_class = subclass_representation_class || target_representation_class
-
         representation_class.new(record, context: @representation.context, include: nested_includes).as_json
       end
 

@@ -62,7 +62,6 @@ module Apiwork
         @param = param
         @path = path
         @singular = singular
-
         @crud_actions = name ? determine_crud_actions(singular, except:, only:) : []
         @custom_actions = []
         @resources = {}
@@ -113,7 +112,6 @@ module Apiwork
           found = resource.find_resource(resource_name)
           return found if found
         end
-
         nil
       end
 
@@ -214,14 +212,11 @@ module Apiwork
           path:,
         }.compact
         build_resource(resource_name, options:, singular: false)
-
         @resource_stack.push(resource_name)
-
         self.concerns(*concerns) if concerns
         if block
           block.arity.positive? ? yield(self) : instance_eval(&block)
         end
-
         @resource_stack.pop
       end
 
@@ -287,14 +282,11 @@ module Apiwork
           path:,
         }.compact
         build_resource(resource_name, options:, singular: true)
-
         @resource_stack.push(resource_name)
-
         self.concerns(*concerns) if concerns
         if block
           block.arity.positive? ? yield(self) : instance_eval(&block)
         end
-
         @resource_stack.pop
       end
 
@@ -321,9 +313,7 @@ module Apiwork
       def with_options(options = {}, &block)
         old_options = @current_options
         @current_options = merged_options(options)
-
         block.arity.positive? ? yield(self) : instance_eval(&block)
-
         @current_options = old_options
       end
 
@@ -532,7 +522,6 @@ module Apiwork
           found = resource.find_resource(&block)
           return found if found
         end
-
         nil
       end
 
@@ -542,12 +531,9 @@ module Apiwork
 
       def build_resource(resource_name, options:, singular:)
         merged = merged_options(options)
-
         parent_name = @resource_stack.last
         parent_resource = parent_name ? find_resource(parent_name) : nil
-
         contract = merged.delete(:contract)
-
         resource = Resource.new(
           @api_class,
           name: resource_name,
@@ -555,7 +541,6 @@ module Apiwork
           contract_class_name: contract ? contract_path_to_class_name(contract) : infer_contract_class_name(resource_name),
           **merged,
         )
-
         if parent_resource
           parent_resource.add_resource(resource)
         else
@@ -580,13 +565,11 @@ module Apiwork
           raise ConfigurationError,
                 ":on option must be either :member or :collection, got #{on.inspect}"
         end
-
         action_type = if @in_member_block || on == :member
                         :member
                       elsif @in_collection_block || on == :collection
                         :collection
                       end
-
         if action_type
           resource.add_action(action_name, method:, type: action_type)
         else
@@ -613,10 +596,8 @@ module Apiwork
                 else
                   namespaces + contract_path.split('/')
                 end
-
         parts = parts.map { |part| part.to_s.camelize }
         parts[-1] = parts[-1].singularize
-
         "#{parts.join('::')}Contract"
       end
 

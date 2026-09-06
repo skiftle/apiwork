@@ -137,16 +137,12 @@ module Apiwork
           nullable:,
           required:,
         }
-
         raise ConfigurationError, 'discriminator can only be used with type: :union' if discriminator && type != :union
 
         optional = normalize_optional(optional, default)
-
         visited_types ||= @visited_types
         visited_types ||= Set.new
-
         resolved_enum = resolve_enum(enum)
-
         case type
         when :literal
           define_literal_param(name, as:, default:, deprecated:, description:, optional:, value:)
@@ -232,7 +228,6 @@ module Apiwork
         element = Element.new(@contract_class)
         block.arity.positive? ? yield(element) : element.instance_eval(&block)
         element.validate!
-
         param(
           name,
           as:,
@@ -297,7 +292,6 @@ module Apiwork
         element = Element.new(@contract_class)
         block.arity.positive? ? yield(element) : element.instance_eval(&block)
         element.validate!
-
         param(
           name,
           as:,
@@ -407,7 +401,6 @@ module Apiwork
           type: :literal,
         }.compact
         params[:default] = default unless UNSET.equal?(default)
-
         @params[name] = (@params[name] || {}).merge(params)
       end
 
@@ -416,7 +409,6 @@ module Apiwork
 
         union = Union.new(@contract_class, discriminator:)
         block.arity.positive? ? yield(union) : union.instance_eval(&block)
-
         params = {
           as:,
           discriminator:,
@@ -428,19 +420,16 @@ module Apiwork
           **options,
         }.compact
         params[:default] = default unless UNSET.equal?(default)
-
         @params[name] = (@params[name] || {}).merge(params)
       end
 
       def define_regular_param(name, as:, default:, of:, optional:, options:, resolved_enum:, shape:, type:, visited_types:, &block)
         type_definition = @contract_class.resolve_custom_type(type)
-
         if type_definition
           expansion_key = [@contract_class.object_id, type]
 
           type_definition = nil if visited_types.include?(expansion_key)
         end
-
         if type_definition&.object?
           define_custom_type_param(
             name,
@@ -493,9 +482,7 @@ module Apiwork
         options:
       )
         scope = type_definition.scope || @contract_class
-
         union = Union.new(scope, discriminator: type_definition.discriminator)
-
         type_definition.variants.each do |variant|
           if variant[:shape].is_a?(API::Object)
             union.variant tag: variant[:tag] do
@@ -515,7 +502,6 @@ module Apiwork
             end
           end
         end
-
         params = {
           as:,
           custom_type: type,
@@ -528,7 +514,6 @@ module Apiwork
           **options,
         }.compact
         params[:default] = default unless UNSET.equal?(default)
-
         @params[name] = (@params[name] || {}).merge(params)
       end
 
@@ -546,19 +531,15 @@ module Apiwork
         &block
       )
         scope = type_definition.scope || @contract_class
-
         shape = Object.new(
           scope,
           action_name: @action_name,
           visited_types: visited_types.dup.add([@contract_class.object_id, type]),
         )
-
         copy_type_definition_params(type_definition, shape)
-
         if block_given?
           block.arity.positive? ? yield(shape) : shape.instance_eval(&block)
         end
-
         params = {
           as:,
           custom_type: type,
@@ -571,14 +552,12 @@ module Apiwork
           **options,
         }.compact
         params[:default] = default unless UNSET.equal?(default)
-
         @params[name] = (@params[name] || {}).merge(params)
       end
 
       def define_standard_param(name, as:, default:, of:, optional:, options:, resolved_enum:, shape:, type:, &block)
         resolved_of = resolve_of(of, type, &block)
         resolved_shape = resolve_shape(shape, type, &block)
-
         params = {
           as:,
           enum: resolved_enum,
@@ -589,9 +568,7 @@ module Apiwork
           **options,
         }.compact
         params[:default] = default unless UNSET.equal?(default)
-
         @params[name] = (@params[name] || {}).merge(params)
-
         @params[name][:shape] = resolved_shape if resolved_shape
       end
 
@@ -638,7 +615,6 @@ module Apiwork
           raise ConfigurationError,
                 "Enum :#{enum} not found. Define it using `enum :#{enum}, %w[...]` in definition scope."
         end
-
         enum
       end
     end

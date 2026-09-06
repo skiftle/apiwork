@@ -347,6 +347,7 @@ RSpec.describe Apiwork::Export::OpenAPI do
 
         expect(first_variant[:allOf]).to be_an(Array)
         discriminator_schema = first_variant[:allOf].last
+
         expect(discriminator_schema[:properties]['kind'][:const]).to eq('invoice')
         expect(discriminator_schema[:properties]['kind'][:type]).to eq('string')
       end

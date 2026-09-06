@@ -16,10 +16,8 @@ module Apiwork
 
       def parse(request, coerce: false)
         request = coerce_request(request) if coerce
-
         parsed_query, query_issues = parse_part(request.query, :query)
         parsed_body, body_issues = parse_part(request.body, :body)
-
         Result.new(
           issues: query_issues + body_issues,
           request: Request.new(body: parsed_body, query: parsed_query),
@@ -40,7 +38,6 @@ module Apiwork
         return [data, []] unless shape
 
         validated = shape.validate(data)
-
         return [{}, validated.issues] if validated.invalid?
 
         [shape.transform(shape.deserialize(validated.params)), []]

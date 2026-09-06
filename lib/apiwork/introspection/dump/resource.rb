@@ -17,10 +17,8 @@ module Apiwork
           formatted_segment = @api_class.transform_path(
             @resource.path || (@resource.singular ? @resource.name.to_s.singularize : @resource.name.to_s),
           )
-
           resource_path = build_resource_path(formatted_segment)
           contract_class = resolve_contract_class
-
           {
             actions: build_actions(contract_class, resource_path),
             identifier: @resource.name.to_s,
@@ -35,7 +33,6 @@ module Apiwork
 
         def build_actions(contract_class, resource_path)
           actions = {}
-
           @resource.actions.each do |action_name, adapter_action|
             actions[action_name] = { method: adapter_action.method, path: build_full_action_path(resource_path, action_name, adapter_action) }
 
@@ -55,7 +52,6 @@ module Apiwork
 
             actions[action_name].merge!(Action.new(contract_action).to_h)
           end
-
           actions
         end
 
@@ -71,14 +67,12 @@ module Apiwork
           return {} unless @resource.resources.any?
 
           child_parent_identifiers = @parent_identifiers + [@resource.name.to_s]
-
           nested_options = {
             parent_identifiers: child_parent_identifiers,
             parent_path: resource_path,
             parent_singular: @resource.singular,
           }
           nested_options[:parent_param] = @resource.param&.to_s || "#{@resource.name.to_s.singularize}_id" unless @resource.singular
-
           @resource.resources.transform_values do |nested_resource|
             Resource.new(nested_resource, @api_class, **nested_options).to_h
           end
@@ -90,7 +84,6 @@ module Apiwork
 
         def action_path_segment(action_name, adapter_action)
           param = @resource.param || :id
-
           if adapter_action.crud?
             case action_name
             when :index, :create

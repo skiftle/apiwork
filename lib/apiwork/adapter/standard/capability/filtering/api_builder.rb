@@ -21,7 +21,6 @@ module Apiwork
 
               operators = operators_for(type)
               register_between(type) if operators.include?(:between)
-
               object(type_name) do |object|
                 operators.each { |operator| add_operator(object, operator, type) }
                 object.boolean?(:null) if nullable

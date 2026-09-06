@@ -66,6 +66,7 @@ RSpec.describe Apiwork::Representation::Base do
         end
 
         attribute = representation_class.attributes[:number]
+
         expect(attribute.deprecated?).to be(true)
         expect(attribute.description).to eq('The number')
         expect(attribute.enum).to eq(%w[draft published])
@@ -93,6 +94,7 @@ RSpec.describe Apiwork::Representation::Base do
         end
 
         association = representation_class.associations[:customer]
+
         expect(association).to be_a(Apiwork::Representation::Association)
         expect(association.name).to eq(:customer)
         expect(association.type).to eq(:belongs_to)
@@ -123,6 +125,7 @@ RSpec.describe Apiwork::Representation::Base do
         end
 
         association = representation_class.associations[:customer]
+
         expect(association.deprecated?).to be(true)
         expect(association.description).to eq('The customer')
         expect(association.example).to eq({ id: 1 })
@@ -220,6 +223,7 @@ RSpec.describe Apiwork::Representation::Base do
         end
 
         association = representation_class.associations[:items]
+
         expect(association).to be_a(Apiwork::Representation::Association)
         expect(association.name).to eq(:items)
         expect(association.type).to eq(:has_many)
@@ -249,6 +253,7 @@ RSpec.describe Apiwork::Representation::Base do
         end
 
         association = representation_class.associations[:items]
+
         expect(association.deprecated?).to be(true)
         expect(association.description).to eq('The items')
         expect(association.example).to eq([{ id: 1 }])
@@ -270,6 +275,7 @@ RSpec.describe Apiwork::Representation::Base do
         end
 
         association = representation_class.associations[:address]
+
         expect(association).to be_a(Apiwork::Representation::Association)
         expect(association.name).to eq(:address)
         expect(association.type).to eq(:has_one)
@@ -300,6 +306,7 @@ RSpec.describe Apiwork::Representation::Base do
         end
 
         association = representation_class.associations[:address]
+
         expect(association.deprecated?).to be(true)
         expect(association.description).to eq('The address')
         expect(association.example).to eq({ id: 1 })
@@ -360,6 +367,7 @@ RSpec.describe Apiwork::Representation::Base do
         end
 
         type_definition = representation_class.type_definitions[:address]
+
         expect(type_definition[:kind]).to eq(:object)
         expect(type_definition[:block]).to be_a(Proc)
         expect(type_definition[:options][:deprecated]).to be(false)
@@ -381,6 +389,7 @@ RSpec.describe Apiwork::Representation::Base do
         end
 
         options = representation_class.type_definitions[:address][:options]
+
         expect(options[:deprecated]).to be(true)
         expect(options[:description]).to eq('Physical address')
         expect(options[:example]).to eq({ street: '123 Main St' })
@@ -419,6 +428,7 @@ RSpec.describe Apiwork::Representation::Base do
       end
 
       root_key = representation_class.root_key
+
       expect(root_key.singular).to eq('bill')
       expect(root_key.plural).to eq('bills')
     end
@@ -433,6 +443,7 @@ RSpec.describe Apiwork::Representation::Base do
         end
 
         root_key = representation_class.root_key
+
         expect(root_key.singular).to eq('bill')
         expect(root_key.plural).to eq('bills')
       end
@@ -445,6 +456,7 @@ RSpec.describe Apiwork::Representation::Base do
         end
 
         root_key = representation_class.root_key
+
         expect(root_key.singular).to eq('invoice')
         expect(root_key.plural).to eq('invoices')
       end
@@ -560,6 +572,7 @@ RSpec.describe Apiwork::Representation::Base do
         end
 
         type_definition = representation_class.type_definitions[:content]
+
         expect(type_definition[:kind]).to eq(:union)
         expect(type_definition[:block]).to be_a(Proc)
         expect(type_definition[:options][:deprecated]).to be(false)
@@ -587,6 +600,7 @@ RSpec.describe Apiwork::Representation::Base do
         end
 
         options = representation_class.type_definitions[:content][:options]
+
         expect(options[:deprecated]).to be(true)
         expect(options[:description]).to eq('Content block')
         expect(options[:discriminator]).to eq(:type)

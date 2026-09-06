@@ -69,11 +69,9 @@ module Apiwork
 
       def build_paths
         paths = {}
-
         traverse_resources do |resource|
           build_resource_paths(paths, resource)
         end
-
         paths
       end
 
@@ -98,9 +96,7 @@ module Apiwork
           summary: action.summary,
           tags: build_tags(resource.to_h[:tags], action.tags),
         }
-
         path_params = extract_path_parameters(action.path)
-
         request = action.request
         if request
           query_params = request.query? ? build_query_parameters(request.query) : []
@@ -114,9 +110,7 @@ module Apiwork
         elsif path_params.any?
           operation[:parameters] = path_params
         end
-
         operation[:responses] = build_responses(action_name, action.response, raises: action.raises)
-
         operation.compact
       end
 
@@ -129,7 +123,6 @@ module Apiwork
 
       def operation_id(resource, action_name)
         joined = (resource.parent_identifiers + [resource.identifier, action_name.to_s]).join('_')
-
         if key_format == :keep
           joined
         else
@@ -189,13 +182,11 @@ module Apiwork
       def build_body_schema(body_params)
         properties = {}
         required_fields = []
-
         body_params.each do |name, param|
           transformed_key = transform_key(name)
           properties[transformed_key] = map_field(param)
           required_fields << transformed_key unless param.optional?
         end
-
         result = { properties:, type: 'object' }
         result[:required] = required_fields if required_fields.any?
         result
@@ -203,9 +194,7 @@ module Apiwork
 
       def build_responses(action_name, response, raises: [])
         responses = {}
-
         response_description = response.description || ''
-
         if response.no_content?
           responses[:'204'] = { description: response_description }
         elsif response.body
@@ -239,7 +228,6 @@ module Apiwork
         else
           responses[:'204'] = { description: '' }
         end
-
         responses
       end
 
@@ -271,7 +259,6 @@ module Apiwork
 
       def build_schemas
         schemas = {}
-
         surface.types.each do |name, type|
           component_name = transform_key(name)
 
@@ -283,14 +270,12 @@ module Apiwork
                                       map_object(type)
                                     end
         end
-
         schemas
       end
 
       def map_object_with_extends(type)
         refs = type.extends.map { |base_type| { '$ref': "#/components/schemas/#{transform_key(base_type)}" } }
         object_schema = map_object(type)
-
         if object_schema[:properties].empty?
           refs.size == 1 ? refs.first : { allOf: refs }
         else
@@ -305,7 +290,6 @@ module Apiwork
             param.nullable?,
           )
         end
-
         if param.scalar? && param.enum?
           if param.enum_reference? && enum_exists?(param.enum)
             enum_obj = surface.enums[param.enum]
@@ -315,17 +299,12 @@ module Apiwork
           end
           return apply_nullable(schema, param.nullable?)
         end
-
         schema = map_param(param)
-
         schema[:description] = param.description if param.description
         schema[:example] = param.example if param.concrete? && param.example
         schema[:deprecated] = true if param.deprecated?
-
         schema[:format] = param.format.to_s if param.formattable? && param.format
-
         schema[:default] = param.default if param.respond_to?(:default) && param.default?
-
         apply_nullable(schema, param.nullable?)
       end
 
@@ -355,24 +334,19 @@ module Apiwork
           properties: {},
           type: 'object',
         }
-
         result[:description] = param.description if param.description
         result[:example] = param.example if param.respond_to?(:example) && param.example
-
         param.shape.each do |name, field|
           result[:properties][transform_key(name)] = map_field(field)
         end
-
         if param.shape.any? && (required = param.shape.reject { |_name, field| field.optional? }.keys.map { |key| transform_key(key) }).any?
           result[:required] = required
         end
-
         result
       end
 
       def map_array(param)
         items_param = param.of
-
         return { items: map_inline_object(param.shape), type: 'array' } if items_param.nil? && param.shape.any?
 
         return { items: {}, type: 'array' } unless items_param
@@ -394,15 +368,12 @@ module Apiwork
 
       def map_inline_object(shape)
         result = { properties: {}, type: 'object' }
-
         shape.each do |name, field|
           result[:properties][transform_key(name)] = map_field(field)
         end
-
         if (required = shape.reject { |_name, field| field.optional? }.keys.map { |key| transform_key(key) }).any?
           result[:required] = required
         end
-
         result
       end
 
@@ -419,7 +390,6 @@ module Apiwork
       def map_discriminated_union(param)
         discriminator_field = param.discriminator
         variants = param.variants
-
         one_of_schemas = variants.map do |variant|
           base_schema = map_param(variant)
 
@@ -444,7 +414,6 @@ module Apiwork
             base_schema
           end
         end
-
         mapping = {}
         variants.each do |variant|
           tag = variant.tag
@@ -455,9 +424,7 @@ module Apiwork
               "#/components/schemas/#{transform_key(variant.reference)}"
           end
         end
-
         result = { oneOf: one_of_schemas }
-
         result[:discriminator] = if mapping.any?
                                    {
                                      mapping:,
@@ -468,7 +435,6 @@ module Apiwork
                                      propertyName: transform_key(discriminator_field),
                                    }
                                  end
-
         result
       end
 
@@ -483,19 +449,15 @@ module Apiwork
         return {} if param.unknown?
 
         type_value = openapi_type(param.type)
-
         return {} if type_value.nil?
 
         result = { type: type_value }
-
         format_value = openapi_format(param.type)
         result[:format] = format_value if format_value
-
         if param.boundable?
           result[:minimum] = param.min unless param.min.nil?
           result[:maximum] = param.max unless param.max.nil?
         end
-
         result
       end
 

@@ -13,6 +13,7 @@ RSpec.describe 'Response format', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body).to have_key('invoice')
       expect(body['invoice']['number']).to eq('INV-001')
     end
@@ -24,6 +25,7 @@ RSpec.describe 'Response format', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body).to have_key('invoices')
       expect(body['invoices'].length).to eq(2)
     end
@@ -33,6 +35,7 @@ RSpec.describe 'Response format', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body).to have_key('pagination')
       expect(body['pagination']).to have_key('current')
       expect(body['pagination']).to have_key('total')
@@ -41,11 +44,11 @@ RSpec.describe 'Response format', type: :request do
 
     it 'returns empty array for empty collection' do
       Invoice.destroy_all
-
       get '/api/v1/invoices'
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['invoices']).to eq([])
     end
   end
@@ -56,6 +59,7 @@ RSpec.describe 'Response format', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body).to have_key('receipt')
       expect(body).not_to have_key('invoice')
       expect(body['receipt']['number']).to eq('INV-001')
@@ -68,6 +72,7 @@ RSpec.describe 'Response format', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body).to have_key('receipts')
       expect(body).not_to have_key('invoices')
     end
@@ -83,6 +88,7 @@ RSpec.describe 'Response format', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['addresses'].length).to eq(1)
     end
 
@@ -91,6 +97,7 @@ RSpec.describe 'Response format', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['addresses'].first).to have_key('createdAt')
       expect(body['addresses'].first).to have_key('updatedAt')
     end
@@ -106,6 +113,7 @@ RSpec.describe 'Response format', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['address']['city']).to eq('Stockholm')
     end
   end

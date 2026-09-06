@@ -18,11 +18,9 @@ module Apiwork
       Adapter.clear!
       ErrorCode.clear!
       Export.clear!
-
       Adapter.register_defaults!
       ErrorCode.register_defaults!
       Export.register_defaults!
-
       load_api_definitions!
       eager_load_representations! if eager_load
     end

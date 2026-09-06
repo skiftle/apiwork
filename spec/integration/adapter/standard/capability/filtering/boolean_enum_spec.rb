@@ -30,6 +30,7 @@ RSpec.describe 'Boolean and enum filtering', type: :request do
         body = response.parsed_body
         expect(body['invoices'].length).to eq(2)
         numbers = body['invoices'].map { |inv| inv['number'] }
+
         expect(numbers).to contain_exactly('INV-001', 'INV-003')
       end
     end
@@ -40,6 +41,7 @@ RSpec.describe 'Boolean and enum filtering', type: :request do
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
+
         expect(body['invoices'].length).to eq(1)
         expect(body['invoices'][0]['number']).to eq('INV-002')
       end
@@ -48,11 +50,11 @@ RSpec.describe 'Boolean and enum filtering', type: :request do
     context 'with boolean null operator' do
       it 'filters by null boolean' do
         Invoice.create!(customer: customer, number: 'INV-004', sent: nil, status: :draft)
-
         get '/api/v1/invoices', params: { filter: { sent: { null: true } } }
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
+
         expect(body['invoices'].length).to eq(1)
         expect(body['invoices'][0]['number']).to eq('INV-004')
       end
@@ -64,6 +66,7 @@ RSpec.describe 'Boolean and enum filtering', type: :request do
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
+
         expect(body['invoices'].length).to eq(1)
         expect(body['invoices'][0]['number']).to eq('INV-002')
       end
@@ -77,6 +80,7 @@ RSpec.describe 'Boolean and enum filtering', type: :request do
         body = response.parsed_body
         expect(body['invoices'].length).to eq(2)
         numbers = body['invoices'].map { |inv| inv['number'] }
+
         expect(numbers).to contain_exactly('INV-001', 'INV-003')
       end
     end
@@ -87,6 +91,7 @@ RSpec.describe 'Boolean and enum filtering', type: :request do
 
         expect(response).to have_http_status(:ok)
         body = response.parsed_body
+
         expect(body['invoices']).to eq([])
       end
     end

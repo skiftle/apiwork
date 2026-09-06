@@ -18,13 +18,11 @@ module Apiwork
                 build_type_definitions(surface.types) +
                 build_action_types +
                 build_action_response_types
-
         types.sort_by { |entry| entry[:name] }.map { |entry| entry[:code] }.join("\n\n")
       end
 
       def build_interface(type_name, type)
         type_name = pascal_case(type_name)
-
         properties = type.shape.sort_by { |name, _param| name.to_s }.map do |name, param|
           key = @export.transform_key(name)
           ts_type = map_field(param)
@@ -38,16 +36,13 @@ module Apiwork
             "  #{key}#{optional_marker}: #{ts_type};"
           end
         end.join("\n")
-
         type_jsdoc = jsdoc(description: type.description, example: type.example)
-
         code = build_interface_code(type_name, properties, type.extends)
         type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
       end
 
       def build_interface_code(type_name, properties, extends)
         base_types = extends.map { |type| pascal_case(type) }
-
         if properties.empty? && base_types.any?
           "export type #{type_name} = #{base_types.join(' & ')};"
         elsif base_types.any?
@@ -59,7 +54,6 @@ module Apiwork
 
       def build_union_type(type_name, type)
         type_name = pascal_case(type_name)
-
         variant_types = type.variants.map do |variant|
           base_type = map_param(variant)
 
@@ -69,7 +63,6 @@ module Apiwork
             base_type
           end
         end
-
         code = "export type #{type_name} = #{variant_types.join(' | ')};"
         type_jsdoc = jsdoc(description: type.description)
         type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
@@ -88,7 +81,6 @@ module Apiwork
           optional_marker = optional_in_output?(param) ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
-
         "export interface #{action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)} {\n#{properties}\n}"
       end
 
@@ -99,17 +91,13 @@ module Apiwork
           optional_marker = optional_in_output?(param) ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
-
         "export interface #{action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)} {\n#{properties}\n}"
       end
 
       def build_action_request_type(resource_name, action_name, request, parent_identifiers: [])
         nested_properties = []
-
         nested_properties << "  query: #{action_type_name(resource_name, action_name, 'RequestQuery', parent_identifiers:)};" if request[:query].any?
-
         nested_properties << "  body: #{action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)};" if request[:body].any?
-
         "export interface #{action_type_name(resource_name, action_name, 'Request', parent_identifiers:)} {\n#{nested_properties.join("\n")}\n}"
       end
 
@@ -119,16 +107,13 @@ module Apiwork
 
       def build_action_response_type(resource_name, action_name, response, parent_identifiers: [], raises:)
         type_name = action_type_name(resource_name, action_name, 'Response', parent_identifiers:)
-
         success_variant = if response.no_content?
                             '{ status: 204 }'
                           else
                             body_ref = action_type_name(resource_name, action_name, 'ResponseBody', parent_identifiers:)
                             "{ status: 200; body: #{body_ref} }"
                           end
-
         error_statuses = resolve_error_statuses(raises)
-
         if error_statuses.empty?
           "export type #{type_name} = #{success_variant};"
         else
@@ -154,9 +139,7 @@ module Apiwork
                     else
                       map_param(param)
                     end
-
         base_type = [base_type, 'null'].sort.join(' | ') if param.nullable?
-
         base_type
       end
 
@@ -182,26 +165,22 @@ module Apiwork
         return 'Record<string, unknown>' if param.shape.empty?
 
         partial = param.object? && param.partial?
-
         properties = param.shape.sort_by { |name, _field| name.to_s }.map do |name, field|
           key = @export.transform_key(name)
           ts_type = map_field(field)
           optional_marker = partial || optional_in_output?(field) ? '?' : ''
           "#{key}#{optional_marker}: #{ts_type}"
         end.join('; ')
-
         "{ #{properties} }"
       end
 
       def map_array_type(param)
         items_type = param.of
-
         return "#{map_object_type(param)}[]" if items_type.nil? && param.shape.any?
 
         return 'unknown[]' unless items_type
 
         element_type = map_param(items_type)
-
         if element_type.include?(' | ') || element_type.include?(' & ')
           "(#{element_type})[]"
         else
@@ -230,7 +209,6 @@ module Apiwork
             map_param(variant)
           end
         end
-
         variant_types.sort.join(' | ')
       end
 
@@ -292,7 +270,6 @@ module Apiwork
 
       def build_action_types
         types = []
-
         traverse_resources do |resource|
           resource_name = resource.identifier.to_sym
           parent_identifiers = resource.parent_identifiers
@@ -308,13 +285,11 @@ module Apiwork
             types << { code:, name: type_name }
           end
         end
-
         types
       end
 
       def build_action_response_types
         types = []
-
         traverse_resources do |resource|
           resource_name = resource.identifier.to_sym
           parent_identifiers = resource.parent_identifiers
@@ -325,7 +300,6 @@ module Apiwork
             types << { code:, name: type_name }
           end
         end
-
         types
       end
 
@@ -365,17 +339,14 @@ module Apiwork
           code = build_action_request_query_type(resource_name, action_name, request.query, parent_identifiers:)
           types << { code:, name: type_name }
         end
-
         if request.body?
           type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_identifiers:)
           code = build_action_request_body_type(resource_name, action_name, request.body, parent_identifiers:)
           types << { code:, name: type_name }
         end
-
         type_name = action_type_name(resource_name, action_name, 'Request', parent_identifiers:)
         code = build_action_request_type(resource_name, action_name, { body: request.body, query: request.query }, parent_identifiers:)
         types << { code:, name: type_name }
-
         types
       end
 

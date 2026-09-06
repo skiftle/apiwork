@@ -239,7 +239,6 @@ RSpec.describe Apiwork::Export::ZodMapper do
       invoice_type = build_type(shape: { number: { type: :string } })
       export_with_types = stub_export(types: { invoice: invoice_type })
       mapper_with_types = described_class.new(export_with_types)
-
       type = build_union_type(
         discriminator: :kind,
         variants: [
@@ -257,7 +256,6 @@ RSpec.describe Apiwork::Export::ZodMapper do
         invoice_type = build_type(shape: { number: { type: :string } })
         export_with_types = stub_export(types: { invoice: invoice_type })
         mapper_with_types = described_class.new(export_with_types)
-
         type = build_union_type(
           discriminator: :kind,
           variants: [
@@ -305,7 +303,6 @@ RSpec.describe Apiwork::Export::ZodMapper do
         invoice_type = build_type(shape: { kind: { type: :string }, number: { type: :string } })
         export_with_types = stub_export(types: { invoice: invoice_type })
         mapper_with_types = described_class.new(export_with_types)
-
         type = build_union_type(
           discriminator: :kind,
           variants: [

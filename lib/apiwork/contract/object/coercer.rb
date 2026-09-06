@@ -68,13 +68,11 @@ module Apiwork
 
         def coerce(hash)
           coerced = hash.dup
-
           @shape.params.each do |name, param_options|
             next unless coerced.key?(name)
 
             coerced[name] = coerce_value(coerced[name], param_options)
           end
-
           coerced
         end
 
@@ -82,7 +80,6 @@ module Apiwork
 
         def coerce_value(value, param_options)
           type = param_options[:type]
-
           return coerce_union(value, param_options[:union]) if type == :union
           return coerce_array(value, param_options) if type == :array && value.is_a?(Array)
           return coerce_record(value, param_options) if type == :record && value.is_a?(Hash)
@@ -92,7 +89,6 @@ module Apiwork
             custom_shape = resolve_custom_shape(type)
             return Coercer.coerce(custom_shape, value) if custom_shape
           end
-
           coerced = coerce_primitive(value, type)
           coerced.nil? ? value : coerced
         end
@@ -102,9 +98,7 @@ module Apiwork
           of = param_options[:of]
           of_type = of&.type
           of_shape = of&.shape
-
           custom_shape = resolve_custom_shape(of_type) if of_type && !PRIMITIVES.key?(of_type)
-
           array.map do |item|
             if of_type == :union && item.is_a?(Hash)
               coerce_union(item, of_shape)
@@ -127,7 +121,6 @@ module Apiwork
           of = param_options[:of]
           of_type = of&.type
           of_shape = of&.shape
-
           hash.transform_values do |item|
             if of_shape && item.is_a?(Hash)
               Coercer.coerce(of_shape, item)
@@ -145,9 +138,7 @@ module Apiwork
             coerced = coerce_primitive(value, :boolean)
             return coerced unless coerced.nil?
           end
-
           discriminator = union.discriminator
-
           if discriminator && value.is_a?(Hash)
             discriminator_value = value[discriminator]
             matching_variant = union.variants.find do |variant|
@@ -159,7 +150,6 @@ module Apiwork
               return Coercer.coerce(custom_shape, value) if custom_shape
             end
           end
-
           union.variants.each do |variant|
             variant_type = variant[:type]
             variant_of = variant[:of]
@@ -188,7 +178,6 @@ module Apiwork
 
             return Coercer.coerce(custom_shape, value) if value.is_a?(Hash)
           end
-
           value
         end
 
@@ -212,7 +201,6 @@ module Apiwork
           return @type_cache[type_name] = nil unless type_definition
 
           scope = type_definition.scope || @shape.contract_class
-
           @type_cache[type_name] = Object.new(scope).tap do |type_shape|
             type_shape.copy_type_definition_params(type_definition, type_shape)
           end

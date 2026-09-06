@@ -82,7 +82,6 @@ module Apiwork
         @representation_class = representation
         validate_representation!
         @polymorphic = normalize_polymorphic(polymorphic)
-
         @filterable = filterable
         @sortable = sortable
         @include = include
@@ -92,9 +91,7 @@ module Apiwork
         @description = description
         @example = example
         @deprecated = deprecated
-
         detect_polymorphic_discriminator! if @polymorphic
-
         validate_include_option!
         validate_association_exists!
         validate_polymorphic!
@@ -235,7 +232,6 @@ module Apiwork
         value.each do |item|
           validate_polymorphic_item!(item)
         end
-
         value
       end
 
@@ -327,7 +323,6 @@ module Apiwork
           code: :invalid_include_option,
           path: [@name],
         )
-
         raise error
       end
 
@@ -345,7 +340,6 @@ module Apiwork
           code: :invalid_association,
           path: [@name],
         )
-
         raise error
       end
 
@@ -365,7 +359,6 @@ module Apiwork
 
           raise error
         end
-
         nested_options = @model_class.nested_attributes_options[@name]
         return unless nested_options
 

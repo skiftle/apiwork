@@ -115,7 +115,6 @@ module Apiwork
                   "Unknown export: :#{name}. " \
                   "Available: #{available}"
           end
-
           unless @export_configs[name]
             export_class = Export.find!(name)
 
@@ -128,7 +127,6 @@ module Apiwork
 
             @export_configs[name] = Configuration.new(options)
           end
-
           return unless block
 
           block.arity.positive? ? yield(@export_configs[name]) : @export_configs[name].instance_eval(&block)
@@ -158,7 +156,6 @@ module Apiwork
                   'explorer requires the apiwork-explorer gem. ' \
                   "Add it to your Gemfile: gem 'apiwork-explorer'"
           end
-
           unless @explorer_config
             options = Configurable.define do
               option :mode, default: :auto, enum: %i[auto always never], type: :symbol
@@ -166,7 +163,6 @@ module Apiwork
             end
             @explorer_config = Configuration.new(options)
           end
-
           return @explorer_config unless block
 
           block.arity.positive? ? yield(@explorer_config) : @explorer_config.instance_eval(&block)
@@ -208,12 +204,10 @@ module Apiwork
         # @see Adapter.register How to register custom adapters
         def adapter(name = nil, &block)
           @adapter_name = name if name.is_a?(Symbol)
-
           if block
             block.arity.positive? ? yield(adapter_config) : adapter_config.instance_eval(&block)
             return
           end
-
           @adapter ||= adapter_class.new
         end
 
@@ -695,7 +689,6 @@ module Apiwork
           @path_format = :keep
           @introspect_cache = {}
           @introspect_contract_cache = {}
-
           Registry.register(self)
         end
 
@@ -724,7 +717,6 @@ module Apiwork
 
         def transform_key(key)
           key_string = key.to_s
-
           return key_string if key_string.match?(/\A[A-Z]+\z/)
 
           case key_format
@@ -738,7 +730,6 @@ module Apiwork
 
         def normalize_key(key)
           key_string = key.to_s
-
           return key_string if key_string.match?(/\A[A-Z]+\z/)
 
           key_string.underscore
@@ -815,15 +806,12 @@ module Apiwork
           return if @built_contracts.include?(contract_class)
 
           ensure_pre_pass_complete!
-
           representation_class = contract_class.representation_class
           return unless representation_class
 
           @built_contracts.add(contract_class)
-
           resource = @root_resource.find_resource { |resource| resource.resolve_contract_class == contract_class }
           resource_actions = resource ? resource.actions : {}
-
           adapter.register_contract(contract_class, representation_class, resource_actions:)
         end
 
@@ -837,7 +825,6 @@ module Apiwork
 
         def ensure_all_contracts_built!
           ensure_pre_pass_complete!
-
           @root_resource.each_resource do |resource|
             build_contracts_for_resource(resource)
           end
@@ -890,7 +877,6 @@ module Apiwork
           return if visited.include?(representation_class)
 
           visited.add(representation_class)
-
           representation_class.associations.each_value do |association|
             next unless association.writable?
 
@@ -910,7 +896,6 @@ module Apiwork
           return unless contract_class.representation_class
 
           @built_contracts.add(contract_class)
-
           adapter.register_contract(contract_class, contract_class.representation_class, resource_actions: resource.actions)
         end
       end

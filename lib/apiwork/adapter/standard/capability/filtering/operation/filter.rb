@@ -60,18 +60,14 @@ module Apiwork
 
               def apply_hash_filter(params)
                 logical_operators, regular_attributes = separate_logical_operators(params)
-
                 scope = @relation
-
                 if regular_attributes.present?
                   conditions, joins = build_where_conditions(regular_attributes, representation_class.model_class)
                   scope = with_joins_and_distinct(scope, joins) { |scoped| scoped.where(conditions.reduce(:and)) } if conditions.any?
                 end
-
                 scope = apply_not(scope, logical_operators[Constants::NOT]) if logical_operators.key?(Constants::NOT)
                 scope = apply_or(scope, logical_operators[Constants::OR]) if logical_operators.key?(Constants::OR)
                 scope = apply_and(scope, logical_operators[Constants::AND]) if logical_operators.key?(Constants::AND)
-
                 scope
               end
 
@@ -82,11 +78,9 @@ module Apiwork
                   conditions, _joins = build_where_conditions(filter_hash, representation_class.model_class)
                   conditions.compact.reduce(:and) if conditions.any?
                 end
-
                 all_joins = params
                   .map { |filter_params| build_where_conditions(filter_params, representation_class.model_class)[1] }
                   .each_with_object({}) { |joins, accumulated| accumulated.deep_merge!(joins) }
-
                 with_joins_and_distinct(@relation, all_joins) do |scope|
                   if individual_conditions.any?
                     scope.where(individual_conditions.reduce(:or))
@@ -108,13 +102,11 @@ module Apiwork
 
                 or_conditions = []
                 all_joins = {}
-
                 conditions_array.each do |filter_hash|
                   conditions, joins = build_conditions_recursive(filter_hash)
                   or_conditions << conditions if conditions
                   all_joins = all_joins.deep_merge(joins)
                 end
-
                 with_joins_and_distinct(scope, all_joins) do |scoped|
                   if or_conditions.any?
                     scoped.where(or_conditions.compact.reduce(:or))
@@ -137,47 +129,39 @@ module Apiwork
                 return [nil, {}] unless filter_params.is_a?(Hash)
 
                 logical_operators, regular_attributes = separate_logical_operators(filter_params)
-
                 conditions = []
                 all_joins = {}
-
                 if regular_attributes.present?
                   attribute_conditions, joins = build_where_conditions(regular_attributes, representation_class.model_class)
                   conditions << attribute_conditions.reduce(:and) if attribute_conditions.any?
                   all_joins = all_joins.deep_merge(joins)
                 end
-
                 if logical_operators.key?(Constants::AND)
                   condition, joins = process_logical_operator(logical_operators[Constants::AND], :and)
                   conditions << condition if condition
                   all_joins = all_joins.deep_merge(joins)
                 end
-
                 if logical_operators.key?(Constants::OR)
                   condition, joins = process_logical_operator(logical_operators[Constants::OR], :or)
                   conditions << condition if condition
                   all_joins = all_joins.deep_merge(joins)
                 end
-
                 if logical_operators.key?(Constants::NOT)
                   not_condition, joins = build_conditions_recursive(logical_operators[Constants::NOT])
                   conditions << not_condition.not if not_condition
                   all_joins = all_joins.deep_merge(joins)
                 end
-
                 [conditions.compact.reduce(:and), all_joins]
               end
 
               def process_logical_operator(filters, combinator)
                 collected_conditions = []
                 all_joins = {}
-
                 filters.each do |filter_hash|
                   condition, joins = build_conditions_recursive(filter_hash)
                   collected_conditions << condition if condition
                   all_joins = all_joins.deep_merge(joins)
                 end
-
                 [collected_conditions.any? ? collected_conditions.reduce(combinator) : nil, all_joins]
               end
 
@@ -190,10 +174,8 @@ module Apiwork
               def build_column_condition(key, value, target_klass)
                 association = representation_class.polymorphic_association_for_type_column(key)
                 value = transform_polymorphic_filter_value(value, association) if association
-
                 inheritance = representation_class.inheritance_for_column(key)
                 value = transform_sti_filter_value(value, inheritance) if inheritance
-
                 column_type = target_klass.type_for_attribute(key).type
                 return nil if column_type.nil?
 
@@ -215,7 +197,6 @@ module Apiwork
 
               def transform_polymorphic_filter_value(value, association)
                 mapping = build_polymorphic_type_mapping(association)
-
                 case value
                 when String
                   mapping[value] || value
@@ -236,7 +217,6 @@ module Apiwork
 
               def transform_sti_filter_value(value, inheritance)
                 mapping = inheritance.mapping
-
                 case value
                 when String
                   mapping[value] || value
@@ -264,13 +244,11 @@ module Apiwork
 
                 nested_query = Filter.new(reflection.klass.all, association.representation_class)
                 nested_conditions, nested_joins = nested_query.build_where_conditions(value, reflection.klass)
-
                 [nested_conditions, { key => (nested_joins.any? ? nested_joins : {}) }]
               end
 
               def build_uuid_where_clause(key, value, target_klass)
                 column = target_klass.arel_table[key]
-
                 normalizer = lambda do |value|
                   case value
                   when String
@@ -281,9 +259,7 @@ module Apiwork
                     value
                   end
                 end
-
                 builder = Builder.new(column, key, allowed_types: [Hash])
-
                 builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_UUID_OPERATORS) do |operator, compare|
                   case operator
                   when :eq then column.eq(compare)
@@ -295,11 +271,8 @@ module Apiwork
 
               def build_string_where_clause(key, value, target_klass)
                 column = target_klass.arel_table[key]
-
                 normalizer = ->(value) { value.is_a?(String) || value.nil? ? { eq: value } : value }
-
                 builder = Builder.new(column, key, allowed_types: [Hash])
-
                 builder.build(
                   value,
                   normalizer:,
@@ -318,14 +291,11 @@ module Apiwork
 
               def build_date_where_clause(key, value, target_klass)
                 column = target_klass.arel_table[key]
-
                 return handle_nil_value(column) if value.nil?
                 return column.eq(value) unless value.is_a?(Hash)
 
                 normalizer = ->(value) { value }
-
                 builder = Builder.new(column, key, allowed_types: [Hash])
-
                 builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_DATE_OPERATORS) do |operator, compare|
                   case operator
                   when :null then handle_null_operator(column, compare)
@@ -351,14 +321,11 @@ module Apiwork
 
               def build_time_where_clause(key, value, target_klass)
                 column = target_klass.arel_table[key]
-
                 return handle_nil_value(column) if value.nil?
                 return column.eq(value) unless value.is_a?(Hash)
 
                 normalizer = ->(value) { value }
-
                 builder = Builder.new(column, key, allowed_types: [Hash])
-
                 builder.build(value, normalizer:, valid_operators: Constants::NULLABLE_DATE_OPERATORS) do |operator, compare|
                   case operator
                   when :null then handle_null_operator(column, compare)
@@ -380,11 +347,8 @@ module Apiwork
 
               def build_numeric_where_clause(key, value, target_klass)
                 column = target_klass.arel_table[key]
-
                 normalizer = ->(value) { value.is_a?(Numeric) || value.nil? ? { eq: value } : value }
-
                 builder = Builder.new(column, key, allowed_types: [Hash])
-
                 builder.build(
                   value,
                   normalizer:,
@@ -412,11 +376,8 @@ module Apiwork
 
               def build_boolean_where_clause(key, value, target_klass)
                 column = target_klass.arel_table[key]
-
                 normalizer = ->(value) { [true, false, nil].include?(value) ? { eq: value } : value }
-
                 builder = Builder.new(column, key, allowed_types: [Hash])
-
                 builder.build(
                   value,
                   normalizer:,

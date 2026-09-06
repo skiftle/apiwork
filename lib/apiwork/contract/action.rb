@@ -189,13 +189,10 @@ module Apiwork
       #   end
       def request(replace: false, &block)
         @reset_request = replace if replace
-
         @request ||= Request.new(contract_class, name)
-
         if block
           block.arity.positive? ? yield(@request) : @request.instance_eval(&block)
         end
-
         @request
       end
 
@@ -236,13 +233,10 @@ module Apiwork
       #   end
       def response(replace: false, &block)
         @reset_response = replace if replace
-
         @response ||= Response.new(contract_class, name)
-
         if block
           block.arity.positive? ? yield(@response) : @response.instance_eval(&block)
         end
-
         @response
       end
 

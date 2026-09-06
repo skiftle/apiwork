@@ -19,7 +19,6 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
         class_name
       end
     end
-
     klass.class_name = name
     klass.associations_hash = associations.transform_values do |config|
       IncludesResolverMockAssociation.new(
@@ -27,7 +26,6 @@ RSpec.describe Apiwork::Adapter::Standard::IncludesResolver do
         representation_class: config[:representation_class],
       )
     end
-
     klass
   end
 

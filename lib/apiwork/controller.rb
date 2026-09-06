@@ -126,9 +126,7 @@ module Apiwork
         head :no_content
         return
       end
-
       representation_class = contract_class.representation_class
-
       body = if representation_class
                action = resource.actions[action_name.to_sym]
                if action.collection?
@@ -140,16 +138,12 @@ module Apiwork
                data[:meta] = meta if meta.present?
                data.deep_symbolize_keys
              end
-
       response = Response.new(body: deep_as_json(body))
-
       if Rails.env.development?
         result = contract_class.parse_response(response, action_name)
         result.issues.each { |issue| Rails.logger.warn(issue.to_s) }
       end
-
       response = api_class.prepare_response(response)
-
       render json: response.body, status: status || (action_name.to_sym == :create ? :created : :ok)
     end
 
@@ -185,14 +179,12 @@ module Apiwork
       meta: {}
     )
       error_code = ErrorCode.find!(code_key)
-
       issue = Issue.new(
         error_code.key,
         detail || error_code.description(locale_key: api_class.locale_key),
         meta:,
         path: path || (error_code.attach_path? ? relative_path.split('/').reject(&:blank?) : []),
       )
-
       render_error HttpError.new([issue], error_code)
     end
 
@@ -246,10 +238,8 @@ module Apiwork
     def render_error(error)
       representation_class = resource ? contract_class.representation_class : nil
       body = adapter.process_error(error, representation_class, context:)
-
       response = Response.new(body:)
       response = api_class.prepare_error_response(response)
-
       render json: response.body, status: error.status
     end
 
@@ -279,7 +269,6 @@ module Apiwork
     def raise_api_not_found_error
       path = path_parts.empty? ? '/' : "/#{path_parts[0..1].join('/')}"
       api_file = "config/apis/#{path.split('/').reject(&:blank?).join('_')}.rb"
-
       raise ConfigurationError,
             "No API found for #{self.class.name}. " \
             "Create the API: #{api_file} (Apiwork::API.define '#{path}')"
@@ -288,10 +277,8 @@ module Apiwork
     def raise_contract_not_found_error
       resource_base = resource.name.to_s.singularize
       namespaces = api_class.namespaces
-
       contract_name = [*namespaces.map { |namespace| namespace.to_s.camelize }, "#{resource_base.camelize}Contract"].join('::')
       contract_path = ['app/contracts', *namespaces, "#{resource_base}_contract.rb"].join('/')
-
       raise ConfigurationError,
             "No contract found for #{self.class.name}. " \
             "Create the contract: #{contract_path} (#{contract_name})"
@@ -306,7 +293,6 @@ module Apiwork
         api_class = API.find(base_path)
         return api_class if api_class
       end
-
       nil
     end
 

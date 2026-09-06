@@ -862,7 +862,6 @@ module Apiwork
           target_class = subclass? ? superclass : self
           target_inheritance = target_class.inheritance
           target_model = target_class.model_class
-
           return nil unless target_inheritance&.subclasses&.any?
           return nil unless target_model.respond_to?(:inheritance_column)
 
@@ -872,7 +871,6 @@ module Apiwork
         def serialize_record(record, context: {}, include: nil)
           subclass_representation_class = inheritance.resolve(record) if inheritance&.subclasses&.any?
           representation_class = subclass_representation_class || self
-
           representation_class.new(record, context:, include:).as_json
         end
 
@@ -896,9 +894,7 @@ module Apiwork
           return unless @model_class
 
           model_detector = ModelDetector.new(self)
-
           auto_configure_inheritance if model_detector.sti_base?(@model_class) && inheritance.nil?
-
           return unless model_detector.sti_subclass?(@model_class)
           return unless model_detector.superclass_is_sti_base?(@model_class)
           return if subclass?

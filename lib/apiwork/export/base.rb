@@ -95,7 +95,6 @@ module Apiwork
 
         def generate(api_base_path, format: nil, **options)
           format ||= :json
-
           raise ArgumentError, "#{export_name} export does not support #{format} format" if hash_output? && !supports_format?(format)
 
           export = new(api_base_path, **options)
@@ -119,7 +118,6 @@ module Apiwork
 
         def file_extension_for(format: nil)
           resolved = format || :json
-
           if hash_output?
             resolved == :yaml ? '.yaml' : '.json'
           else
@@ -129,7 +127,6 @@ module Apiwork
 
         def content_type_for(format: nil)
           resolved = format || :json
-
           if hash_output?
             resolved == :yaml ? 'application/yaml' : 'application/json'
           else
@@ -139,7 +136,6 @@ module Apiwork
 
         def extract_options(source)
           result = {}
-
           options.each do |name, option|
             value = source[name] || source[name.to_s]
             next if value.nil?
@@ -150,7 +146,6 @@ module Apiwork
                              option.cast(value)
                            end
           end
-
           result
         end
 
@@ -169,7 +164,6 @@ module Apiwork
 
         def extract_options_from_env
           result = {}
-
           options.each do |name, option|
             if option.nested?
               nested = extract_nested_option_from_env(name, option)
@@ -180,14 +174,12 @@ module Apiwork
               result[name] = option.cast(value) unless value.nil?
             end
           end
-
           result
         end
 
         def extract_nested_option_from_env(parent_name, option)
           nested = {}
           prefix = parent_name.to_s.upcase
-
           option.children.each do |child_name, child_option|
             env_key = "#{prefix}_#{child_name.to_s.upcase}"
             value = ENV[env_key]
@@ -195,7 +187,6 @@ module Apiwork
 
             nested[child_name] = child_option.cast(value)
           end
-
           nested
         end
       end
@@ -203,20 +194,17 @@ module Apiwork
       def initialize(api_base_path, key_format: nil, locale: nil, **options)
         @api_base_path = api_base_path
         @api_class = API.find!(api_base_path)
-
         unless @api_class.export_configs.key?(self.class.export_name)
           raise ConfigurationError,
                 "Export :#{self.class.export_name} is not declared for #{api_base_path}. " \
                 "Add `export :#{self.class.export_name}` to your API definition."
         end
-
         config = @api_class.export_configs[self.class.export_name]
         api_config = extract_options_from_config(config)
         all_options = options.merge(key_format:, locale:).compact
         @options = self.class.default_options.merge(api_config).merge(all_options)
         @options[:key_format] ||= @api_class.key_format || :keep
         validate_options!
-
         @api = @api_class.introspect(locale: @options[:locale])
       end
 
@@ -250,7 +238,6 @@ module Apiwork
       # @see #key_format
       def transform_key(key)
         key_string = key.to_s
-
         return key_string if key_string.match?(/\A[A-Z]+\z/)
 
         case key_format

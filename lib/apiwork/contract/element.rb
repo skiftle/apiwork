@@ -73,7 +73,6 @@ module Apiwork
       #   end
       def of(type, discriminator: nil, enum: nil, format: nil, max: nil, min: nil, value: nil, &block)
         resolved_enum = enum.is_a?(Symbol) ? resolve_enum(enum) : enum
-
         case type
         when :string, :integer, :decimal, :boolean, :number, :datetime, :date, :uuid, :time, :binary, :unknown
           set_type(type, format:, max:, min:, enum: resolved_enum)

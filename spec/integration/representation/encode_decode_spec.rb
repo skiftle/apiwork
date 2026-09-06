@@ -40,9 +40,7 @@ RSpec.describe 'Representation encode and decode', type: :integration do
   describe 'round-trip' do
     it 'serializes symmetrically after deserialize and create' do
       deserialized = Api::V1::CustomerRepresentation.deserialize({ email: 'anna@example.com', name: 'Anna Svensson', type: 'person' })
-
       expect(deserialized[:email]).to eq('ANNA@EXAMPLE.COM')
-
       customer = PersonCustomer.create!(deserialized.slice(:email, :name))
 
       result = Api::V1::CustomerRepresentation.serialize(customer)

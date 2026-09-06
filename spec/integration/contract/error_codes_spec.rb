@@ -14,6 +14,7 @@ RSpec.describe 'Error codes', type: :integration do
       Apiwork::ErrorCode.register :rate_limited, status: 429
 
       error_code = Apiwork::ErrorCode.find!(:rate_limited)
+
       expect(error_code.key).to eq(:rate_limited)
       expect(error_code.status).to eq(429)
     end
@@ -22,6 +23,7 @@ RSpec.describe 'Error codes', type: :integration do
       Apiwork::ErrorCode.register :resource_locked, attach_path: true, status: 423
 
       error_code = Apiwork::ErrorCode.find!(:resource_locked)
+
       expect(error_code.attach_path?).to be(true)
     end
 
@@ -61,6 +63,7 @@ RSpec.describe 'Error codes', type: :integration do
       end
 
       action = contract.actions[:show]
+
       expect(action.raises).to include(:not_found)
     end
 
@@ -76,6 +79,7 @@ RSpec.describe 'Error codes', type: :integration do
       end
 
       action = contract.actions[:update]
+
       expect(action.raises).to include(:not_found, :forbidden, :conflict)
     end
 
@@ -109,7 +113,6 @@ RSpec.describe 'Error codes', type: :integration do
 
     it 'accepts custom registered error codes' do
       Apiwork::ErrorCode.register :insufficient_credits, status: 402
-
       contract = Class.new(Apiwork::Contract::Base) do
         def self.name
           'PurchaseContract'
@@ -121,6 +124,7 @@ RSpec.describe 'Error codes', type: :integration do
       end
 
       action = contract.actions[:purchase]
+
       expect(action.raises).to include(:insufficient_credits)
     end
   end

@@ -19,7 +19,6 @@ module Apiwork
           metadata = {}
           serialize_options = {}
           includes = []
-
           result_data = @capabilities.reduce(data) do |current, capability|
             result = capability.apply(current, representation_class, request, wrapper_type: @wrapper_type)
             next current unless result
@@ -29,10 +28,8 @@ module Apiwork
             includes << result.includes if result.includes.present?
             result.data || current
           end
-
           includes.concat(representation_class.preloads)
           preloaded = preload_associations(result_data, includes.flatten.compact)
-
           [preloaded, metadata, serialize_options]
         end
 

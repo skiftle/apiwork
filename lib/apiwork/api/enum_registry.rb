@@ -16,7 +16,6 @@ module Apiwork
         example: nil
       )
         key = scoped_name(scope, name)
-
         if @store.key?(key)
           merge(
             key,

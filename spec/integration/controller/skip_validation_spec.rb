@@ -14,6 +14,7 @@ RSpec.describe 'Skip contract validation', type: :request do
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
+
       expect(body['service']['name']).to eq('Consulting')
     end
   end
@@ -27,6 +28,7 @@ RSpec.describe 'Skip contract validation', type: :request do
       expect(response).to have_http_status(:bad_request)
       body = response.parsed_body
       issue = body['issues'].find { |issue| issue['code'] == 'field_unknown' }
+
       expect(issue['code']).to eq('field_unknown')
     end
   end
