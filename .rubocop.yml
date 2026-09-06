@@ -8,4 +8,5 @@ AllCops:
     - "**/log/**/*"
     - "**/tmp/**/*"
     - "**/vendor/**/*"
-    - "spec/dummy/Rakefile"
+    - "spec/dummy/**/*"
+    - "docs/playground/**/*"
