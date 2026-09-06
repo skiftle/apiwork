@@ -6,6 +6,7 @@ module NimbleGecko
 
     def index
       meal_plans = MealPlan.all
+
       expose meal_plans
     end
 
@@ -15,16 +16,19 @@ module NimbleGecko
 
     def create
       meal_plan = MealPlan.create(contract.body[:meal_plan])
+
       expose meal_plan
     end
 
     def update
       meal_plan.update(contract.body[:meal_plan])
+
       expose meal_plan
     end
 
     def destroy
       meal_plan.destroy
+
       expose meal_plan
     end
 

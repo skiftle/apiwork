@@ -1,5 +1,7 @@
 inherit_gem:
-  rubocop-skiftle: rubocop-app.yml
+  rubocop-skiftle:
+    - rubocop-app.yml
+    - rubocop-apiwork.yml
 
 inherit_mode:
   merge:

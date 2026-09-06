@@ -6,6 +6,7 @@ module HappyZebra
 
     def index
       users = User.all
+
       expose users
     end
 
@@ -15,16 +16,19 @@ module HappyZebra
 
     def create
       user = User.create(contract.body[:user])
+
       expose user
     end
 
     def update
       user.update(contract.body[:user])
+
       expose user
     end
 
     def destroy
       user.destroy
+
       expose user
     end
 

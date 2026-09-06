@@ -6,6 +6,7 @@ module SteadyHorse
 
     def index
       products = Product.all
+
       expose products
     end
 
@@ -15,16 +16,19 @@ module SteadyHorse
 
     def create
       product = Product.create(contract.body[:product])
+
       expose product
     end
 
     def update
       product.update(contract.body[:product])
+
       expose product
     end
 
     def destroy
       product.destroy
+
       expose product
     end
 

@@ -14,16 +14,19 @@ module FunnySnake
 
     def create
       invoice = Invoice.create(contract.body[:invoice])
+
       expose({ invoice: })
     end
 
     def update
       invoice.update(contract.body[:invoice])
+
       expose({ invoice: invoice })
     end
 
     def destroy
       invoice.destroy
+
       expose({ invoice: invoice })
     end
 

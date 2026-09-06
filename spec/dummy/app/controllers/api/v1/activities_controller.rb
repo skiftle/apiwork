@@ -15,16 +15,19 @@ module Api
 
       def create
         activity = Activity.create(contract.body[:activity])
+
         expose activity
       end
 
       def update
         activity.update(contract.body[:activity])
+
         expose activity
       end
 
       def destroy
         activity.destroy
+
         expose activity
       end
 

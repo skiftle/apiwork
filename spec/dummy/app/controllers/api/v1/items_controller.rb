@@ -11,6 +11,7 @@ module Api
                 else
                   Item.all
                 end
+
         expose items
       end
 
@@ -25,16 +26,19 @@ module Api
                                 contract.body[:item]
                               end
         item = Item.create(params_with_invoice)
+
         expose item
       end
 
       def update
         item.update(contract.body[:item])
+
         expose item
       end
 
       def destroy
         item.destroy
+
         expose item
       end
 

@@ -6,6 +6,7 @@ module LoyalHound
 
     def index
       books = Book.all
+
       expose books
     end
 
@@ -15,16 +16,19 @@ module LoyalHound
 
     def create
       book = Book.create(contract.body[:book])
+
       expose book
     end
 
     def update
       book.update(contract.body[:book])
+
       expose book
     end
 
     def destroy
       book.destroy
+
       expose book
     end
 

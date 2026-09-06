@@ -6,6 +6,7 @@ module SharpHawk
 
     def index
       accounts = Account.all
+
       expose accounts
     end
 
@@ -15,16 +16,19 @@ module SharpHawk
 
     def create
       account = Account.create(contract.body[:account])
+
       expose account
     end
 
     def update
       account.update(contract.body[:account])
+
       expose account
     end
 
     def destroy
       account.destroy
+
       expose account
     end
 

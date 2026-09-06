@@ -15,16 +15,19 @@ module Api
 
       def create
         customer = Customer.create(contract.body[:customer])
+
         expose customer
       end
 
       def update
         customer.update(contract.body[:customer])
+
         expose customer
       end
 
       def destroy
         customer.destroy
+
         expose customer
       end
 

@@ -15,26 +15,31 @@ module Api
 
       def create
         invoice = Invoice.create(contract.body[:invoice])
+
         expose invoice
       end
 
       def update
         invoice.update(contract.body[:invoice])
+
         expose invoice
       end
 
       def destroy
         invoice.destroy
+
         expose invoice
       end
 
       def send_invoice
         invoice.update(sent: true)
+
         expose invoice
       end
 
       def void
         invoice.update(status: :void)
+
         expose invoice
       end
 
@@ -44,6 +49,7 @@ module Api
 
       def bulk_create
         invoices = Invoice.create(contract.body[:invoices])
+
         expose Invoice.where(id: invoices.map(&:id)), status: :created
       end
 

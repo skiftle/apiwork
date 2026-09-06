@@ -17,16 +17,19 @@ module Api
 
       def create
         service = Service.create(contract.body[:service])
+
         expose service
       end
 
       def update
         service.update(contract.body[:service])
+
         expose service
       end
 
       def destroy
         service.destroy
+
         expose service
       end
 

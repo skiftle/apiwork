@@ -15,16 +15,19 @@ module Api
 
       def create
         payment = Payment.create(contract.body[:payment])
+
         expose payment
       end
 
       def update
         payment.update(contract.body[:payment])
+
         expose payment
       end
 
       def destroy
         payment.destroy
+
         expose payment
       end
 

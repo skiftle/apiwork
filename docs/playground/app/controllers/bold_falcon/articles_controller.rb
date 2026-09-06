@@ -6,6 +6,7 @@ module BoldFalcon
 
     def index
       articles = Article.all
+
       expose articles
     end
 
@@ -15,16 +16,19 @@ module BoldFalcon
 
     def create
       article = Article.create(contract.body[:article])
+
       expose article
     end
 
     def update
       article.update(contract.body[:article])
+
       expose article
     end
 
     def destroy
       article.destroy
+
       expose article
     end
 
